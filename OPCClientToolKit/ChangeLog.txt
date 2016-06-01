@@ -1,0 +1,10 @@
+V0.3
+Added refresh
+modified CTransaction and IAsynchDataCallback so that the same OPCData types are being used.
+
+
+V0.4
+General file restructuring
+Added Asynch group read
+got Synch group read working
+

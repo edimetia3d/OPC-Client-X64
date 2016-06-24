@@ -194,12 +194,12 @@ public:
 
 
 
-COPCGroup::COPCGroup(const CString & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server):
+COPCGroup::COPCGroup(const std::string & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server):
 name(groupName),
 opcServer(server)
 {
 	USES_CONVERSION;
-	WCHAR* wideName = T2OLE(groupName);
+	WCHAR* wideName = T2OLE(groupName.c_str());
 
 
 	HRESULT result = opcServer.getServerInterface()->AddGroup(wideName, active, reqUpdateRate_ms, 0, 0, &deadBand,
@@ -238,9 +238,9 @@ COPCGroup::~COPCGroup()
 }
 
 
-OPCHANDLE * COPCGroup::buildServerHandleList(CAtlArray<COPCItem *>& items){
-	OPCHANDLE *handles = new OPCHANDLE[items.GetCount()];
-	for (unsigned i = 0; i < items.GetCount(); i++){
+OPCHANDLE * COPCGroup::buildServerHandleList(std::vector<COPCItem *>& items){
+	OPCHANDLE *handles = new OPCHANDLE[items.size()];
+	for (unsigned i = 0; i < items.size(); i++){
 		if (items[i]==NULL){
 			delete []handles;
 			throw OPCException("Item is NULL");
@@ -251,11 +251,11 @@ OPCHANDLE * COPCGroup::buildServerHandleList(CAtlArray<COPCItem *>& items){
 }
 
 
-void COPCGroup::readSync(CAtlArray<COPCItem *>& items, COPCItem_DataMap & opcData, OPCDATASOURCE source){
+void COPCGroup::readSync(std::vector<COPCItem *>& items, COPCItem_DataMap & opcData, OPCDATASOURCE source){
 	OPCHANDLE *serverHandles = buildServerHandleList(items);
 	HRESULT *itemResult;
 	OPCITEMSTATE *itemState;
-	DWORD noItems = (DWORD)items.GetCount();
+	DWORD noItems = (DWORD)items.size();
 
 	HRESULT	result = iSychIO->Read(source, noItems, serverHandles, &itemState, &itemResult);
 	if (FAILED(result)){
@@ -281,12 +281,12 @@ void COPCGroup::readSync(CAtlArray<COPCItem *>& items, COPCItem_DataMap & opcDat
 
 
 
-CTransaction * COPCGroup::readAsync(CAtlArray<COPCItem *>& items, ITransactionComplete *transactionCB){
+CTransaction * COPCGroup::readAsync(std::vector<COPCItem *>& items, ITransactionComplete *transactionCB){
 		DWORD cancelID;
 		HRESULT * individualResults;
 		CTransaction * trans = new CTransaction(items,transactionCB);
 		OPCHANDLE *serverHandles = buildServerHandleList(items);
-		DWORD noItems = (DWORD)items.GetCount();
+		DWORD noItems = (DWORD)items.size();
 
 		HRESULT result = iAsych2IO->Read(noItems, serverHandles, (DWORD)trans, &cancelID, &individualResults);
 		delete [] serverHandles;
@@ -303,7 +303,7 @@ CTransaction * COPCGroup::readAsync(CAtlArray<COPCItem *>& items, ITransactionCo
 				failCount++;
 			}
 		}
-		if (failCount == items.GetCount()){
+		if (failCount == items.size()){
 			trans->setCompleted(); // if all items return error then no callback will occur. p 101
 		}
 		
@@ -329,12 +329,12 @@ CTransaction * COPCGroup::refresh(OPCDATASOURCE source, ITransactionComplete *tr
 
 
 
-COPCItem * COPCGroup::addItem(CString &itemName, bool active)
+COPCItem * COPCGroup::addItem(std::string &itemName, bool active)
 {
-	CAtlArray<CString> names;
-	CAtlArray<COPCItem *> itemsCreated;
-	CAtlArray<HRESULT> errors;
-	names.Add(itemName);
+	std::vector<std::string> names;
+	std::vector<COPCItem *> itemsCreated;
+	std::vector<HRESULT> errors;
+	names.push_back(itemName);
 	if (addItems(names, itemsCreated, errors, active)!= 0){
 		throw OPCException("Failed to add item");
 	}
@@ -344,15 +344,15 @@ COPCItem * COPCGroup::addItem(CString &itemName, bool active)
 
 
 
-int COPCGroup::addItems(CAtlArray<CString>& itemName, CAtlArray<COPCItem *>& itemsCreated, CAtlArray<HRESULT>& errors, bool active){
-	itemsCreated.SetCount(itemName.GetCount());
-	errors.SetCount(itemName.GetCount());
- 	OPCITEMDEF *itemDef = new OPCITEMDEF[itemName.GetCount()];
+int COPCGroup::addItems(std::vector<std::string>& itemName, std::vector<COPCItem *>& itemsCreated, std::vector<HRESULT>& errors, bool active){
+	itemsCreated.resize(itemName.size());
+	errors.resize(itemName.size());
+ 	OPCITEMDEF *itemDef = new OPCITEMDEF[itemName.size()];
 	unsigned i = 0;
-	for (; i < itemName.GetCount(); i++){
+	for (; i < itemName.size(); i++){
 		itemsCreated[i] = new COPCItem(itemName[i],*this);
 		USES_CONVERSION;
-		WCHAR* wideName = T2OLE(itemName[i]);
+		WCHAR* wideName = T2OLE(itemName[i].c_str());
 		itemDef[i].szItemID = wideName;
 		itemDef[i].szAccessPath = NULL;//wideName;
 		itemDef[i].bActive = active;
@@ -364,7 +364,7 @@ int COPCGroup::addItems(CAtlArray<CString>& itemName, CAtlArray<COPCItem *>& ite
 
 	HRESULT *itemResult;
 	OPCITEMRESULT *itemDetails;
-	DWORD noItems = (DWORD)itemName.GetCount();
+	DWORD noItems = (DWORD)itemName.size();
 
 	HRESULT	result = getItemManagementInterface()->AddItems(noItems, itemDef, &itemDetails, &itemResult);
 	delete[] itemDef;

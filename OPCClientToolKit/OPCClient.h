@@ -54,11 +54,11 @@ class COPCItem;
 */
 class  OPCException:public ATL::CAtlException{
 private:
-	CString why;
+	std::string why;
 public:
-	OPCException(const CString& what,HRESULT code = 0):/*ATL::CAtlException(code),*/why(what){}
+	OPCException(const std::string& what,HRESULT code = 0):/*ATL::CAtlException(code),*/why(what){}
 
-	const CString & reasonString() const{
+	const std::string & reasonString() const{
 		return why;
 	}
 };
@@ -112,7 +112,7 @@ public:
 	* @param hostname - may be empty (in which case a local host is created).
 	* @ returns host object (owned by caller).
 	*/
-	static COPCHost * makeHost(const CString &hostName);
+	static COPCHost * makeHost(const std::string &hostName);
 
 
 	static const GUID CATID_OPCDAv10;

@@ -1,6 +1,8 @@
 #pragma once
+#include <vector>
 
 #include "OPCClient.h"
+
 class CTransaction;
 
 
@@ -51,7 +53,7 @@ public:
 	/**
 	* Used where the transaction completion will result in data being received.
 	*/
-	CTransaction(CAtlArray<COPCItem *>&items, ITransactionComplete * completeCB);
+	CTransaction(std::vector<COPCItem *>&items, ITransactionComplete * completeCB);
 
 
 	

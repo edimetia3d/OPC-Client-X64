@@ -25,7 +25,7 @@ Boston, MA  02111-1307, USA.
 
 
 
-COPCItem::COPCItem(CString &itemName, COPCGroup &g):
+COPCItem::COPCItem(std::string &itemName, COPCGroup &g):
 name(itemName), group(g){
 }
 
@@ -66,8 +66,8 @@ void COPCItem::writeSync(VARIANT &data){
 
 
 void COPCItem::readSync(OPCItemData &data, OPCDATASOURCE source){
-	CAtlArray<COPCItem *> items;
-	items.Add(this);
+	std::vector<COPCItem *> items;
+	items.push_back(this);
 	COPCItem_DataMap opcData;
 	group.readSync(items, opcData, source);
 		
@@ -113,8 +113,8 @@ void COPCItem::readSync(OPCItemData &data, OPCDATASOURCE source){
 
 
 CTransaction * COPCItem::readAsynch(ITransactionComplete *transactionCB){
-	CAtlArray<COPCItem *> items;
-	items.Add(this);
+	std::vector<COPCItem *> items;
+	items.push_back(this);
 	return group.readAsync(items, transactionCB);
 }
 
@@ -123,8 +123,8 @@ CTransaction * COPCItem::readAsynch(ITransactionComplete *transactionCB){
 CTransaction * COPCItem::writeAsynch(VARIANT &data, ITransactionComplete *transactionCB){
 	DWORD cancelID;
 	HRESULT * individualResults;
-	CAtlArray<COPCItem *> items;
-	items.Add(this);
+	std::vector<COPCItem *> items;
+	items.push_back(this);
 	CTransaction * trans = new CTransaction(items,transactionCB);
 
 	HRESULT result = group.getAsych2IOInterface()->Write(1,&serversItemHandle,&data,(DWORD)trans,&cancelID,&individualResults); 
@@ -144,20 +144,22 @@ CTransaction * COPCItem::writeAsynch(VARIANT &data, ITransactionComplete *transa
 	return trans;
 }
 
-void COPCItem::getSupportedProperties(CAtlArray<CPropertyDescription> &desc){
+void COPCItem::getSupportedProperties(std::vector<CPropertyDescription> &desc){
 	DWORD noProperties = 0;
 	DWORD *pPropertyIDs;
 	LPWSTR *pDescriptions;
 	VARTYPE *pvtDataTypes;
 
 	USES_CONVERSION;
-	HRESULT res = group.getServer().getPropertiesInterface()->QueryAvailableProperties(T2OLE(name), &noProperties, &pPropertyIDs, &pDescriptions, &pvtDataTypes);
+	HRESULT res = group.getServer().getPropertiesInterface()->QueryAvailableProperties(T2OLE(name.c_str()), &noProperties, &pPropertyIDs, &pDescriptions, &pvtDataTypes);
 	if (FAILED(res)){
 		throw OPCException("Failed to restrieve properties", res);
 	}
 
+	std::string tmp;
 	for (unsigned i = 0; i < noProperties; i++){
-		desc.Add(CPropertyDescription(pPropertyIDs[i], pDescriptions[i], pvtDataTypes[i]));
+		tmp=*pDescriptions[i];
+		desc.push_back(CPropertyDescription(pPropertyIDs[i], std::string(tmp), pvtDataTypes[i]));
 	}
 
 	COPCClient::comFree(pPropertyIDs);
@@ -166,19 +168,19 @@ void COPCItem::getSupportedProperties(CAtlArray<CPropertyDescription> &desc){
 }
 
 
-void COPCItem::getProperties(const CAtlArray<CPropertyDescription> &propsToRead, ATL::CAutoPtrArray<SPropertyValue> &propsRead){
-	unsigned noProperties = (DWORD)propsToRead.GetCount();
+void COPCItem::getProperties(const std::vector<CPropertyDescription> &propsToRead, ATL::CAutoPtrArray<SPropertyValue> &propsRead){
+	unsigned noProperties = (DWORD)propsToRead.size();
 	VARIANT *pValues = NULL;
 	HRESULT *pErrors = NULL;
 	DWORD *pPropertyIDs = new DWORD[noProperties];
 	for (unsigned i = 0; i < noProperties; i++){
-		pPropertyIDs[i] = propsToRead.GetAt(i).id;
+		pPropertyIDs[i] = propsToRead[i].id;
 	}
 	propsRead.RemoveAll();
 	propsRead.SetCount(noProperties);
 	
 	USES_CONVERSION;
-	HRESULT res = group.getServer().getPropertiesInterface()->GetItemProperties(T2OLE(name), noProperties, pPropertyIDs, &pValues, &pErrors);
+	HRESULT res = group.getServer().getPropertiesInterface()->GetItemProperties(T2OLE(name.c_str()), noProperties, pPropertyIDs, &pValues, &pErrors);
 	delete []pPropertyIDs;
 	if (FAILED(res)){
 		throw OPCException("Failed to restrieve property values", res);

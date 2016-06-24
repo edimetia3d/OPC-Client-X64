@@ -7,9 +7,9 @@ CTransaction::CTransaction(ITransactionComplete * completeCB)
 
 
 
-CTransaction::CTransaction(CAtlArray<COPCItem *>&items, ITransactionComplete * completeCB)
+CTransaction::CTransaction(std::vector<COPCItem *>&items, ITransactionComplete * completeCB)
 :completed(FALSE), cancelID(0xffffffff), completeCallBack(completeCB){
-	for (unsigned i = 0; i < items.GetCount(); i++){
+	for (unsigned i = 0; i < items.size(); i++){
 		opcData.SetAt(items[i],NULL);
 	}
 }

@@ -52,11 +52,11 @@ Boston, MA  02111-1307, USA.
 class CMyCallback:public IAsynchDataCallback{
 	public:
 		void OnDataChange(COPCGroup & group, CAtlMap<COPCItem *, OPCItemData *> & changes){
-			printf("Group %s, item changes\n", group.getName());
+			printf("Group %s, item changes\n", group.getName().c_str());
 			POSITION pos = changes.GetStartPosition();
 			while (pos != NULL){
 				COPCItem * item = changes.GetNextKey(pos);
-				printf("-----> %s\n", item->getName());
+				printf("-----> %s\n", item->getName().c_str());
 			}
 		}
 		
@@ -68,17 +68,17 @@ class CMyCallback:public IAsynchDataCallback{
 *	Handle completion of asynch operation
 */
 class CTransComplete:public ITransactionComplete{
-	CString completionMessage;
+	std::string completionMessage;
 public:
 	CTransComplete(){
 		completionMessage = "Asynch operation is completed";
 	};
 
 	void complete(CTransaction &transaction){
-		printf("%s\n",completionMessage);
+		printf("%s\n",completionMessage.c_str());
 	}
 
-	void setCompletionMessage(const CString & message){
+	void setCompletionMessage(const std::string & message){
 		completionMessage = message;
 	}
 };
@@ -101,23 +101,23 @@ void main(void)
 	printf("Input hostname: \nWarning: NOT IP ADDRESS, use sucn as:\"Jhon-PC\"\n");//See readme to find reason
 	char C_str_name[100];
 	scanf("%s",C_str_name);
-	CString hostName = C_str_name;
+	std::string hostName = C_str_name;
 	COPCHost *host = COPCClient::makeHost(hostName);
 	
 	//List servers
-	CAtlArray<CString> localServerList;
+	std::vector<std::string> localServerList;
 	host->getListOfDAServers(IID_CATID_OPCDAServer20, localServerList);
 	unsigned i = 0;
 	printf("\nServer ID List:\n");
-	for (; i < localServerList.GetCount(); i++){
-		printf("%d. %s\n", i,localServerList[i]);
+	for (; i < localServerList.size(); i++){
+		printf("%d. %s\n", i,localServerList[i].c_str());
 	}
 
 	// connect to OPC
 	printf("\nSelect a Server ID:\n");
 	int server_id;
 	scanf("%d",&server_id);
-	CString serverName = localServerList[server_id];
+	std::string serverName = localServerList[server_id];
 	COPCServer *opcServer = host->connectDAServer(serverName);
 
 	// Check status
@@ -126,44 +126,44 @@ void main(void)
 	printf("Server state is %ld\n", status.dwServerState);
 
 	// browse server
-	CAtlArray<CString> opcItemNames;
+	std::vector<std::string> opcItemNames;
 	opcServer->getItemNames(opcItemNames);
-	printf("Got %d names\n", opcItemNames.GetCount());
-	for (i = 0; i < opcItemNames.GetCount(); i++){
-		printf("%s\n",opcItemNames[i]);
+	printf("Got %d names\n", opcItemNames.size());
+	for (i = 0; i < opcItemNames.size(); i++){
+		printf("%s\n",opcItemNames[i].c_str());
 	}
 
 	// make group
 	unsigned long refreshRate;
 	COPCGroup *group = opcServer->makeGroup("Group",true,1000,refreshRate,0.0);
-	CAtlArray<COPCItem *> items;
+	std::vector<COPCItem *> items;
 
 	// make  a single item
-	CString changeChanNameName = opcItemNames[5];
+	std::string changeChanNameName = opcItemNames[5];
 	COPCItem * readWritableItem = group->addItem(changeChanNameName, true);
 
 	// make several items
-	CAtlArray<CString> itemNames;
-	CAtlArray<COPCItem *>itemsCreated;
-	CAtlArray<HRESULT> errors;
+	std::vector<std::string> itemNames;
+	std::vector<COPCItem *>itemsCreated;
+	std::vector<HRESULT> errors;
 
-	itemNames.Add(opcItemNames[15]);
-	itemNames.Add(opcItemNames[16]);	
+	itemNames.push_back(opcItemNames[15]);
+	itemNames.push_back(opcItemNames[16]);	
 	if (group->addItems(itemNames, itemsCreated,errors,true) != 0){
 		printf("Item create failed\n");
 	}
 
 	// get properties
-	CAtlArray<CPropertyDescription> propDesc;
+	std::vector<CPropertyDescription> propDesc;
 	readWritableItem->getSupportedProperties(propDesc);
-	printf("Supported properties for %s\n", readWritableItem->getName());
-	for (i = 0; i < propDesc.GetCount(); i++){
-		printf("%d id = %u, description = %s, type = %d\n", i, propDesc[i].id,propDesc[i].desc,propDesc[i].type);
+	printf("Supported properties for %s\n", readWritableItem->getName().c_str());
+	for (i = 0; i < propDesc.size(); i++){
+		printf("%d id = %u, description = %s, type = %d\n", i, propDesc[i].id,propDesc[i].desc.c_str(),propDesc[i].type);
 	}
 
 	CAutoPtrArray<SPropertyValue> propVals;
 	readWritableItem->getProperties(propDesc, propVals);
-	for (i = 0; i < propDesc.GetCount(); i++){
+	for (i = 0; i < propDesc.size(); i++){
 		if (propVals[i] == NULL){
 			printf("Failed to get property %u\n", propDesc[i].id);
 		}else{

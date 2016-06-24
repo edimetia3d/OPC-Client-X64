@@ -81,8 +81,8 @@ void COPCClient::comFreeVariant(VARIANT *memory, unsigned size){
 
 
 
-COPCHost * COPCClient::makeHost(const CString &hostName){
-	if (CString::StringLength(hostName)== 0){
+COPCHost * COPCClient::makeHost(const std::string &hostName){
+	if (hostName.size()==0){
 		return new CLocalHost();
 	}
 	

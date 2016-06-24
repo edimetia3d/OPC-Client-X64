@@ -54,12 +54,12 @@ COPCServer::~COPCServer()
 
 
 
-COPCGroup *COPCServer::makeGroup(const CString & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand){
+COPCGroup *COPCServer::makeGroup(const std::string & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand){
 	return new COPCGroup(groupName, active, reqUpdateRate_ms, revisedUpdateRate_ms, deadBand, *this);
 }
 
 
-void COPCServer::getItemNames(CAtlArray<CString> & opcItemNames){
+void COPCServer::getItemNames(std::vector<std::string> & opcItemNames){
 	if (!iOpcNamespace) return;
 
 	OPCNAMESPACETYPE nameSpaceType;
@@ -89,7 +89,7 @@ void COPCServer::getItemNames(CAtlArray<CString> & opcItemNames){
 			char * cStr = OLE2T(fullName);
 			//char * cStr = OLE2T(str);
 			//printf("Adding %s\n", cStr);
-			opcItemNames.Add(cStr);
+			opcItemNames.push_back(cStr);
 			COPCClient::comFree(fullName);
 		}
 		COPCClient::comFree(str);

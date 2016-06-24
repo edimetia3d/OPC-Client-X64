@@ -44,7 +44,7 @@ DWORD dwBandWidth;
 WORD wMajorVersion;
 WORD wMinorVersion;
 WORD wBuildNumber;
-CString vendorInfo;
+std::string vendorInfo;
 } ServerStatus;
 
 
@@ -103,14 +103,14 @@ public:
 	* This is currently done FLAT mode
 	* TODO implement browsing of structured namespace
 	*/
-	void getItemNames(CAtlArray<CString> & opcItemNames);
+	void getItemNames(std::vector<std::string> & opcItemNames);
 
 
 
 	/**
 	* Get an OPC group. Caller owns
 	*/
-	COPCGroup *makeGroup(const CString & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand); 
+	COPCGroup *makeGroup(const std::string & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand); 
 
 
 	/**

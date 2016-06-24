@@ -9,12 +9,12 @@ struct CPropertyDescription{
 	DWORD id;
 
 	/// server supplied textual description
-	CString desc;
+	std::string desc;
 
 	/// data type of the property
 	VARTYPE type;
 
-	CPropertyDescription(DWORD i, CString d, VARTYPE t):id(i),desc(d), type(t){};
+	CPropertyDescription(DWORD i, std::string d, VARTYPE t):id(i),desc(d), type(t){};
 };
 
 

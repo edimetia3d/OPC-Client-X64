@@ -43,7 +43,7 @@ private:
 
 	COPCGroup & group;
 
-	CString name;
+	std::string name;
 	
 protected:
 	friend class COPCGroup;
@@ -51,7 +51,7 @@ protected:
 	void setOPCParams(OPCHANDLE handle, VARTYPE type, DWORD dwAccess);
 
 	// items may only be created by group.
-	COPCItem(CString &itemName, COPCGroup &g);
+	COPCItem(std::string &itemName, COPCGroup &g);
 public:
 
 	virtual ~COPCItem();
@@ -82,17 +82,17 @@ public:
 		return serversItemHandle;
 	}	
 
-	const CString & getName() const{
+	const std::string & getName() const{
 		return name;
 	} 
 
-	void getSupportedProperties(CAtlArray<CPropertyDescription> &desc);
+	void getSupportedProperties(std::vector<CPropertyDescription> &desc);
 
 	
 	/**
 	* retreive the OPC item properties for the descriptors passed. Any data previously existing in propsRead will be destroyed.
 	*/
-	void getProperties(const CAtlArray<CPropertyDescription> &propsToRead, ATL::CAutoPtrArray<SPropertyValue> &propsRead);
+	void getProperties(const std::vector<CPropertyDescription> &propsToRead, ATL::CAutoPtrArray<SPropertyValue> &propsRead);
 };
 
 #endif // !defined(AFX_OPCITEM_H__B01EC96B_8666_4498_93C9_980AAFEABFB6__INCLUDED_)

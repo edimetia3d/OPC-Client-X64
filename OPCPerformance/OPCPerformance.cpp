@@ -62,26 +62,26 @@ public:
 class CMyCallback:public IAsynchDataCallback{
 	public:
 		void OnDataChange(COPCGroup & group, CAtlMap<COPCItem *, OPCItemData *> & changes){
-			printf("Group %s, item changes\n", group.getName());
+			printf("Group %s, item changes\n", group.getName().c_str());
 			POSITION pos = changes.GetStartPosition();
 			while (pos != NULL){
 				COPCItem * item = changes.GetNextKey(pos);
-				printf("-----> %s\n", item->getName());
+				printf("-----> %s\n", item->getName().c_str());
 			}
 		}		
 };
 
 
 void recordTheNameSpace(COPCServer &opcServer,const char * fileName){
-	CAtlArray<CString> opcItemNames;
+	std::vector<std::string> opcItemNames;
 	opcServer.getItemNames(opcItemNames);
-	printf("Namespace holds %d items\n", opcItemNames.GetCount());
+	printf("Namespace holds %d items\n", opcItemNames.size());
 	Sleep(1000);
 
 	fstream itemListFile(fileName,ios::out);
-    for (unsigned i = 0; i < opcItemNames.GetCount(); i++){
-		opcItemNames[i].OemToAnsi();
-		itemListFile << opcItemNames[i] << "\n";
+    for (unsigned i = 0; i < opcItemNames.size(); i++){
+		opcItemNames[i].c_str();
+		itemListFile << opcItemNames[i].c_str() << "\n";
 	}
 	itemListFile.close();
 
@@ -93,10 +93,10 @@ void recordTheNameSpace(COPCServer &opcServer,const char * fileName){
 void runRefreshTest(COPCServer &opcServer,const char * fileName, unsigned noRefreshs){
 	char str[256];
     fstream itemListFile(fileName,ios::in);
-	CAtlArray<CString> itemNames;
+	std::vector<std::string> itemNames;
     while(!itemListFile.eof()) {
 		itemListFile.getline(str,2000);
-		itemNames.Add(str);
+		itemNames.push_back(str);
     } 
 	itemListFile.close();
 
@@ -106,11 +106,11 @@ void runRefreshTest(COPCServer &opcServer,const char * fileName, unsigned noRefr
 	printf("Made OPC group\n");
 	Sleep(1000);
 
-	CAtlArray<COPCItem *>itemsCreated;
-	CAtlArray<HRESULT> errors;
+	std::vector<COPCItem *>itemsCreated;
+	std::vector<HRESULT> errors;
 	group->addItems(itemNames, itemsCreated,errors,true);
 
-	printf("Added %d items to the OPC group\n", itemsCreated.GetCount());
+	printf("Added %d items to the OPC group\n", itemsCreated.size());
 	Sleep(1000);
 
 	CMyCallback usrCallBack;
@@ -144,7 +144,7 @@ void runRefreshTest(COPCServer &opcServer,const char * fileName, unsigned noRefr
 
 	unsigned long processTime_mS = ((endTime.time - startTime.time) * 1000) + (endTime.millitm - startTime.millitm);
 	printf("It took %d mSec to make %d refreshes (%f refreshs per second)\n", processTime_mS, noRefreshs, ((float)processTime_mS)/((float)noRefreshs * 1000.0f));
-	printf("Each refresh represents a hardware read of %d items\n", itemsCreated.GetCount());
+	printf("Each refresh represents a hardware read of %d items\n", itemsCreated.size());
 	delete t;
 
 	Sleep(1000);

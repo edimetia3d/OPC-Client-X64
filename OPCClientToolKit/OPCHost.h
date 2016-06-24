@@ -18,6 +18,7 @@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
 
+#include <vector>
 #if !defined(AFX_OPCHOST_H__D8F307D8_4412_4FE7_93AE_E101F5366817__INCLUDED_)
 #define AFX_OPCHOST_H__D8F307D8_4412_4FE7_93AE_E101F5366817__INCLUDED_
 
@@ -42,13 +43,13 @@ public:
 	* @param cid the version of the OPC servers to browse
 	* @param listOfProgIDs list of servers of version cid on this host
 	*/
-	virtual void getListOfDAServers(CATID cid, CAtlArray<CString> &listOfProgIDs) = 0;
+	virtual void getListOfDAServers(CATID cid, std::vector<std::string> &listOfProgIDs) = 0;
 
 
 	/**
 	* Connect to OPC Data Access server on this host
 	*/
-	virtual COPCServer * connectDAServer(const CString & serverProgID) = 0;
+	virtual COPCServer * connectDAServer(const std::string & serverProgID) = 0;
 };
 
 
@@ -61,7 +62,7 @@ private:
 	/**
 	* name of the host we are to look for OPC servers on.
 	*/
-	CString host;
+	std::string host;
 
 
 	/**
@@ -70,10 +71,10 @@ private:
 	void makeRemoteObject(const IID requestedClass, const IID requestedInterface, void** interfacePtr);
 
 
-	CLSID GetCLSIDFromRemoteRegistry(const CString & hostName, const CString &progID);
+	CLSID GetCLSIDFromRemoteRegistry(const std::string & hostName, const std::string &progID);
 
 public:
-	CRemoteHost(const CString & hostName);
+	CRemoteHost(const std::string & hostName);
 
 
 	/**
@@ -81,14 +82,14 @@ public:
 	* @param cid the version of the OPC servers to browse
 	* @param listOfProgIDs list of servers of version cid on this host
 	*/
-	void getListOfDAServers(CATID cid, CAtlArray<CString> &listOfProgIDs);
+	void getListOfDAServers(CATID cid, std::vector<std::string> &listOfProgIDs);
 
 
 	/**
 	* Make opc server from progID
 	* @returns COPCServer owned by caller
 	*/
-	COPCServer * connectDAServer(const CString & serverProgID);
+	COPCServer * connectDAServer(const std::string & serverProgID);
 
 	/**
 	* Make opc server from classID
@@ -111,14 +112,14 @@ public:
 	* @param cid the version of the OPC servers to browse
 	* @param listOfProgIDs list of servers of version cid on this host
 	*/
-	void getListOfDAServers(CATID cid, CAtlArray<CString> &listOfProgIDs);
+	void getListOfDAServers(CATID cid, std::vector<std::string> &listOfProgIDs);
 
 
 	/**
 	* Make opc server from progID
 	* @returns COPCServer owned by caller
 	*/
-	COPCServer * connectDAServer(const CString & serverProgID);
+	COPCServer * connectDAServer(const std::string & serverProgID);
 };
 
 #endif // !defined(AFX_OPCHOST_H__D8F307D8_4412_4FE7_93AE_E101F5366817__INCLUDED_)

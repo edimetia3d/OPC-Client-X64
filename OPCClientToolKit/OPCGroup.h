@@ -79,13 +79,13 @@ private:
 	/**
 	* list of OPC items associated with this goup. Not owned (at the moment!)
 	*/
-	CAtlArray<COPCItem *> items;
+	std::vector<COPCItem *> items;
 
 
 	/**
 	* Name of the group
 	*/
-	const CString name;
+	const std::string name;
 
 
 	/**
@@ -104,21 +104,21 @@ private:
 	/**
 	* Caller owns returned array
 	*/
-	OPCHANDLE * buildServerHandleList(CAtlArray<COPCItem *>& items);
+	OPCHANDLE * buildServerHandleList(std::vector<COPCItem *>& items);
 
 public:
-	COPCGroup(const CString & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server);
+	COPCGroup(const std::string & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server);
 
 	virtual ~COPCGroup();
 
 
-	COPCItem * addItem(CString &itemName, bool active);
+	COPCItem * addItem(std::string &itemName, bool active);
 
 	/**
 	* returns the number of failed item creates
 	* itemsCreated[x] will be null if could not create and will contain error code in corresponding error entry
 	*/
-	int addItems(CAtlArray<CString>& itemName, CAtlArray<COPCItem *>& itemsCreated, CAtlArray<HRESULT>& errors, bool active);
+	int addItems(std::vector<std::string>& itemName, std::vector<COPCItem *>& itemsCreated, std::vector<HRESULT>& errors, bool active);
 
 
 	/**
@@ -143,13 +143,13 @@ public:
 	/**
 	* Read set of OPC items synchronously.
 	*/
-	void readSync(CAtlArray<COPCItem *>& items, COPCItem_DataMap &opcData, OPCDATASOURCE source);
+	void readSync(std::vector<COPCItem *>& items, COPCItem_DataMap &opcData, OPCDATASOURCE source);
 
 
 	/**
 	* Read a defined group of OPC item asynchronously
 	*/
-	CTransaction * readAsync(CAtlArray<COPCItem *>& items, ITransactionComplete *transactionCB = NULL);
+	CTransaction * readAsync(std::vector<COPCItem *>& items, ITransactionComplete *transactionCB = NULL);
 
 
 	/**
@@ -176,7 +176,7 @@ public:
 		return iItemManagement;
 	}
 
-	const CString & getName() const {
+	const std::string & getName() const {
 		return name;
 	}
 

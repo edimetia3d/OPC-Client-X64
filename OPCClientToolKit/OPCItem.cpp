@@ -158,7 +158,7 @@ void COPCItem::getSupportedProperties(std::vector<CPropertyDescription> &desc){
 
 	std::string tmp;
 	for (unsigned i = 0; i < noProperties; i++){
-		tmp=*pDescriptions[i];
+		tmp=CW2A (pDescriptions[i]);
 		desc.push_back(CPropertyDescription(pPropertyIDs[i], std::string(tmp), pvtDataTypes[i]));
 	}
 

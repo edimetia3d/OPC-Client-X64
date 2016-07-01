@@ -2,6 +2,9 @@
 An object oriented OPC DA Client SDK/ToolKit written in C++, Both X86/X64 supported, implementing the OPC DA specification version 2.05A
 
 ## Detail
+* Date:2016-07-01
+	* this std branch try to move every ATL to STL.
+	* the static .lib now work for MFC too.
 * Date:2016-5-31
 * Modified from X86 Version [OPC Client 0.4a by beharrell](https://sourceforge.net/projects/opcclient/)
 * Add some Hint info

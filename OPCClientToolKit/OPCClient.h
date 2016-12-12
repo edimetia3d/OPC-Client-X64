@@ -98,6 +98,7 @@ private:
 	static ATL::CComPtr<IMalloc> iMalloc; 
 
 public:
+	static int count;
 
 	static void init();
 	

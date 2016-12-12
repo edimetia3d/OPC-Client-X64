@@ -30,16 +30,13 @@ const GUID COPCClient::CATID_OPCDAv20 =
 { 0x63d5f432, 0xcfe4, 0x11d1, { 0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb } };
 //{63D5F432-CFE4-11d1-B2C8-0060083BA1FB}
 
-
 ATL::CComPtr<IMalloc> COPCClient::iMalloc;
 
-
-
-
+int COPCClient::count = 0;
 
 void COPCClient::init()
 {	
-	HRESULT	result = CoInitialize(NULL);
+	HRESULT	result = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 	if (FAILED(result))
 	{
 		throw OPCException("CoInitialize failed");
@@ -47,11 +44,16 @@ void COPCClient::init()
 
 	CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
 
-	result = CoGetMalloc(MEMCTX_TASK, &iMalloc);
-	if (FAILED(result))
+	if (!iMalloc)
 	{
-		throw OPCException("CoGetMalloc failed");
+		result = CoGetMalloc(MEMCTX_TASK, &iMalloc);
+		if (FAILED(result))
+		{
+			throw OPCException("CoGetMalloc failed");
+		}
 	}
+	
+	++count;
 }
 
 
@@ -59,8 +61,13 @@ void COPCClient::init()
 
 void COPCClient::stop()
 {
-	iMalloc = NULL;
-	CoUninitialize();
+	--count;
+	if (count == 0)
+	{
+		iMalloc.Release();
+		//iMalloc = NULL;
+		CoUninitialize();
+	}
 }
 
 

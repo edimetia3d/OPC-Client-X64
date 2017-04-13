@@ -86,10 +86,10 @@ void COPCServer::getItemNames(std::vector<std::string> & opcItemNames){
 		result = iOpcNamespace->GetItemID(str, &fullName);
 		if (SUCCEEDED(result)){
 			USES_CONVERSION;
-			char * cStr = OLE2T(fullName);
+			COLE2T cStr(fullName);
 			//char * cStr = OLE2T(str);
 			//printf("Adding %s\n", cStr);
-			opcItemNames.push_back(cStr);
+			opcItemNames.push_back((char*)cStr);
 			COPCClient::comFree(fullName);
 		}
 		COPCClient::comFree(str);

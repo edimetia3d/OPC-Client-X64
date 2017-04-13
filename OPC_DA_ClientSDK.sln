@@ -6,6 +6,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPCPerformance", "OPCPerfor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPCClientDemo", "OPCClientDemo\OPCClientDemo.vcxproj", "{D8297ACF-C66B-4EC2-8837-C5A4308A63D6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LocalSyncWrapper", "LocalSyncWrapper\LocalSyncWrapper.vcxproj", "{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}"
+	ProjectSection(ProjectDependencies) = postProject
+		{169E1B60-878B-4237-95FF-065DD5F36180} = {169E1B60-878B-4237-95FF-065DD5F36180}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -38,6 +43,13 @@ Global
 		{D8297ACF-C66B-4EC2-8837-C5A4308A63D6}.Release|Win32.Build.0 = Release|Win32
 		{D8297ACF-C66B-4EC2-8837-C5A4308A63D6}.Release|x64.ActiveCfg = Release|x64
 		{D8297ACF-C66B-4EC2-8837-C5A4308A63D6}.Release|x64.Build.0 = Release|x64
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Debug|Win32.ActiveCfg = Debug|Win32
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Debug|Win32.Build.0 = Debug|Win32
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Debug|x64.ActiveCfg = Debug|x64
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Debug|x64.Build.0 = Debug|x64
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Release|Win32.ActiveCfg = Release|Win32
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Release|Win32.Build.0 = Release|Win32
+		{03F51D04-7C4C-42CA-A5B9-DB6A19B1D413}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -349,11 +349,12 @@ int COPCGroup::addItems(std::vector<std::string>& itemName, std::vector<COPCItem
 	errors.resize(itemName.size());
  	OPCITEMDEF *itemDef = new OPCITEMDEF[itemName.size()];
 	unsigned i = 0;
+	std::vector<CT2OLE *> tpm;
 	for (; i < itemName.size(); i++){
 		itemsCreated[i] = new COPCItem(itemName[i],*this);
 		USES_CONVERSION;
-		WCHAR* wideName = T2OLE(itemName[i].c_str());
-		itemDef[i].szItemID = wideName;
+		tpm.push_back(new CT2OLE(itemName[i].c_str())) ;
+		itemDef[i].szItemID = **(tpm.end()-1);
 		itemDef[i].szAccessPath = NULL;//wideName;
 		itemDef[i].bActive = active;
 		itemDef[i].hClient = (DWORD)itemsCreated[i];
@@ -368,6 +369,9 @@ int COPCGroup::addItems(std::vector<std::string>& itemName, std::vector<COPCItem
 
 	HRESULT	result = getItemManagementInterface()->AddItems(noItems, itemDef, &itemDetails, &itemResult);
 	delete[] itemDef;
+	for (int i=0; i < itemName.size(); i++){
+		delete tpm[i];
+	}
 	if (FAILED(result)){
 		throw OPCException("Failed to add items");
 	}

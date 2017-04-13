@@ -5,6 +5,30 @@ An object oriented OPC DA Client SDK/ToolKit written in C++, Both X86/X64 suppor
 * the x64 version has some address corruption problem when you are using VS2012 or later, you can open "Project Property -> Linker -> CommandLine", then add `/HIGHENTROPYVA:NO` to avoid this issue, See [Issue#1](https://github.com/edimetia3d/OPC-Client-X64/issues/1) for more detail
 
 ## Detail & ChangeLog
+* Date: 2017-04-13
+	* Fix a string conversion bug which might lead stack overflow
+	* Add a convenience class to connect local server in sync I/O mode
+	```cpp
+		// connect local server
+		LocalSyncOPCCLient* client = new LocalSyncOPCCLient;
+		client->Init();
+		if (client->Connect("Matrikon.OPC.Simulation.1"))
+		{
+			// sync write and sync read
+			client->WriteUint16("Bucket Brigade.UInt2", 998);
+			std::cout << client->ReadUint16("Bucket Brigade.UInt2");
+
+			// disconnect and stop
+			client->DisConnect();
+			client->Stop();
+			delete client;
+		}
+
+	```
+	* You could rewrite or override the member function `IsOPCConnectedPLC()` to make connection more safety
+	* You could rewrite or override the member function `ItemNameFilter(std::string)` to avoid adding useless items
+	* Since there are too many [Variant type](https://msdn.microsoft.com/en-us/library/windows/desktop/ms221627(v=vs.85).aspx), I only add three basic I/O functions as a guidence, it should help you to add what you need
+
 * Date:2016-12-13
 	* Thanks for [Tom Loya](https://github.com/tomloya)'s contribution, now the project can work in a multi-threaded environment. You should call `COPCClient::init()` and `COPCClient::stop()` in every thread.
 * Date:2016-07-01

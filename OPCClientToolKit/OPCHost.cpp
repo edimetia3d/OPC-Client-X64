@@ -177,10 +177,10 @@ void CRemoteHost::getListOfDAServers(CATID cid, std::vector<std::string>& listOf
 		else
 		{
 			USES_CONVERSION;
-			char* str = OLE2T(progID);
-			char* str1 = OLE2T(userType);
+			COLE2T str(progID);
+			COLE2T str1(userType);
 			//printf("Adding %s\n", str);
-			listOfProgIDs.push_back(str);
+			listOfProgIDs.push_back((char*)str);
 			COPCClient::comFree(progID);
 			COPCClient::comFree(userType);
 		}
@@ -264,8 +264,8 @@ void CLocalHost::getListOfDAServers(CATID cid, std::vector<std::string>& listOfP
 		else
 		{
 			USES_CONVERSION;
-			char* str = OLE2T(progID);
-			listOfProgIDs.push_back(str);
+			COLE2T str(progID);
+			listOfProgIDs.push_back((char*)str);
 			COPCClient::comFree(progID);
 		}
 	}

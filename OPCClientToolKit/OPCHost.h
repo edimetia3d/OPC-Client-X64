@@ -45,11 +45,14 @@ public:
 	*/
 	virtual void getListOfDAServers(CATID cid, std::vector<std::string> &listOfProgIDs) = 0;
 
+	virtual CLSID getCLSID(const std::string& serverProgID) = 0;
 
 	/**
 	* Connect to OPC Data Access server on this host
 	*/
-	virtual COPCServer * connectDAServer(const std::string & serverProgID) = 0;
+	virtual COPCServer* connectDAServer(const std::string & serverProgID) = 0;
+
+	virtual COPCServer* connectDAServer(const CLSID& clsid) = 0;
 };
 
 
@@ -84,6 +87,7 @@ public:
 	*/
 	void getListOfDAServers(CATID cid, std::vector<std::string> &listOfProgIDs);
 
+	CLSID getCLSID(const std::string& serverProgID);
 
 	/**
 	* Make opc server from progID
@@ -114,12 +118,19 @@ public:
 	*/
 	void getListOfDAServers(CATID cid, std::vector<std::string> &listOfProgIDs);
 
+	CLSID getCLSID(const std::string& serverProgID);
 
 	/**
 	* Make opc server from progID
 	* @returns COPCServer owned by caller
 	*/
 	COPCServer * connectDAServer(const std::string & serverProgID);
+
+	/**
+	* Make opc server from CLSID
+	* @returns COPCServer owned by caller
+	*/
+	COPCServer* connectDAServer(const CLSID& clsid);
 };
 
 #endif // !defined(AFX_OPCHOST_H__D8F307D8_4412_4FE7_93AE_E101F5366817__INCLUDED_)

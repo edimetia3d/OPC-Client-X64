@@ -92,6 +92,8 @@ public:
 * Starting point for 'everything'. Utility class that creates host objects and handles COM memory management. 
 * Effectively a singleton.
 */
+
+enum OPCOLEInitMode{APARTMENTTHREADED,MULTITHREADED};
 class COPCClient  
 {
 private:
@@ -100,7 +102,7 @@ private:
 public:
 	static int count;
 
-	static void init();
+	static void init(OPCOLEInitMode mode=APARTMENTTHREADED);
 	
 	static void stop();
 

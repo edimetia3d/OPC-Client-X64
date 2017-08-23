@@ -34,9 +34,18 @@ ATL::CComPtr<IMalloc> COPCClient::iMalloc;
 
 int COPCClient::count = 0;
 
-void COPCClient::init()
-{	
-	HRESULT	result = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+void COPCClient::init(OPCOLEInitMode mode)
+{
+	HRESULT result;
+	if (mode == APARTMENTTHREADED)
+	{
+		result = CoInitialize(nullptr);
+	}
+	if (mode == MULTITHREADED)
+	{
+		result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	}
+	
 	if (FAILED(result))
 	{
 		throw OPCException("CoInitialize failed");
@@ -66,8 +75,8 @@ void COPCClient::stop()
 	{
 		iMalloc.Release();
 		//iMalloc = NULL;
-		CoUninitialize();
 	}
+	CoUninitialize();
 }
 
 

@@ -4,6 +4,14 @@ An object oriented OPC DA Client SDK/ToolKit written in C++, Both X86/X64 suppor
 ## Known Issues
 * the x64 version has some address corruption problem when you are using VS2012 or later, you can open "Project Property -> Linker -> CommandLine", then add `/HIGHENTROPYVA:NO` to avoid this issue, See [Issue#1](https://github.com/edimetia3d/OPC-Client-X64/issues/1) for more detail
 
+## Notice
+* Multi - Thread Programing Guide
+	* Call `COPCCLint::init`and `COPCClinet::stop` in every thread. There are two method to init, in one application, different thread could use different method.
+		* You can call `COPCClient::init(MULTITHREADED)` to init thread OLE, then the `COPCxxx` created in the thread could be accessed from other thread that is also inited with `MULTITHREADED`.
+		* You can call `COPCClient::init()` to init thread OLE, but all `COPCxxx` created in the thread can't be accessed from different thread.
+	* Attention: If you are using anything related to **MFC GUI**, you MUST use `COPCClient::init()` in main thread (the UI thread). ([See MSDN](https://support.microsoft.com/en-us/help/828643/mfc-application-stops-responding-when-you-initialize-the-application-a)).
+
+
 ## Detail & ChangeLog
 * Date: 2017-04-13
 	* Fix a string conversion bug which might lead stack overflow

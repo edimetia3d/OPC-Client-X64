@@ -247,37 +247,42 @@ bool LocalSyncOPCCLient::WriteUint16(std::string item_name, uint16_t item_value)
 
 bool LocalSyncOPCCLient::ReadUint16Array(std::string item_name, uint16_t* item_value_array, int array_size)
 {
-	SyncReadItem(item_name, &read_tmp_variant_);
+	VARIANT array_variant;
+	VariantInit(&array_variant);
+	SyncReadItem(item_name, &array_variant);
 
 	uint16_t* buf;
-	SafeArrayAccessData(read_tmp_variant_.parray, (void **)&buf);
+	SafeArrayAccessData(array_variant.parray, (void **)&buf);
 	for (int i = 0; i < array_size; ++i)
 	{
 		item_value_array[i] = buf[i];
 	}
-	SafeArrayUnaccessData(read_tmp_variant_.parray);
+	SafeArrayUnaccessData(array_variant.parray);
+	VariantClear(&array_variant);
 	return true;
 }
 
 bool LocalSyncOPCCLient::WriteUint16Array(std::string item_name, uint16_t* item_value_array, int array_size)
 {
 	// create variant and safe array
-	static VARIANT var;
-	static VARTYPE a = (var.vt = VT_ARRAY | VT_UI2);
+	VARIANT array_variant;
+	VariantInit(&array_variant);
+	VARTYPE a = (array_variant.vt = VT_ARRAY | VT_UI2);
 	SAFEARRAYBOUND rgsabound[1];
 	rgsabound[0].cElements = array_size;
 	rgsabound[0].lLbound = 0;
-	var.parray = SafeArrayCreate(VT_UI2, 1, rgsabound);
+	array_variant.parray = SafeArrayCreate(VT_UI2, 1, rgsabound);
 	// copy data
 	uint16_t* buf;
-	SafeArrayAccessData(var.parray, (void **)&buf);
+	SafeArrayAccessData(array_variant.parray, (void **)&buf);
 	for (int i = 0; i < array_size; ++i)
 	{
 		buf[i] = item_value_array[i];
 	}
-	SafeArrayUnaccessData(var.parray);
+	SafeArrayUnaccessData(array_variant.parray);
 	//write variant
-	SyncWriteItem(item_name, &var);
+	SyncWriteItem(item_name, &array_variant);
+	VariantClear(&array_variant);
 	return true;
 }
 

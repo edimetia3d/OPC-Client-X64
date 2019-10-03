@@ -27,6 +27,8 @@ Boston, MA  02111-1307, USA.
 #include "OPCClient.h"
 #include "Transaction.h"
 
+#include <map>
+
 
 /**
 * Forward decl.

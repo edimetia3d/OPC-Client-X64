@@ -8,6 +8,7 @@
 
 ## Known Issues
 * the x64 version has some address corruption problem when you are using VS2012 or later, you can open "Project Property -> Linker -> CommandLine", then add `/HIGHENTROPYVA:NO` to avoid this issue, See [Issue#1](https://github.com/edimetia3d/OPC-Client-X64/issues/1) for more detail
+    * If you do need the `HIGHENTROPYVA` feature, the branch `async_address_fix` may help you. See #13 for more information
 
 ## Basic Guide
 * Install `OPC Core Component x64` is **NECESSARY** if you want to build x64 project, I bundled the `3.0.105.1` version (seems more popular).

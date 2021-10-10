@@ -24,75 +24,78 @@ Boston, MA  02111-1307, USA.
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-#include "OPCClientToolKitDLL.h"
+
 #include "OPCClient.h"
+#include "OPCClientToolKitDLL.h"
 #include "OPCProperties.h"
+
 class COPCGroup;
 
-
 /**
-* Provides wrapper for operations that typically exist at the group level (e.g. reads) (it is at this level
-* that OPC supports the operation) however, we provide the operation at this level for ease of use.
-*/
-class  COPCItem  
+ * Provides wrapper for operations that typically exist at the group level (e.g.
+ * reads) (it is at this level that OPC supports the operation) however, we
+ * provide the operation at this level for ease of use.
+ */
+class COPCItem
 {
-private:
-	OPCHANDLE serversItemHandle;
+  private:
+    OPCHANDLE serversItemHandle;
     VARTYPE vtCanonicalDataType;
     DWORD dwAccessRights;
 
-	COPCGroup & group;
+    COPCGroup &group;
 
-	std::string name;
-	
-protected:
-	friend class COPCGroup;
-	// used to set data for the OPC item AFTER it has been created in the server.
-	void setOPCParams(OPCHANDLE handle, VARTYPE type, DWORD dwAccess);
+    std::string name;
 
-	// items may only be created by group.
-	COPCItem(std::string &itemName, COPCGroup &g);
-public:
+  protected:
+    friend class COPCGroup;
 
-	virtual ~COPCItem();
+    // used to set data for the OPC item AFTER it has been created in the server.
+    void setOPCParams(OPCHANDLE handle, VARTYPE type, DWORD dwAccess);
 
-	void writeSync(VARIANT &data);
+    // items may only be created by group.
+    COPCItem(std::string &itemName, COPCGroup &g);
 
+  public:
+    virtual ~COPCItem();
 
-	void readSync(OPCItemData &data, OPCDATASOURCE source);
+    void writeSync(VARIANT &data);
 
+    void readSync(OPCItemData &data, OPCDATASOURCE source);
 
-	/**
-	* returned transaction object is owned
-	*/
-	CTransaction * readAsynch(ITransactionComplete *transactionCB = NULL);
+    /**
+     * returned transaction object is owned
+     */
+    CTransaction *readAsynch(ITransactionComplete *transactionCB = NULL);
 
+    /**
+     * returned transaction object is owned
+     */
+    CTransaction *writeAsynch(VARIANT &data, ITransactionComplete *transactionCB = NULL);
 
-	/**
-	* returned transaction object is owned
-	*/
-	CTransaction * writeAsynch(VARIANT &data, ITransactionComplete *transactionCB = NULL);
+    DWORD getAccessRights() const
+    {
+        return dwAccessRights;
+    }
 
-	
-	DWORD getAccessRights() const{
-		return dwAccessRights;
-	}
+    OPCHANDLE getHandle() const
+    {
+        return serversItemHandle;
+    }
 
-	OPCHANDLE getHandle() const{
-		return serversItemHandle;
-	}	
+    const std::string &getName() const
+    {
+        return name;
+    }
 
-	const std::string & getName() const{
-		return name;
-	} 
+    void getSupportedProperties(std::vector<CPropertyDescription> &desc);
 
-	void getSupportedProperties(std::vector<CPropertyDescription> &desc);
-
-	
-	/**
-	* retreive the OPC item properties for the descriptors passed. Any data previously existing in propsRead will be destroyed.
-	*/
-	void getProperties(const std::vector<CPropertyDescription> &propsToRead, ATL::CAutoPtrArray<SPropertyValue> &propsRead);
+    /**
+     * retreive the OPC item properties for the descriptors passed. Any data
+     * previously existing in propsRead will be destroyed.
+     */
+    void getProperties(const std::vector<CPropertyDescription> &propsToRead,
+                       ATL::CAutoPtrArray<SPropertyValue> &propsRead);
 };
 
 #endif // !defined(AFX_OPCITEM_H__B01EC96B_8666_4498_93C9_980AAFEABFB6__INCLUDED_)

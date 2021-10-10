@@ -24,172 +24,161 @@ Boston, MA  02111-1307, USA.
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
 #include "OPCClient.h"
 #include "Transaction.h"
 
-
 /**
-* Forward decl.
-*/
+ * Forward decl.
+ */
 class COPCItem;
 
 /**
-* used internally to implement the asynch callback
-*/
-class CAsynchDataCallback; 
-
-
-
+ * used internally to implement the asynch callback
+ */
+class CAsynchDataCallback;
 
 /**
-* Client sided abstraction of an OPC group, wrapping the COM interfaces to the group within the OPC server.
-*/
-class COPCGroup  
+ * Client sided abstraction of an OPC group, wrapping the COM interfaces to the
+ * group within the OPC server.
+ */
+class COPCGroup
 {
-private:
-	ATL::CComPtr<IOPCGroupStateMgt>	iStateManagement;
-	ATL::CComPtr<IOPCSyncIO>		iSychIO;
-	ATL::CComPtr<IOPCAsyncIO2>		iAsych2IO;
-	ATL::CComPtr<IOPCItemMgt>		iItemManagement;
+  private:
+    ATL::CComPtr<IOPCGroupStateMgt> iStateManagement;
+    ATL::CComPtr<IOPCSyncIO> iSychIO;
+    ATL::CComPtr<IOPCAsyncIO2> iAsych2IO;
+    ATL::CComPtr<IOPCItemMgt> iItemManagement;
 
-	/**
-	* Used to keep track of the connection point for the
-	* AsynchDataCallback
-	*/
-	ATL::CComPtr<IConnectionPoint> iAsynchDataCallbackConnectionPoint;
+    /**
+     * Used to keep track of the connection point for the
+     * AsynchDataCallback
+     */
+    ATL::CComPtr<IConnectionPoint> iAsynchDataCallbackConnectionPoint;
 
+    /**
+     * handle given the group by the server
+     */
+    DWORD groupHandle;
 
-	/**
-	* handle given the group by the server
-	*/
-	DWORD groupHandle;
+    /**
+     * The server this group belongs to
+     */
+    COPCServer &opcServer;
 
-	/**
-	* The server this group belongs to
-	*/
-	COPCServer &opcServer;
+    /**
+     * Callback for asynch data at the group level
+     */
+    ATL::CComPtr<CAsynchDataCallback> asynchDataCallBackHandler;
 
+    /**
+     * list of OPC items associated with this goup. Not owned (at the moment!)
+     */
+    std::vector<COPCItem *> items;
 
-	/**
-	* Callback for asynch data at the group level
-	*/
-	ATL::CComPtr<CAsynchDataCallback> asynchDataCallBackHandler;
+    /**
+     * Name of the group
+     */
+    const std::string name;
 
+    /**
+     * Handle given to callback by server.
+     */
+    DWORD callbackHandle;
 
-	/**
-	* list of OPC items associated with this goup. Not owned (at the moment!)
-	*/
-	std::vector<COPCItem *> items;
+    /**
+     * Users hander to handle asynch data
+     * NOT OWNED.
+     */
+    IAsynchDataCallback *userAsynchCBHandler;
+    CAsynchDataCallback *_CAsynchDataCallback;
 
+    /**
+     * Caller owns returned array
+     */
+    OPCHANDLE *buildServerHandleList(std::vector<COPCItem *> &items);
 
-	/**
-	* Name of the group
-	*/
-	const std::string name;
+  public:
+    COPCGroup(const std::string &groupName, bool active, unsigned long reqUpdateRate_ms,
+              unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server);
 
+    virtual ~COPCGroup();
 
-	/**
-	* Handle given to callback by server.
-	*/
-	DWORD callbackHandle;
+    COPCItem *addItem(std::string &itemName, bool active);
 
+    /**
+     * returns the number of failed item creates
+     * itemsCreated[x] will be null if could not create and will contain error
+     * code in corresponding error entry
+     */
+    int addItems(std::vector<std::string> &itemName, std::vector<COPCItem *> &itemsCreated,
+                 std::vector<HRESULT> &errors, bool active);
 
-	/**
-	* Users hander to handle asynch data 
-	* NOT OWNED.
-	*/
-	IAsynchDataCallback *userAsynchCBHandler;
-	CAsynchDataCallback* _CAsynchDataCallback;
+    /**
+     * enable Asynch IO
+     */
+    void enableAsynch(IAsynchDataCallback &handler);
 
-	/**
-	* Caller owns returned array
-	*/
-	OPCHANDLE * buildServerHandleList(std::vector<COPCItem *>& items);
+    /**
+     * disable Asych IO
+     */
+    void disableAsynch();
 
-public:
-	COPCGroup(const std::string & groupName, bool active, unsigned long reqUpdateRate_ms, unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server);
+    /**
+     * set the group state values.
+     */
+    void setState(DWORD reqUpdateRate_ms, DWORD &returnedUpdateRate_ms, float deadBand, BOOL active);
 
-	virtual ~COPCGroup();
+    /**
+     * Read set of OPC items synchronously.
+     */
+    void readSync(std::vector<COPCItem *> &items, COPCItem_DataMap &opcData, OPCDATASOURCE source);
 
+    /**
+     * Read a defined group of OPC item asynchronously
+     */
+    CTransaction *readAsync(std::vector<COPCItem *> &items, ITransactionComplete *transactionCB = NULL);
 
-	COPCItem * addItem(std::string &itemName, bool active);
+    /**
+     * Refresh is an asysnch operation.
+     * retreives all active items in the group, which will be stored in the
+     * transaction object Transaction object is owned by caller. If group asynch
+     * is disabled then this call will not work
+     */
+    CTransaction *refresh(OPCDATASOURCE source, ITransactionComplete *transactionCB = NULL);
 
-	/**
-	* returns the number of failed item creates
-	* itemsCreated[x] will be null if could not create and will contain error code in corresponding error entry
-	*/
-	int addItems(std::vector<std::string>& itemName, std::vector<COPCItem *>& itemsCreated, std::vector<HRESULT>& errors, bool active);
+    ATL::CComPtr<IOPCSyncIO> &getSychIOInterface()
+    {
+        return iSychIO;
+    }
 
+    ATL::CComPtr<IOPCAsyncIO2> &getAsych2IOInterface()
+    {
+        return iAsych2IO;
+    }
 
-	/**
-	* enable Asynch IO
-	*/
-	void enableAsynch(IAsynchDataCallback &handler);
+    ATL::CComPtr<IOPCItemMgt> &getItemManagementInterface()
+    {
+        return iItemManagement;
+    }
 
+    const std::string &getName() const
+    {
+        return name;
+    }
 
-	/**
-	* disable Asych IO 
-	*/
-	void disableAsynch();
+    IAsynchDataCallback *getUsrAsynchHandler()
+    {
+        return userAsynchCBHandler;
+    }
 
-
-	/**
-	* set the group state values.
-	*/
-	void setState(DWORD reqUpdateRate_ms, DWORD &returnedUpdateRate_ms, float deadBand, BOOL active);
-
-
-
-	/**
-	* Read set of OPC items synchronously.
-	*/
-	void readSync(std::vector<COPCItem *>& items, COPCItem_DataMap &opcData, OPCDATASOURCE source);
-
-
-	/**
-	* Read a defined group of OPC item asynchronously
-	*/
-	CTransaction * readAsync(std::vector<COPCItem *>& items, ITransactionComplete *transactionCB = NULL);
-
-
-	/**
-	* Refresh is an asysnch operation.
-	* retreives all active items in the group, which will be stored in the transaction object
-	* Transaction object is owned by caller.
-	* If group asynch is disabled then this call will not work
-	*/ 
-	CTransaction * refresh(OPCDATASOURCE source, ITransactionComplete *transactionCB = NULL);
-
-
-
-	ATL::CComPtr<IOPCSyncIO> & getSychIOInterface(){
-		return iSychIO;
-	}
-
-
-	ATL::CComPtr<IOPCAsyncIO2> & getAsych2IOInterface(){
-		return iAsych2IO;
-	}
-
-
-	ATL::CComPtr<IOPCItemMgt> &getItemManagementInterface(){
-		return iItemManagement;
-	}
-
-	const std::string & getName() const {
-		return name;
-	}
-
-	IAsynchDataCallback *getUsrAsynchHandler(){
-		return userAsynchCBHandler;
-	}
-
-	/**
-	* returns reaference to the OPC server that this group belongs to.
-	*/
-	COPCServer & getServer(){
-		return opcServer;
-	}
+    /**
+     * returns reaference to the OPC server that this group belongs to.
+     */
+    COPCServer &getServer()
+    {
+        return opcServer;
+    }
 };
 
 #endif // !defined(AFX_OPCGROUP_H__BE6D983E_3D18_4952_A2B3_84A9FCDFC5CE__INCLUDED_)

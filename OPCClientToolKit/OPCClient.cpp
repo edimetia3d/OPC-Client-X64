@@ -17,17 +17,15 @@ License along with this library; if not, write to the
 Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
-#include <process.h>
 #include "OPCClient.h"
-#include "OPCServer.h"
 #include "OPCHost.h"
+#include "OPCServer.h"
+#include <process.h>
 
-const GUID COPCClient::CATID_OPCDAv10 = 
-{ 0x63d5f430, 0xcfe4, 0x11d1, { 0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb } };
+const GUID COPCClient::CATID_OPCDAv10 = {0x63d5f430, 0xcfe4, 0x11d1, {0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb}};
 // {63D5F430-CFE4-11d1-B2C8-0060083BA1FB}
 
-const GUID COPCClient::CATID_OPCDAv20 = 
-{ 0x63d5f432, 0xcfe4, 0x11d1, { 0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb } };
+const GUID COPCClient::CATID_OPCDAv20 = {0x63d5f432, 0xcfe4, 0x11d1, {0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb}};
 //{63D5F432-CFE4-11d1-B2C8-0060083BA1FB}
 
 ATL::CComPtr<IMalloc> COPCClient::iMalloc;
@@ -36,72 +34,67 @@ int COPCClient::count = 0;
 
 void COPCClient::init(OPCOLEInitMode mode)
 {
-	HRESULT result;
-	if (mode == APARTMENTTHREADED)
-	{
-		result = CoInitialize(nullptr);
-	}
-	if (mode == MULTITHREADED)
-	{
-		result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-	}
-	
-	if (FAILED(result))
-	{
-		throw OPCException("CoInitialize failed");
-	}
+    HRESULT result;
+    if (mode == APARTMENTTHREADED)
+    {
+        result = CoInitialize(nullptr);
+    }
+    if (mode == MULTITHREADED)
+    {
+        result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+    }
 
-	CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
+    if (FAILED(result))
+    {
+        throw OPCException("CoInitialize failed");
+    }
 
-	if (!iMalloc)
-	{
-		result = CoGetMalloc(MEMCTX_TASK, &iMalloc);
-		if (FAILED(result))
-		{
-			throw OPCException("CoGetMalloc failed");
-		}
-	}
-	
-	++count;
+    CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE,
+                         NULL);
+
+    if (!iMalloc)
+    {
+        result = CoGetMalloc(MEMCTX_TASK, &iMalloc);
+        if (FAILED(result))
+        {
+            throw OPCException("CoGetMalloc failed");
+        }
+    }
+
+    ++count;
 }
-
-
-
 
 void COPCClient::stop()
 {
-	--count;
-	if (count == 0)
-	{
-		iMalloc.Release();
-		//iMalloc = NULL;
-	}
-	CoUninitialize();
+    --count;
+    if (count == 0)
+    {
+        iMalloc.Release();
+        // iMalloc = NULL;
+    }
+    CoUninitialize();
 }
 
-
-
-
-
-void COPCClient::comFree(void *memory){
-	iMalloc->Free(memory);
+void COPCClient::comFree(void *memory)
+{
+    iMalloc->Free(memory);
 }
 
-
-void COPCClient::comFreeVariant(VARIANT *memory, unsigned size){
-	for (unsigned i = 0; i < size; i++){
-		VariantClear(&(memory[i]));	
-	}
-	iMalloc->Free(memory);
+void COPCClient::comFreeVariant(VARIANT *memory, unsigned size)
+{
+    for (unsigned i = 0; i < size; i++)
+    {
+        VariantClear(&(memory[i]));
+    }
+    iMalloc->Free(memory);
 }
 
+COPCHost *COPCClient::makeHost(const std::string &hostName)
+{
+    if (hostName.size() == 0)
+    {
+        return new CLocalHost();
+    }
 
-
-COPCHost * COPCClient::makeHost(const std::string &hostName){
-	if (hostName.size()==0){
-		return new CLocalHost();
-	}
-	
-	return new CRemoteHost(hostName);
+    return new CRemoteHost(hostName);
 }
-

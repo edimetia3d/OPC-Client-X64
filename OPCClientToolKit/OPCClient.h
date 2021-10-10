@@ -21,110 +21,103 @@ Boston, MA  02111-1307, USA.
 #if !defined(AFX_OPCCLIENT_H__1C1AA002_F7C5_4537_B569_8352FBA27544__INCLUDED_)
 #define AFX_OPCCLIENT_H__1C1AA002_F7C5_4537_B569_8352FBA27544__INCLUDED_
 
-
 #ifdef OPCCLIENTTOOLKITDLL_EXPORTS
 #define OPCCLIENTTOOLKITDLL_API __declspec(dllexport)
 #else
 #define OPCCLIENTTOOLKITDLL_API __declspec(dllimport)
-#endif 
-
+#endif
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-#include <atlbase.h>
-#include <atlstr.h>
-#include <atlexcept.h>
-#include <atlcoll.h>
-#include <objbase.h>
-#include <COMCat.h>
-#include <stdexcept>
-#include "opcda.h"
-#include "OPCItemData.h"
 
+#include "OPCItemData.h"
+#include "opcda.h"
+#include <COMCat.h>
+#include <atlbase.h>
+#include <atlcoll.h>
+#include <atlexcept.h>
+#include <atlstr.h>
+#include <objbase.h>
+#include <stdexcept>
 
 class COPCHost;
+
 class COPCServer;
+
 class COPCGroup;
+
 class COPCItem;
 
-
 /**
-* Basic OPC expection
-*/
-class  OPCException:public ATL::CAtlException{
-private:
-	std::string why;
-public:
-	OPCException(const std::string& what,HRESULT code = 0):/*ATL::CAtlException(code),*/why(what){}
+ * Basic OPC expection
+ */
+class OPCException : public ATL::CAtlException
+{
+  private:
+    std::string why;
 
-	const std::string & reasonString() const{
-		return why;
-	}
+  public:
+    OPCException(const std::string &what, HRESULT code = 0) : /*ATL::CAtlException(code),*/ why(what)
+    {
+    }
+
+    const std::string &reasonString() const
+    {
+        return why;
+    }
 };
 
-
-
 /**
-* Data received from the OnDataChange() method of the CAsynchDataCallback instance is delegated to an instance 
-* of a child class implementing this interface. The Child class must obviously provide the desired behaviour
-* in the overriden OnDataChange() method. This interface is active only when the corresponding group is active
-* (achieved by the groups enableSynch() method.)
-*/
+ * Data received from the OnDataChange() method of the CAsynchDataCallback
+ * instance is delegated to an instance of a child class implementing this
+ * interface. The Child class must obviously provide the desired behaviour in
+ * the overriden OnDataChange() method. This interface is active only when the
+ * corresponding group is active (achieved by the groups enableSynch() method.)
+ */
 class IAsynchDataCallback
 {
-public:
-	virtual void OnDataChange(COPCGroup & group, CAtlMap<COPCItem *, OPCItemData *> & changes) = 0;
+  public:
+    virtual void OnDataChange(COPCGroup &group, CAtlMap<COPCItem *, OPCItemData *> &changes) = 0;
 };
-
-
-
-
-
-
-
-
-
-
-
 
 /**
-* Starting point for 'everything'. Utility class that creates host objects and handles COM memory management. 
-* Effectively a singleton.
-*/
+ * Starting point for 'everything'. Utility class that creates host objects and
+ * handles COM memory management. Effectively a singleton.
+ */
 
-enum OPCOLEInitMode{APARTMENTTHREADED,MULTITHREADED};
-class COPCClient  
+enum OPCOLEInitMode
 {
-private:
-	static ATL::CComPtr<IMalloc> iMalloc; 
-
-public:
-	static int count;
-
-	static void init(OPCOLEInitMode mode=APARTMENTTHREADED);
-	
-	static void stop();
-
-	static void comFree(void *memory);
-
-	static void comFreeVariant(VARIANT *memory, unsigned size);
-
-	/**
-	* make a host machine abstraction.
-	* @param hostname - may be empty (in which case a local host is created).
-	* @ returns host object (owned by caller).
-	*/
-	static COPCHost * makeHost(const std::string &hostName);
-
-
-	static const GUID CATID_OPCDAv10;
-
-	static const GUID CATID_OPCDAv20;
+    APARTMENTTHREADED,
+    MULTITHREADED
 };
 
+class COPCClient
+{
+  private:
+    static ATL::CComPtr<IMalloc> iMalloc;
 
+  public:
+    static int count;
 
+    static void init(OPCOLEInitMode mode = APARTMENTTHREADED);
 
+    static void stop();
+
+    static void comFree(void *memory);
+
+    static void comFreeVariant(VARIANT *memory, unsigned size);
+
+    /**
+     * make a host machine abstraction.
+     * @param hostname - may be empty (in which case a local host is created).
+     * @ returns host object (owned by caller).
+     */
+    static COPCHost *makeHost(const std::string &hostName);
+
+    static const GUID CATID_OPCDAv10;
+
+    static const GUID CATID_OPCDAv20;
+};
 
 #endif // !defined(AFX_OPCCLIENT_H__1C1AA002_F7C5_4537_B569_8352FBA27544__INCLUDED_)

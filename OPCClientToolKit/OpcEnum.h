@@ -2,18 +2,18 @@
 
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
-/* File created by MIDL compiler version 8.00.0603 */
-/* at Mon May 23 14:10:22 2016
+/* File created by MIDL compiler version 6.00.0366 */
+/* at Thu Feb 05 03:04:00 2009
  */
-/* Compiler settings for OpcEnum.idl:
-    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603
+/* Compiler settings for .\OpcEnum.idl:
+    Oicf, W1, Zp8, env=Win32 (32b run)
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data
     VC __declspec() decoration level:
          __declspec(uuid()), __declspec(selectany), __declspec(novtable)
          DECLSPEC_UUID(), MIDL_INTERFACE()
 */
-/* @@MIDL_FILE_HEADING(  ) */
+//@@MIDL_FILE_HEADING(  )
 
 #pragma warning(disable : 4049) /* more than 64k source lines */
 
@@ -56,6 +56,11 @@ typedef struct OpcServerList OpcServerList;
 extern "C"
 {
 #endif
+
+    void *__RPC_USER MIDL_user_allocate(size_t);
+    void __RPC_USER
+
+    MIDL_user_free(void *);
 
 #ifndef __OpcEnumLib_LIBRARY_DEFINED__
 #define __OpcEnumLib_LIBRARY_DEFINED__

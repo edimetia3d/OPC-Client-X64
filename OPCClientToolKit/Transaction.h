@@ -1,23 +1,49 @@
+/*
+OPCClientToolKit
+Copyright (C) 2005 Mark C. Beharrell
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the
+Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA  02111-1307, USA.
+*/
+
 #pragma once
 
 #include <vector>
 
 #include "OPCClient.h"
+#include "OPCClientToolKitDLL.h"
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
 
 class CTransaction;
 
 /**
- * Interface which provides means by which the client can be notified when an
- * asynchronous operation is completed. The implementer must implement this
- * interface overriding the complete method to provide the desired behaviour. An
- * instance of the implementation can be passed as a parameter to an
- * asynchronous operation and used as a means of completion notification.
+ * Interface which provides means by which the client can be notified when an asynchronous operation
+ * is completed. The implementer must implement this interface overriding the complete method to provide
+ * the desired behaviour. An instance of the implementation can be passed as a parameter to an asynchronous
+ * operation and used as a means of completion notification.
  */
 class ITransactionComplete
 {
   public:
     virtual void complete(CTransaction &transaction) = 0;
-};
+
+}; // ITransactionComplete
 
 /**
  * Used to indicate completion of an asynchronous operation.
@@ -25,34 +51,41 @@ class ITransactionComplete
  */
 class CTransaction
 {
-
+  private:
     /**
      * Optional transation complete callback - not owned
      */
-    ITransactionComplete *completeCallBack;
+    ITransactionComplete *CompleteCallBack;
 
     // true when the transaction has completed
-    bool completed;
+    bool Completed;
 
-    DWORD cancelID;
+    DWORD CancelID;
 
-  public:
     /**
      * keyed on OPCitem address (not owned)
-     * OPCitem data is owned by the transaction - may be NULL
+     * OPCitem data is owned by the transaction - may be nullptr
      */
-    COPCItem_DataMap opcData;
+    COPCItemDataMap ItemDataMap;
 
-    CTransaction(ITransactionComplete *completeCB = NULL);
+  public:
+    CTransaction(ITransactionComplete *completeCB = nullptr);
 
     /**
      * Used where the transaction completion will result in data being received.
      */
     CTransaction(std::vector<COPCItem *> &items, ITransactionComplete *completeCB);
 
-    void setItemError(COPCItem *item, HRESULT error);
+    CTransaction(COPCItemDataMap &itemDataMap, ITransactionComplete *completeCB);
 
-    void setItemValue(COPCItem *item, FILETIME time, WORD qual, VARIANT &val, HRESULT err);
+    COPCItemDataMap &getItemDataMap()
+    {
+        return ItemDataMap;
+    }
+
+    void setItemError(COPCItem *item, HRESULT error = S_OK);
+
+    void setItemValue(COPCItem *item, FILETIME time, WORD quality, VARIANT &value, HRESULT error = S_OK);
 
     /**
      * return Value stored for a given opc item.
@@ -64,18 +97,23 @@ class CTransaction
      */
     void setCompleted();
 
-    bool isCompeleted() const
+    bool isCompleted() const
     {
-        return completed;
+        return Completed;
     }
 
-    void setCancelId(DWORD id)
+    void setCancelId(DWORD cancelID)
     {
-        cancelID = id;
+        CancelID = cancelID;
     }
 
     DWORD getCancelId() const
     {
-        return cancelID;
+        return CancelID;
     }
-};
+
+}; // CTransaction
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

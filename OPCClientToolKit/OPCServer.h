@@ -18,20 +18,23 @@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
 
-#if !defined(AFX_OPCSERVER_H__AD6316C0_37B3_4DEC_8378_EE03CC3AEED8__INCLUDED_)
-#define AFX_OPCSERVER_H__AD6316C0_37B3_4DEC_8378_EE03CC3AEED8__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
+#pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
 
 #include "OPCClient.h"
+#include "OPCClientToolKitDLL.h"
 #include "OPCGroup.h"
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
 
 /**
  * Holds status information about the server
  */
-typedef struct
+struct ServerStatus
 {
     FILETIME ftStartTime;
     FILETIME ftCurrentTime;
@@ -42,14 +45,14 @@ typedef struct
     WORD wMajorVersion;
     WORD wMinorVersion;
     WORD wBuildNumber;
-    std::string vendorInfo;
-} ServerStatus;
+    std::wstring vendorInfo;
+
+}; // ServerStatus
 
 /**
- * Local representation of a local or remote OPC server. Wrapper for the COM
- * interfaces to the server.
+ * Local representation of a local or remote OPC server. Wrapper for the COM interfaces to the server.
  */
-class COPCServer
+class OPCDACLIENT_API COPCServer
 {
   private:
     /**
@@ -60,19 +63,18 @@ class COPCServer
     /**
      * Interface to the OPC server namespace
      */
-    ATL::CComPtr<IOPCBrowseServerAddressSpace> iOpcNamespace;
+    ATL::CComPtr<IOPCBrowseServerAddressSpace> iOpcNameSpace;
 
     /**
-     * interface to the properties maintained for each item in the server
-     * namespace
+     * interface to the properties maintained for each item in the server namespace
      */
     ATL::CComPtr<IOPCItemProperties> iOpcProperties;
-
-    friend class COPCGroup;
 
     /**
      * Used by group object.
      */
+    friend class COPCGroup;
+
     ATL::CComPtr<IOPCServer> &getServerInterface()
     {
         return iOpcServer;
@@ -95,22 +97,25 @@ class COPCServer
     virtual ~COPCServer();
 
     /**
-     * Browse the OPC servers namespace.
+     * Browse the OPC server's namespace.
      * This is currently done FLAT mode
      * TODO implement browsing of structured namespace
      */
-    void getItemNames(std::vector<std::string> &opcItemNames);
+    bool getItemNames(std::vector<std::wstring> &opcItemNames);
 
     /**
      * Get an OPC group. Caller owns
      */
-    COPCGroup *makeGroup(const std::string &groupName, bool active, unsigned long reqUpdateRate_ms,
+    COPCGroup *makeGroup(const std::wstring &groupName, bool active, unsigned long reqUpdateRate_ms,
                          unsigned long &revisedUpdateRate_ms, float deadBand);
 
     /**
      * get the current status of the server.
      */
-    void getStatus(ServerStatus &status);
-};
+    bool getStatus(ServerStatus &status);
 
-#endif // !defined(AFX_OPCSERVER_H__AD6316C0_37B3_4DEC_8378_EE03CC3AEED8__INCLUDED_)
+}; // COPCServer
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

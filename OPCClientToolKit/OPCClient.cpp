@@ -17,84 +17,85 @@ License along with this library; if not, write to the
 Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
+
+#include <process.h>
+
 #include "OPCClient.h"
 #include "OPCHost.h"
 #include "OPCServer.h"
-#include <process.h>
 
-const GUID COPCClient::CATID_OPCDAv10 = {0x63d5f430, 0xcfe4, 0x11d1, {0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb}};
-// {63D5F430-CFE4-11d1-B2C8-0060083BA1FB}
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
 
-const GUID COPCClient::CATID_OPCDAv20 = {0x63d5f432, 0xcfe4, 0x11d1, {0xb2, 0xc8, 0x0, 0x60, 0x8, 0x3b, 0xa1, 0xfb}};
-//{63D5F432-CFE4-11d1-B2C8-0060083BA1FB}
+const GUID COPCClient::CATID_OPCDAv10 = IID_CATID_OPCDAServer10; // {63D5F430-CFE4-11d1-B2C8-0060083BA1FB}
+
+const GUID COPCClient::CATID_OPCDAv20 = IID_CATID_OPCDAServer20; // {63D5F432-CFE4-11d1-B2C8-0060083BA1FB}
 
 ATL::CComPtr<IMalloc> COPCClient::iMalloc;
 
-int COPCClient::count = 0;
+int COPCClient::ReleaseCount = 0;
 
-void COPCClient::init(OPCOLEInitMode mode)
+bool COPCClient::init(OPCOLEInitMode mode)
 {
-    HRESULT result;
+    HRESULT result = -1;
     if (mode == APARTMENTTHREADED)
-    {
         result = CoInitialize(nullptr);
-    }
     if (mode == MULTITHREADED)
-    {
         result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-    }
 
     if (FAILED(result))
-    {
-        throw OPCException("CoInitialize failed");
-    }
+        throw OPCException(L"COPCClient::init: CoInitialize failed");
 
-    CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE,
-                         NULL);
+    CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr,
+                         EOAC_NONE, nullptr);
 
     if (!iMalloc)
     {
         result = CoGetMalloc(MEMCTX_TASK, &iMalloc);
         if (FAILED(result))
-        {
-            throw OPCException("CoGetMalloc failed");
-        }
-    }
+            throw OPCException(L"COPCClient::init: CoGetMalloc FAILED");
+    } // if
 
-    ++count;
-}
+    ++ReleaseCount;
+    return true;
+
+} // COPCClient::init
 
 void COPCClient::stop()
 {
-    --count;
-    if (count == 0)
-    {
+    if (--ReleaseCount <= 0)
         iMalloc.Release();
-        // iMalloc = NULL;
-    }
+
     CoUninitialize();
-}
+
+} // COPCClient::stop
 
 void COPCClient::comFree(void *memory)
 {
     iMalloc->Free(memory);
-}
+
+} // COPCClient::comFree
 
 void COPCClient::comFreeVariant(VARIANT *memory, unsigned size)
 {
-    for (unsigned i = 0; i < size; i++)
-    {
+    for (unsigned i = 0; i < size; ++i)
         VariantClear(&(memory[i]));
-    }
-    iMalloc->Free(memory);
-}
 
-COPCHost *COPCClient::makeHost(const std::string &hostName)
+    iMalloc->Free(memory);
+
+} // COPCClient::comFreeVariant
+
+COPCHost *COPCClient::makeHost(const std::wstring &hostName)
 {
-    if (hostName.size() == 0)
-    {
+    if (!hostName.size() || (hostName == L"localhost") || (hostName == L"127.0.0.1"))
         return new CLocalHost();
-    }
 
     return new CRemoteHost(hostName);
-}
+
+} // COPCClient::makeHost
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

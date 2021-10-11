@@ -18,84 +18,99 @@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
 
-#if !defined(AFX_OPCITEM_H__B01EC96B_8666_4498_93C9_980AAFEABFB6__INCLUDED_)
-#define AFX_OPCITEM_H__B01EC96B_8666_4498_93C9_980AAFEABFB6__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
+#pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
 
 #include "OPCClient.h"
 #include "OPCClientToolKitDLL.h"
 #include "OPCProperties.h"
+#include "Transaction.h"
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
 
 class COPCGroup;
 
 /**
- * Provides wrapper for operations that typically exist at the group level (e.g.
- * reads) (it is at this level that OPC supports the operation) however, we
- * provide the operation at this level for ease of use.
+ * Provides wrapper for operations that typically exist at the group level (e.g. reads) (it is at this level
+ * that OPC supports the operation) however, we provide the operation at this level for ease of use.
  */
-class COPCItem
+class OPCDACLIENT_API COPCItem
 {
   private:
-    OPCHANDLE serversItemHandle;
-    VARTYPE vtCanonicalDataType;
-    DWORD dwAccessRights;
+    OPCHANDLE ServersItemHandle;
+    VARTYPE VtCanonicalDataType;
+    DWORD DwAccessRights;
 
-    COPCGroup &group;
+    COPCGroup &ItemGroup;
 
-    std::string name;
+    std::wstring ItemName;
 
   protected:
     friend class COPCGroup;
 
-    // used to set data for the OPC item AFTER it has been created in the server.
-    void setOPCParams(OPCHANDLE handle, VARTYPE type, DWORD dwAccess);
-
     // items may only be created by group.
-    COPCItem(std::string &itemName, COPCGroup &g);
+    COPCItem(std::wstring &itemName, COPCGroup &itemGroup);
 
   public:
     virtual ~COPCItem();
 
-    void writeSync(VARIANT &data);
+    /// used to set data for the OPC item AFTER it has been created in the server.
+    void setOPCParameters(OPCHANDLE handle, VARTYPE type, DWORD dwAccess);
 
-    void readSync(OPCItemData &data, OPCDATASOURCE source);
+    bool writeSync(VARIANT &data);
 
-    /**
-     * returned transaction object is owned
-     */
-    CTransaction *readAsynch(ITransactionComplete *transactionCB = NULL);
+    bool readSync(OPCItemData &data, OPCDATASOURCE source);
 
     /**
      * returned transaction object is owned
      */
-    CTransaction *writeAsynch(VARIANT &data, ITransactionComplete *transactionCB = NULL);
+    CTransaction *readAsync(ITransactionComplete *transactionCB = nullptr);
+
+    /**
+     * returned transaction object is owned
+     */
+    CTransaction *writeAsync(VARIANT &data, ITransactionComplete *transactionCB = nullptr);
 
     DWORD getAccessRights() const
     {
-        return dwAccessRights;
+        return DwAccessRights;
+    }
+
+    VARTYPE getDataType() const
+    {
+        return VtCanonicalDataType;
     }
 
     OPCHANDLE getHandle() const
     {
-        return serversItemHandle;
+        return ServersItemHandle;
     }
 
-    const std::string &getName() const
+    COPCGroup &getGroup() const
     {
-        return name;
+        return ItemGroup;
     }
 
-    void getSupportedProperties(std::vector<CPropertyDescription> &desc);
+    const std::wstring &getName() const
+    {
+        return ItemName;
+    }
+
+    bool getSupportedProperties(std::vector<CPropertyDescription> &desc);
 
     /**
-     * retreive the OPC item properties for the descriptors passed. Any data
-     * previously existing in propsRead will be destroyed.
+     * retrieve the OPC item properties for the descriptors passed. Any data previously existing in propsRead will be
+     * destroyed.
      */
-    void getProperties(const std::vector<CPropertyDescription> &propsToRead,
+    bool getProperties(const std::vector<CPropertyDescription> &propsToRead,
                        ATL::CAutoPtrArray<SPropertyValue> &propsRead);
-};
 
-#endif // !defined(AFX_OPCITEM_H__B01EC96B_8666_4498_93C9_980AAFEABFB6__INCLUDED_)
+}; // COPCItem
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

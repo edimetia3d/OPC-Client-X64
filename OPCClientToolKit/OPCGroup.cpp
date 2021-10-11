@@ -22,458 +22,535 @@ Boston, MA  02111-1307, USA.
 #include "OPCItem.h"
 #include "OPCServer.h"
 
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
+
 /**
- * Handles OPC (DCOM) callbacks at the group level. It deals with the receipt of
- * data from asynchronous operations. This is a fake COM object.
+ * Handles OPC (DCOM) callbacks at the group level. It deals with the receipt of data from asynchronous operations.
+ * This is a fake COM object.
  */
-class CAsynchDataCallback : public IOPCDataCallback
+class CAsyncDataCallback : public IOPCDataCallback
 {
   private:
-    DWORD mRefCount;
+    DWORD ReferenceCount;
 
     /**
      * group this is a callback for
      */
-    COPCGroup &callbacksGroup;
+    COPCGroup &CallbacksGroup;
 
   public:
-    CAsynchDataCallback(COPCGroup &group) : callbacksGroup(group)
+    CAsyncDataCallback(COPCGroup &group) : CallbacksGroup(group), ReferenceCount(0)
     {
-        mRefCount = 0;
-    }
+    } // CAsyncDataCallback
 
-    ~CAsynchDataCallback()
+    virtual ~CAsyncDataCallback()
     {
-    }
+    } // ~CAsyncDataCallback
 
     /**
      * Functions associated with IUNKNOWN
      */
     STDMETHODIMP QueryInterface(REFIID iid, LPVOID *ppInterface)
     {
-        if (ppInterface == NULL)
-        {
+        if (!ppInterface)
             return E_INVALIDARG;
-        }
 
         if (iid == IID_IUnknown)
-        {
             *ppInterface = (IUnknown *)this;
-        }
         else if (iid == IID_IOPCDataCallback)
-        {
             *ppInterface = (IOPCDataCallback *)this;
-        }
         else
         {
-            *ppInterface = NULL;
+            *ppInterface = nullptr;
             return E_NOINTERFACE;
-        }
+        } // else
 
         AddRef();
         return S_OK;
-    }
+
+    } // QueryInterface
 
     STDMETHODIMP_(ULONG)
 
     AddRef()
     {
-        return ++mRefCount;
-    }
+        return ++ReferenceCount;
+
+    } // AddRef
 
     STDMETHODIMP_(ULONG)
 
     Release()
     {
-        --mRefCount;
+        DWORD count = ReferenceCount ? --ReferenceCount : 0;
 
-        if (mRefCount == 0)
-        {
+        if (!count)
             delete this;
-        }
-        return mRefCount;
-    }
+
+        return count;
+
+    } // Release
 
     /**
-     * Functions associated with IOPCDataCallback
+     * Functions associated with IOPCDataCallback, pls see also:
+     * https://lhcb-online.web.cern.ch/ecs/opcevaluation/htmlspef/DA_Custom_IF/Custom_Client.html
      */
-    STDMETHODIMP OnDataChange(DWORD Transid, OPCHANDLE grphandle, HRESULT masterquality, HRESULT mastererror,
-                              DWORD count, OPCHANDLE *clienthandles, VARIANT *values, WORD *quality, FILETIME *time,
+    STDMETHODIMP OnDataChange(DWORD transactionID, OPCHANDLE groupHandle, HRESULT masterQuality, HRESULT masterError,
+                              DWORD count, OPCHANDLE *clientHandles, VARIANT *values, WORD *quality, FILETIME *time,
                               HRESULT *errors)
     {
-        IAsynchDataCallback *usrHandler = callbacksGroup.getUsrAsynchHandler();
+        (void)groupHandle;
+        (void)masterQuality;
+        (void)masterError;
 
-        if (Transid != 0)
+        IAsyncDataCallback *usrHandler = CallbacksGroup.getUsrAsyncHandler();
+
+        if (transactionID)
         {
             // it is a result of a refresh (see p106 of spec)
-            CTransaction &trans = *(CTransaction *)Transid;
-            updateOPCData(trans.opcData, count, clienthandles, values, quality, time, errors);
-            trans.setCompleted();
-            return S_OK;
-        }
+            CTransaction *transaction = nullptr;
+            if (CallbacksGroup.lookupTransaction(transactionID, transaction))
+            {
+                updateOPCData(transaction->getItemDataMap(), count, clientHandles, values, quality, time, errors);
+                transaction->setCompleted();
+                return S_OK;
+            } // if
+
+            else
+                throw OPCException(L"CAsyncDataCallback::OnDataChange: FAILED to lookup transaction ID in map");
+        } // if
 
         if (usrHandler)
         {
-            COPCItem_DataMap dataChanges;
-            updateOPCData(dataChanges, count, clienthandles, values, quality, time, errors);
-            usrHandler->OnDataChange(callbacksGroup, dataChanges);
-        }
-        return S_OK;
-    }
+            COPCItemDataMap dataChanges;
+            updateOPCData(dataChanges, count, clientHandles, values, quality, time, errors);
+            usrHandler->OnDataChange(CallbacksGroup, dataChanges);
+        } // if
 
-    STDMETHODIMP OnReadComplete(DWORD Transid, OPCHANDLE grphandle, HRESULT masterquality, HRESULT mastererror,
-                                DWORD count, OPCHANDLE *clienthandles, VARIANT *values, WORD *quality, FILETIME *time,
+        return S_OK;
+
+    } // OnDataChange
+
+    STDMETHODIMP OnReadComplete(DWORD transactionID, OPCHANDLE groupHandle, HRESULT masterQuality, HRESULT masterError,
+                                DWORD count, OPCHANDLE *clientHandles, VARIANT *values, WORD *quality, FILETIME *time,
                                 HRESULT *errors)
     {
-        // TODO this is bad  - server could corrupt address - need to use look up
-        // table
-        CTransaction &trans = *(CTransaction *)Transid;
-        updateOPCData(trans.opcData, count, clienthandles, values, quality, time, errors);
-        trans.setCompleted();
-        return S_OK;
-    }
+        (void)groupHandle;
+        (void)masterQuality;
+        (void)masterError;
 
-    STDMETHODIMP OnWriteComplete(DWORD Transid, OPCHANDLE grphandle, HRESULT mastererr, DWORD count,
-                                 OPCHANDLE *clienthandles, HRESULT *errors)
-    {
-        // TODO this is bad  - server could corrupt address - need to use look up
-        // table
-        CTransaction &trans = *(CTransaction *)Transid;
-
-        // see page 145 - number of items returned may be less than sent
-        for (unsigned i = 0; i < count; i++)
+        // TODO this is bad  - server could corrupt address - need to use look up table
+        CTransaction *transaction = nullptr;
+        if (CallbacksGroup.lookupTransaction(transactionID, transaction))
         {
-            // TODO this is bad  - server could corrupt address - need to use look up
-            // table
-            COPCItem *item = (COPCItem *)clienthandles[i];
-            trans.setItemError(item,
-                               errors[i]); // this records error state - may be good
-        }
+            updateOPCData(transaction->getItemDataMap(), count, clientHandles, values, quality, time, errors);
+            transaction->setCompleted();
+            return S_OK;
+        } // if
+        return S_FALSE;
 
-        trans.setCompleted();
-        return S_OK;
-    }
+    } // OnReadComplete
 
-    STDMETHODIMP OnCancelComplete(DWORD transid, OPCHANDLE grphandle)
+    STDMETHODIMP OnWriteComplete(DWORD transactionID, OPCHANDLE groupHandle, HRESULT masterError, DWORD count,
+                                 OPCHANDLE *clientHandles, HRESULT *errors)
     {
-        printf("OnCancelComplete: Transid=%ld GrpHandle=%ld\n", transid, grphandle);
+        (void)groupHandle;
+        (void)masterError;
+
+        // TODO this is bad  - server could corrupt address - need to use look up table
+        CTransaction *transaction = nullptr;
+        if (CallbacksGroup.lookupTransaction(transactionID, transaction))
+        {
+            // see page 145 - number of items returned may be less than sent
+            for (unsigned i = 0; i < count; ++i)
+            {
+                OPCItemData *data = nullptr;
+                if (transaction->getItemDataMap().Lookup(clientHandles[i], data) &&
+                    data)                                               // look up adjoining OPC data in map..
+                    transaction->setItemError(data->item(), errors[i]); // this records error state - may be good
+            }                                                           // for
+            transaction->setCompleted();
+        } // if
         return S_OK;
-    }
+
+    } // OnWriteComplete
+
+    STDMETHODIMP OnCancelComplete(DWORD transactionID, OPCHANDLE groupHandle)
+    {
+        printf("OnCancelComplete: transactionID=%ld groupHandle=%ld\n", transactionID, groupHandle);
+        return S_OK;
+
+    } // OnCancelComplete
 
     /**
      * make OPC item
      */
-    static OPCItemData *makeOPCDataItem(VARIANT &value, WORD quality, FILETIME &time, HRESULT error)
+    static OPCItemData *makeOPCDataItem(VARIANT &value, WORD quality, FILETIME &time, HRESULT error,
+                                        COPCItem *item = nullptr)
     {
-        OPCItemData *data = NULL;
+        OPCItemData *data = nullptr;
         if (FAILED(error))
-        {
-            data = new OPCItemData(error);
-        }
+            data = new OPCItemData(item, error);
         else
-        {
-            data = new OPCItemData(time, quality, value, error);
-        }
+            data = new OPCItemData(item, value, quality, time, error);
         return data;
-    }
+
+    } // makeOPCDataItem
 
     /**
      * Enter the OPC items data that resulted from an operation
      */
-    static void updateOPCData(COPCItem_DataMap &opcData, DWORD count, OPCHANDLE *clienthandles, VARIANT *values,
-                              WORD *quality, FILETIME *time, HRESULT *errors)
+    void updateOPCData(COPCItemDataMap &itemDataMap, DWORD count, OPCHANDLE *clientHandles, VARIANT *values,
+                       WORD *quality, FILETIME *time, HRESULT *errors)
     {
         // see page 136 - returned arrays may be out of order
-        for (unsigned i = 0; i < count; i++)
+        for (unsigned i = 0; i < count; ++i)
         {
-            // TODO this is bad  - server could corrupt address - need to use look up
-            // table
-            COPCItem *item = (COPCItem *)clienthandles[i];
-            OPCItemData *data = makeOPCDataItem(values[i], quality[i], time[i], errors[i]);
-            COPCItem_DataMap::CPair *pair = opcData.Lookup(item);
-            if (pair == NULL)
+            COPCItemDataMap::CPair *pair = itemDataMap.Lookup(clientHandles[i]);
+
+            if (!pair || !pair->m_value)
             {
-                opcData.SetAt(item, data);
-            }
+                COPCItem *item = nullptr;
+                CallbacksGroup.lookupOpcItem(clientHandles[i], item);
+                OPCItemData *data = makeOPCDataItem(values[i], quality[i], time[i], errors[i],
+                                                    item); // make data item..
+                if (!pair)
+                    itemDataMap.SetAt(clientHandles[i],
+                                      data); // create new item in OPC data map, but without valid OPC item pointer !
+                else
+                    itemDataMap.SetValueAt(pair,
+                                           data); // update existing item in OPC data map with new OPC data item..
+            }                                     // if
+
             else
-            {
-                opcData.SetValueAt(pair, data);
-            }
-        }
-    }
-};
+                pair->m_value->set(values[i], quality[i], time[i], errors[i]); // just set values of existing item..
+        }                                                                      // for
 
-COPCGroup::COPCGroup(const std::string &groupName, bool active, unsigned long reqUpdateRate_ms,
+    } // updateOPCData
+
+}; // CAsyncDataCallback
+
+COPCGroup::COPCGroup(const std::wstring &groupName, bool active, unsigned long reqUpdateRate_ms,
                      unsigned long &revisedUpdateRate_ms, float deadBand, COPCServer &server)
-    : name(groupName), opcServer(server)
+    : GroupName(groupName), OpcServer(server)
 {
-    USES_CONVERSION;
-    WCHAR *wideName = T2OLE(groupName.c_str());
-
-    HRESULT result = opcServer.getServerInterface()->AddGroup(wideName, active, reqUpdateRate_ms, 0, 0, &deadBand, 0,
-                                                              &groupHandle, &revisedUpdateRate_ms,
+    HRESULT result = OpcServer.getServerInterface()->AddGroup(groupName.c_str(), active, reqUpdateRate_ms, 0, 0,
+                                                              &deadBand, 0, &GroupHandle, &revisedUpdateRate_ms,
                                                               IID_IOPCGroupStateMgt, (LPUNKNOWN *)&iStateManagement);
     if (FAILED(result))
-    {
-        throw OPCException("Failed to Add group");
-    }
+        throw OPCException(L"COPCGroup::COPCGroup: FAILED to Add group");
 
-    result = iStateManagement->QueryInterface(IID_IOPCSyncIO, (void **)&iSychIO);
+    result = iStateManagement->QueryInterface(IID_IOPCSyncIO, (void **)&iSyncIO);
     if (FAILED(result))
-    {
-        throw OPCException("Failed to get IID_IOPCSyncIO");
-    }
+        throw OPCException(L"COPCGroup::COPCGroup: FAILED to get IID_IOPCSyncIO");
 
-    result = iStateManagement->QueryInterface(IID_IOPCAsyncIO2, (void **)&iAsych2IO);
+    result = iStateManagement->QueryInterface(IID_IOPCAsyncIO2, (void **)&iAsync2IO);
     if (FAILED(result))
-    {
-        throw OPCException("Failed to get IID_IOPCAsyncIO2");
-    }
+        throw OPCException(L"COPCGroup::COPCGroup: FAILED to get IID_IOPCAsyncIO2");
 
     result = iStateManagement->QueryInterface(IID_IOPCItemMgt, (void **)&iItemManagement);
     if (FAILED(result))
-    {
-        throw OPCException("Failed to get IID_IOPCItemMgt");
-    }
-}
+        throw OPCException(L"COPCGroup::COPCGroup: FAILED to get IID_IOPCItemMgt");
+
+} // COPCGroup::COPCGroup
 
 COPCGroup::~COPCGroup()
 {
-    opcServer.getServerInterface()->RemoveGroup(groupHandle, FALSE);
-}
+    OpcServer.getServerInterface()->RemoveGroup(GroupHandle, false);
+
+} // COPCGroup::~COPCGroup
 
 OPCHANDLE *COPCGroup::buildServerHandleList(std::vector<COPCItem *> &items)
 {
     OPCHANDLE *handles = new OPCHANDLE[items.size()];
-    for (unsigned i = 0; i < items.size(); i++)
+    for (unsigned i = 0; i < items.size(); ++i)
     {
-        if (items[i] == NULL)
+        if (!items[i])
         {
             delete[] handles;
-            throw OPCException("Item is NULL");
-        }
+            throw OPCException(L"COPCGroup::buildServerHandleList: item is nullptr");
+        } // if
+
         handles[i] = items[i]->getHandle();
-    }
+    } // for
+
     return handles;
-}
 
-void COPCGroup::readSync(std::vector<COPCItem *> &items, COPCItem_DataMap &opcData, OPCDATASOURCE source)
+} // COPCGroup::buildServerHandleList
+
+void COPCGroup::readSync(std::vector<COPCItem *> &items, COPCItemDataMap &itemDataMap, OPCDATASOURCE source)
 {
-    OPCHANDLE *serverHandles = buildServerHandleList(items);
-    HRESULT *itemResult;
-    OPCITEMSTATE *itemState;
-    DWORD noItems = (DWORD)items.size();
+    OPCHANDLE *handles = buildServerHandleList(items);
+    HRESULT *results = nullptr;
+    OPCITEMSTATE *states = nullptr;
+    DWORD nbrItems = static_cast<DWORD>(items.size());
 
-    HRESULT result = iSychIO->Read(source, noItems, serverHandles, &itemState, &itemResult);
+    HRESULT result = iSyncIO->Read(source, nbrItems, handles, &states, &results);
     if (FAILED(result))
     {
-        delete[] serverHandles;
-        throw OPCException("Read failed");
-    }
+        delete[] handles;
+        throw OPCException(L"COPCGroup::readSync: sync read FAILED");
+    } // if
 
-    for (unsigned i = 0; i < noItems; i++)
+    for (unsigned i = 0; i < nbrItems; ++i)
     {
-        COPCItem *item = (COPCItem *)itemState[i].hClient;
-        OPCItemData *data = CAsynchDataCallback::makeOPCDataItem(itemState[i].vDataValue, itemState[i].wQuality,
-                                                                 itemState[i].ftTimeStamp, itemResult[i]);
-        COPCItem_DataMap::CPair *pair = opcData.Lookup(item);
-        if (pair == NULL)
-        {
-            opcData.SetAt(item, data);
-        }
+        OPCHANDLE handle = states[i].hClient;
+        OPCItemData *data = CAsyncDataCallback::makeOPCDataItem(states[i].vDataValue, states[i].wQuality,
+                                                                states[i].ftTimeStamp, results[i], items[i]);
+        COPCItemDataMap::CPair *pair = itemDataMap.Lookup(handle);
+        if (!pair)
+            itemDataMap.SetAt(handle, data);
         else
-        {
-            opcData.SetValueAt(pair, data);
-        }
-    }
+            itemDataMap.SetValueAt(pair, data);
+    } // for
 
-    delete[] serverHandles;
-    COPCClient::comFree(itemResult);
-    COPCClient::comFree(itemState);
-}
+    delete[] handles;
+    COPCClient::comFree(results);
+    COPCClient::comFree(states);
+
+} // COPCGroup::readSync
 
 CTransaction *COPCGroup::readAsync(std::vector<COPCItem *> &items, ITransactionComplete *transactionCB)
 {
-    DWORD cancelID;
-    HRESULT *individualResults;
-    CTransaction *trans = new CTransaction(items, transactionCB);
-    OPCHANDLE *serverHandles = buildServerHandleList(items);
-    DWORD noItems = (DWORD)items.size();
+    DWORD cancelID = 0;
+    HRESULT *results = nullptr;
+    OPCHANDLE *handles = buildServerHandleList(items);
+    DWORD nbrItems = static_cast<DWORD>(items.size());
+    CTransaction *transaction = new CTransaction(items, transactionCB);
+    DWORD transactionID = addTransaction(transaction);
 
-    HRESULT result = iAsych2IO->Read(noItems, serverHandles, (DWORD)trans, &cancelID, &individualResults);
-    delete[] serverHandles;
+    HRESULT result = iAsync2IO->Read(nbrItems, handles, transactionID, &cancelID, &results);
+    delete[] handles;
     if (FAILED(result))
     {
-        delete trans;
-        throw OPCException("Asynch Read failed");
-    }
+        deleteTransaction(transaction);
+        throw OPCException(L"COPCGroup::readAsync: async read FAILED");
+    } // if
 
-    trans->setCancelId(cancelID);
+    transaction->setCancelId(cancelID);
     unsigned failCount = 0;
-    for (unsigned i = 0; i < noItems; i++)
-    {
-        if (FAILED(individualResults[i]))
+    for (unsigned i = 0; i < nbrItems; ++i)
+        if (FAILED(results[i]))
         {
-            trans->setItemError(items[i], individualResults[i]);
-            failCount++;
-        }
-    }
-    if (failCount == items.size())
-    {
-        trans->setCompleted(); // if all items return error then no callback will
-                               // occur. p 101
-    }
+            transaction->setItemError(items[i], results[i]);
+            ++failCount;
+        } // if
 
-    COPCClient::comFree(individualResults);
-    return trans;
-}
+    if (failCount == items.size())
+        transaction->setCompleted(); // if all items return error then no callback will occur. p 101
+
+    COPCClient::comFree(results);
+    return transaction;
+
+} // COPCGroup::readAsync
 
 CTransaction *COPCGroup::refresh(OPCDATASOURCE source, ITransactionComplete *transactionCB)
 {
-    DWORD cancelID;
-    CTransaction *trans = new CTransaction(items, transactionCB);
+    DWORD cancelID = 0;
+    CTransaction *transaction = new CTransaction(GroupItemDataMap, transactionCB);
+    DWORD transactionID = addTransaction(transaction);
 
-    HRESULT result = iAsych2IO->Refresh2(source, (DWORD)trans, &cancelID);
+    HRESULT result = iAsync2IO->Refresh2(source, transactionID, &cancelID);
     if (FAILED(result))
     {
-        delete trans;
-        throw OPCException("refresh failed");
-    }
+        deleteTransaction(transaction);
+        throw OPCException(L"COPCGroup::refresh: refresh FAILED");
+    } // if
 
-    return trans;
-}
+    transaction->setCancelId(cancelID);
+    return transaction;
 
-COPCItem *COPCGroup::addItem(std::string &itemName, bool active)
+} // COPCGroup::refresh
+
+bool COPCGroup::cancelRefresh(CTransaction *&transaction)
 {
-    std::vector<std::string> names;
-    std::vector<COPCItem *> itemsCreated;
+    if (!transaction)
+        return false;
+
+    DWORD cancelID = transaction->getCancelId();
+    if (!deleteTransaction(transaction))
+        return false;
+
+    HRESULT result = iAsync2IO->Cancel2(cancelID);
+    if (FAILED(result) && (result != E_FAIL)) // 0x80004005L "Unspecified error", just return if this happened..
+        throw OPCException(L"COPCGroup::cancelRefresh: cancel async refresh FAILED");
+
+    return !FAILED(result);
+
+} // COPCGroup::cancelRefresh
+
+COPCItem *COPCGroup::addItem(std::wstring &name, bool active)
+{
+    std::vector<COPCItem *> items;
     std::vector<HRESULT> errors;
-    names.push_back(itemName);
-    if (addItems(names, itemsCreated, errors, active) != 0)
-    {
-        throw OPCException("Failed to add item");
-    }
-    return itemsCreated[0];
-}
+    std::vector<std::wstring> names;
+    names.push_back(name);
+    if (addItems(names, items, errors, active) != 0)
+        throw OPCException(L"COPCGroup::addItem: FAILED to add item");
 
-int COPCGroup::addItems(std::vector<std::string> &itemName, std::vector<COPCItem *> &itemsCreated,
-                        std::vector<HRESULT> &errors, bool active)
+    return items[0];
+
+} // COPCGroup::addItem
+
+int COPCGroup::addItems(std::vector<std::wstring> &names, std::vector<COPCItem *> &items, std::vector<HRESULT> &errors,
+                        bool active)
 {
-    itemsCreated.resize(itemName.size());
-    errors.resize(itemName.size());
-    OPCITEMDEF *itemDef = new OPCITEMDEF[itemName.size()];
-    unsigned i = 0;
-    std::vector<CT2OLE *> tpm;
-    for (; i < itemName.size(); i++)
+    items.resize(names.size());
+    errors.resize(names.size());
+    OPCITEMDEF *itemDef = new OPCITEMDEF[names.size()];
+    std::vector<CW2W *> nameVector;
+    for (unsigned i = 0; i < names.size(); ++i)
     {
-        itemsCreated[i] = new COPCItem(itemName[i], *this);
+        items[i] = new COPCItem(names[i], *this);
         USES_CONVERSION;
-        tpm.push_back(new CT2OLE(itemName[i].c_str()));
-        itemDef[i].szItemID = **(tpm.end() - 1);
-        itemDef[i].szAccessPath = NULL; // wideName;
+        nameVector.push_back(new CW2W(names[i].c_str()));
+        itemDef[i].szItemID = **(nameVector.end() - 1);
+        itemDef[i].szAccessPath = nullptr; // wide name;
         itemDef[i].bActive = active;
-        itemDef[i].hClient = (DWORD)itemsCreated[i];
+        itemDef[i].hClient = getOpcHandle(items[i]);
         itemDef[i].dwBlobSize = 0;
-        itemDef[i].pBlob = NULL;
+        itemDef[i].pBlob = nullptr;
         itemDef[i].vtRequestedDataType = VT_EMPTY;
-    }
+    } // for
 
-    HRESULT *itemResult;
-    OPCITEMRESULT *itemDetails;
-    DWORD noItems = (DWORD)itemName.size();
+    HRESULT *results = nullptr;
+    OPCITEMRESULT *details = nullptr;
+    DWORD nbrItems = static_cast<DWORD>(names.size());
 
-    HRESULT result = getItemManagementInterface()->AddItems(noItems, itemDef, &itemDetails, &itemResult);
+    HRESULT result = getItemManagementInterface()->AddItems(nbrItems, itemDef, &details, &results);
     delete[] itemDef;
-    for (int i = 0; i < itemName.size(); i++)
-    {
-        delete tpm[i];
-    }
+    for (unsigned i = 0; i < names.size(); ++i)
+        delete nameVector[i];
+
     if (FAILED(result))
-    {
-        throw OPCException("Failed to add items");
-    }
+        throw OPCException(L"COPCGroup::addItems: FAILED to add items");
 
     int errorCount = 0;
-    for (i = 0; i < noItems; i++)
+    for (unsigned i = 0; i < nbrItems; ++i)
     {
-        if (itemDetails[i].pBlob)
-        {
-            COPCClient::comFree(itemDetails[0].pBlob);
-        }
+        if (details[i].pBlob)
+            COPCClient::comFree(details[0].pBlob);
 
-        if (FAILED(itemResult[i]))
+        if (FAILED(results[i]))
         {
-            delete itemsCreated[i];
-            itemsCreated[i] = NULL;
-            errors[i] = itemResult[i];
-            errorCount++;
-        }
+            delete items[i];
+            items[i] = nullptr;
+            errors[i] = results[i];
+            ++errorCount;
+        } // if
         else
         {
-            (itemsCreated[i])
-                ->setOPCParams(itemDetails[i].hServer, itemDetails[i].vtCanonicalDataType,
-                               itemDetails[i].dwAccessRights);
+            addItemData(GroupItemDataMap, items[i]); // add new item to group's item data map..
+            items[i]->setOPCParameters(details[i].hServer, details[i].vtCanonicalDataType, details[i].dwAccessRights);
             errors[i] = ERROR_SUCCESS;
-        }
-    }
+        } // else
+    }     // for
 
-    COPCClient::comFree(itemDetails);
-    COPCClient::comFree(itemResult);
-
+    COPCClient::comFree(details);
+    COPCClient::comFree(results);
     return errorCount;
-}
 
-void COPCGroup::enableAsynch(IAsynchDataCallback &handler)
+} // COPCGroup::addItems
+
+OPCHANDLE COPCGroup::addItemData(COPCItemDataMap &opcItemDataMap, COPCItem *item, HRESULT error)
 {
-    if (!asynchDataCallBackHandler == false)
-    {
-        throw OPCException("Asynch already enabled");
-    }
+    OPCHANDLE handle = getOpcHandle(item);
+    opcItemDataMap.SetAt(handle, new OPCItemData(item, error));
+    return handle;
+
+} // COPCGroup::addItemData
+
+bool COPCGroup::lookupOpcItem(OPCHANDLE handle, COPCItem *&item)
+{
+    item = nullptr;
+    bool result = false;
+    OPCItemData *itemData = nullptr;
+    if ((result = GroupItemDataMap.Lookup(handle, itemData)) && itemData)
+        item = itemData->item();
+    return result;
+
+} // COPCGroup::lookupOpcItem
+
+DWORD COPCGroup::addTransaction(CTransaction *transaction)
+{
+    DWORD transactionID = getTransactionID(transaction);
+    if (transactionID)
+        TransactionMap.SetAt(transactionID, transaction);
+
+    return transactionID;
+
+} // COPCGroup::addTransaction
+
+bool COPCGroup::deleteTransaction(CTransaction *&transaction)
+{
+    bool result = false;
+    DWORD transactionID = getTransactionID(transaction);
+    result = TransactionMap.RemoveKey(transactionID);
+    delete transaction;
+    transaction = nullptr;
+    return result;
+
+} // COPCGroup::deleteTransaction
+
+bool COPCGroup::lookupTransaction(DWORD transactionID, CTransaction *&transaction)
+{
+    return TransactionMap.Lookup(transactionID, transaction);
+
+} // COPCGroup::lookupTransaction
+
+bool COPCGroup::enableAsync(IAsyncDataCallback *handler)
+{
+    if (AsyncDataCallBackHandler)
+        throw OPCException(L"COPCGroup::enableAsync: async already enabled");
 
     ATL::CComPtr<IConnectionPointContainer> iConnectionPointContainer = 0;
     HRESULT result =
         iStateManagement->QueryInterface(IID_IConnectionPointContainer, (void **)&iConnectionPointContainer);
     if (FAILED(result))
-    {
-        throw OPCException("Could not get IID_IConnectionPointContainer");
-    }
+        throw OPCException(L"COPCGroup::enableAsync: could not get IID_IConnectionPointContainer");
 
-    result = iConnectionPointContainer->FindConnectionPoint(IID_IOPCDataCallback, &iAsynchDataCallbackConnectionPoint);
+    result = iConnectionPointContainer->FindConnectionPoint(IID_IOPCDataCallback, &iAsyncDataCallbackConnectionPoint);
+    if (FAILED(result))
+        throw OPCException(L"COPCGroup::enableAsync: could not get IID_IOPCDataCallback");
+
+    AsyncDataCallBackHandler = new CAsyncDataCallback(*this);
+    result = iAsyncDataCallbackConnectionPoint->Advise(AsyncDataCallBackHandler, &GroupCallbackHandle);
     if (FAILED(result))
     {
-        throw OPCException("Could not get IID_IOPCDataCallback");
-    }
+        iAsyncDataCallbackConnectionPoint = nullptr;
+        AsyncDataCallBackHandler = nullptr;
+        throw OPCException(L"COPCGroup::enableAsync: FAILED to set DataCallbackConnectionPoint");
+    } // if
 
-    asynchDataCallBackHandler = new CAsynchDataCallback(*this);
-    result = iAsynchDataCallbackConnectionPoint->Advise(asynchDataCallBackHandler, &callbackHandle);
-    if (FAILED(result))
-    {
-        iAsynchDataCallbackConnectionPoint = NULL;
-        asynchDataCallBackHandler = NULL;
-        throw OPCException("Failed to set DataCallbackConnectionPoint");
-    }
+    UserAsyncCBHandler = handler;
+    return true;
 
-    userAsynchCBHandler = &handler;
-}
+} // COPCGroup::enableAsync
 
 void COPCGroup::setState(DWORD reqUpdateRate_ms, DWORD &returnedUpdateRate_ms, float deadBand, BOOL active)
 {
     HRESULT result = iStateManagement->SetState(&reqUpdateRate_ms, &returnedUpdateRate_ms, &active, 0, &deadBand, 0, 0);
     if (FAILED(result))
-    {
-        throw OPCException("Failed to set group state");
-    }
-}
+        throw OPCException(L"COPCGroup::setState: FAILED to set group state");
 
-void COPCGroup::disableAsynch()
+} // COPCGroup::setState
+
+bool COPCGroup::disableAsync()
 {
-    if (asynchDataCallBackHandler == NULL)
-    {
-        throw OPCException("Asynch is not exabled");
-    }
-    iAsynchDataCallbackConnectionPoint->Unadvise(callbackHandle);
-    iAsynchDataCallbackConnectionPoint = NULL;
-    asynchDataCallBackHandler = NULL; // WE DO NOT DELETE callbackHandler, let the
-                                      // COM ref counting take care of that
-    userAsynchCBHandler = NULL;
-}
+    if (!AsyncDataCallBackHandler)
+        throw OPCException(L"COPCGroup::disableAsync: async is not enabled");
+
+    iAsyncDataCallbackConnectionPoint->Unadvise(GroupCallbackHandle);
+    iAsyncDataCallbackConnectionPoint = nullptr;
+    AsyncDataCallBackHandler = nullptr; // WE DO NOT DELETE callbackHandler, let the COM ref counting take care of that
+    UserAsyncCBHandler = nullptr;
+    return true;
+
+} // COPCGroup::disableAsync
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

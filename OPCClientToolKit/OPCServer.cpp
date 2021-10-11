@@ -20,80 +20,81 @@ Boston, MA  02111-1307, USA.
 
 #include "OPCServer.h"
 
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
+
 COPCServer::COPCServer(ATL::CComPtr<IOPCServer> &opcServerInterface)
 {
     iOpcServer = opcServerInterface;
 
-    HRESULT res = opcServerInterface->QueryInterface(IID_IOPCBrowseServerAddressSpace, (void **)&iOpcNamespace);
-    if (FAILED(res))
-    {
-        throw OPCException("Failed to obtain IID_IOPCBrowseServerAddressSpace interface", res);
-    }
+    HRESULT result = opcServerInterface->QueryInterface(IID_IOPCBrowseServerAddressSpace, (void **)&iOpcNameSpace);
+    if (FAILED(result))
+        throw OPCException(L"COPCServer::COPCServer: FAILED to obtain IID_IOPCBrowseServerAddressSpace interface",
+                           result);
 
-    res = opcServerInterface->QueryInterface(IID_IOPCItemProperties, (void **)&iOpcProperties);
-    if (FAILED(res))
-    {
-        throw OPCException("Failed to obtain IID_IOPCItemProperties interface", res);
-    }
-}
+    result = opcServerInterface->QueryInterface(IID_IOPCItemProperties, (void **)&iOpcProperties);
+    if (FAILED(result))
+        throw OPCException(L"COPCServer::COPCServer: FAILED to obtain IID_IOPCItemProperties interface", result);
+
+} // COPCServer::COPCServer
 
 COPCServer::~COPCServer()
 {
-}
+} // COPCServer::~COPCServer
 
-COPCGroup *COPCServer::makeGroup(const std::string &groupName, bool active, unsigned long reqUpdateRate_ms,
+COPCGroup *COPCServer::makeGroup(const std::wstring &groupName, bool active, unsigned long reqUpdateRate_ms,
                                  unsigned long &revisedUpdateRate_ms, float deadBand)
 {
     return new COPCGroup(groupName, active, reqUpdateRate_ms, revisedUpdateRate_ms, deadBand, *this);
-}
 
-void COPCServer::getItemNames(std::vector<std::string> &opcItemNames)
+} // COPCServer::makeGroup
+
+bool COPCServer::getItemNames(std::vector<std::wstring> &opcItemNames)
 {
-    if (!iOpcNamespace)
-        return;
+    if (!iOpcNameSpace)
+        return false;
 
-    OPCNAMESPACETYPE nameSpaceType;
-    HRESULT result = iOpcNamespace->QueryOrganization(&nameSpaceType);
+    OPCNAMESPACETYPE nameSpaceType = OPC_NS_FLAT;
+    HRESULT result = iOpcNameSpace->QueryOrganization(&nameSpaceType);
+    (void)result; // mutes clang complaints..
 
     USES_CONVERSION;
-    int v = 0;
     WCHAR emptyString[] = {0};
-    // result = iOpcNamespace->ChangeBrowsePosition(OPC_BROWSE_TO,emptyString);
+    // result = iOpcNameSpace->ChangeBrowsePosition ( OPC_BROWSE_TO, emptyString );
 
     ATL::CComPtr<IEnumString> iEnum;
-    result = iOpcNamespace->BrowseOPCItemIDs(OPC_FLAT, emptyString, VT_EMPTY, 0, (&iEnum));
+    result = iOpcNameSpace->BrowseOPCItemIDs(OPC_FLAT, emptyString, VT_EMPTY, 0, &iEnum);
     if (FAILED(result))
-    {
-        return;
-    }
+        return false;
 
-    WCHAR *str;
-    ULONG strSize;
-    while ((result = iEnum->Next(1, &str, &strSize)) == S_OK)
+    LPWSTR name = nullptr;
+    ULONG nameSize = 0;
+    while ((result = iEnum->Next(1, &name, &nameSize)) == S_OK)
     {
-        WCHAR *fullName;
-        result = iOpcNamespace->GetItemID(str, &fullName);
+        (void)result; // mutes clang complaints..
+        LPWSTR fullName = nullptr;
+        result = iOpcNameSpace->GetItemID(name, &fullName);
         if (SUCCEEDED(result))
         {
-            USES_CONVERSION;
-            COLE2T cStr(fullName);
-            // char * cStr = OLE2T(str);
-            // printf("Adding %s\n", cStr);
-            opcItemNames.push_back((char *)cStr);
+            opcItemNames.push_back(fullName);
             COPCClient::comFree(fullName);
-        }
-        COPCClient::comFree(str);
-    }
-}
+        } // if
 
-void COPCServer::getStatus(ServerStatus &status)
+        COPCClient::comFree(name);
+    } // while
+
+    return true;
+
+} // COPCServer::getItemNames
+
+bool COPCServer::getStatus(ServerStatus &status)
 {
-    OPCSERVERSTATUS *serverStatus;
+    OPCSERVERSTATUS *serverStatus = nullptr;
     HRESULT result = iOpcServer->GetStatus(&serverStatus);
     if (FAILED(result))
-    {
-        throw OPCException("Failed to get status");
-    }
+        throw OPCException(L"COPCServer::getStatus: FAILED to get status");
 
     status.ftStartTime = serverStatus->ftStartTime;
     status.ftCurrentTime = serverStatus->ftCurrentTime;
@@ -104,11 +105,18 @@ void COPCServer::getStatus(ServerStatus &status)
     status.wMajorVersion = serverStatus->wMajorVersion;
     status.wMinorVersion = serverStatus->wMinorVersion;
     status.wBuildNumber = serverStatus->wBuildNumber;
-    if (serverStatus->szVendorInfo != NULL)
+
+    if (serverStatus->szVendorInfo)
     {
-        USES_CONVERSION;
-        status.vendorInfo = OLE2T(serverStatus->szVendorInfo);
+        status.vendorInfo = serverStatus->szVendorInfo;
         COPCClient::comFree(serverStatus->szVendorInfo);
-    }
+    } // if
+
     COPCClient::comFree(serverStatus);
-}
+    return true;
+
+} // COPCServer::getStatus
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

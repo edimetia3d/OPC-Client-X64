@@ -8,13 +8,10 @@
     * Multithread supported.
     * Connect to server with CLSID.(Hasn't tested)
 
-## Known Issues
+## Notes
 
-* the x64 version has some address corruption problem when you are using VS2012 or later, you can open "Project Property
-  -> Linker -> CommandLine", then add `/HIGHENTROPYVA:NO` to avoid this issue,
-  See [Issue#1](https://github.com/edimetia3d/OPC-Client-X64/issues/1) for more detail
-    * If you do need the `HIGHENTROPYVA` feature, the branch `async_address_fix` may help you. See #13 for more
-      information
+Current master branch contains a huge bug fixes commit from [PR#14](https://github.com/edimetia3d/OPC-Client-X64/pull/14), which might introduced some new bug. If the master branch went
+wrong, you may check release 0.4.1 as a backup.
 
 ## Basic Guide
 
@@ -47,7 +44,8 @@
       .
 
 ## Detail & ChangeLog
-
+* Date: 2017-10-10
+    * Thanks for wolfgang.griech (wolfgang.griech@gmail.com), who contributed a huge bug fixes [PR#14](https://github.com/edimetia3d/OPC-Client-X64/pull/14) that may fix many issues in this project.
 * Date: 2017-07-07
     * Thanks for [mzillgith](https://github.com/mzillgith/OPC-Client-X64), now the project can connect to remote server
       with CLSID.(It hasn't been tested)

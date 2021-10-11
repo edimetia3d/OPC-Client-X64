@@ -10,7 +10,7 @@
 
 ## Notes
 
-Current master branch contains a huge bug fixes commit from [PR#14](https://github.com/edimetia3d/OPC-Client-X64/pull/14), which might introduced some new bug. If the master branch went
+Current master branch contains a huge bug fixes commit from [PR#14](https://github.com/edimetia3d/OPC-Client-X64/pull/14), which might introduce some new bugs. If the master branch went
 wrong, you may check release 0.4.1 as a backup.
 
 ## Basic Guide
@@ -44,7 +44,7 @@ wrong, you may check release 0.4.1 as a backup.
       .
 
 ## Detail & ChangeLog
-* Date: 2017-10-10
+* Date: 2021-10-10
     * Thanks for wolfgang.griech (wolfgang.griech@gmail.com), who contributed a huge bug fixes [PR#14](https://github.com/edimetia3d/OPC-Client-X64/pull/14) that may fix many issues in this project.
 * Date: 2017-07-07
     * Thanks for [mzillgith](https://github.com/mzillgith/OPC-Client-X64), now the project can connect to remote server

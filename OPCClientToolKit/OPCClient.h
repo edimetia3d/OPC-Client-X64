@@ -18,21 +18,10 @@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
 
-#if !defined(AFX_OPCCLIENT_H__1C1AA002_F7C5_4537_B569_8352FBA27544__INCLUDED_)
-#define AFX_OPCCLIENT_H__1C1AA002_F7C5_4537_B569_8352FBA27544__INCLUDED_
-
-#ifdef OPCCLIENTTOOLKITDLL_EXPORTS
-#define OPCCLIENTTOOLKITDLL_API __declspec(dllexport)
-#else
-#define OPCCLIENTTOOLKITDLL_API __declspec(dllimport)
-#endif
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-#include "OPCItemData.h"
-#include "opcda.h"
+#pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
+
 #include <COMCat.h>
 #include <atlbase.h>
 #include <atlcoll.h>
@@ -40,6 +29,15 @@ Boston, MA  02111-1307, USA.
 #include <atlstr.h>
 #include <objbase.h>
 #include <stdexcept>
+
+#include "OPCClientToolKitDLL.h"
+#include "OPCItemData.h"
+#include "opcda.h"
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
+{
+#endif
 
 class COPCHost;
 
@@ -50,57 +48,59 @@ class COPCGroup;
 class COPCItem;
 
 /**
- * Basic OPC expection
+ * Basic OPC exception
  */
 class OPCException : public ATL::CAtlException
 {
   private:
-    std::string why;
+    std::wstring ExceptionMsg;
 
   public:
-    OPCException(const std::string &what, HRESULT code = 0) : /*ATL::CAtlException(code),*/ why(what)
+    OPCException(const std::wstring &msg, HRESULT code = 0) : ExceptionMsg(msg)
     {
+        (void)code;
     }
 
-    const std::string &reasonString() const
+    const std::wstring &reasonString() const
     {
-        return why;
+        return ExceptionMsg;
     }
-};
+
+}; // OPCException
 
 /**
- * Data received from the OnDataChange() method of the CAsynchDataCallback
- * instance is delegated to an instance of a child class implementing this
- * interface. The Child class must obviously provide the desired behaviour in
- * the overriden OnDataChange() method. This interface is active only when the
- * corresponding group is active (achieved by the groups enableSynch() method.)
+ * Data received from the OnDataChange() method of the CAsyncDataCallback instance is delegated to an instance
+ * of a child class implementing this interface. The Child class must obviously provide the desired behaviour
+ * in the overriden OnDataChange() method. This interface is active only when the corresponding group is active
+ * (achieved by the groups enableAsync() method.)
  */
-class IAsynchDataCallback
+class IAsyncDataCallback
 {
   public:
-    virtual void OnDataChange(COPCGroup &group, CAtlMap<COPCItem *, OPCItemData *> &changes) = 0;
-};
+    virtual void OnDataChange(COPCGroup &group, COPCItemDataMap &changes) = 0;
+
+}; // IAsyncDataCallback
 
 /**
- * Starting point for 'everything'. Utility class that creates host objects and
- * handles COM memory management. Effectively a singleton.
+ * Starting point for 'everything'. Utility class that creates host objects and handles COM memory management.
+ * Effectively a singleton.
  */
 
 enum OPCOLEInitMode
 {
     APARTMENTTHREADED,
     MULTITHREADED
-};
+}; // OPCOLEInitMode
 
-class COPCClient
+class OPCDACLIENT_API COPCClient
 {
   private:
     static ATL::CComPtr<IMalloc> iMalloc;
 
   public:
-    static int count;
+    static int ReleaseCount;
 
-    static void init(OPCOLEInitMode mode = APARTMENTTHREADED);
+    static bool init(OPCOLEInitMode mode = APARTMENTTHREADED);
 
     static void stop();
 
@@ -113,11 +113,14 @@ class COPCClient
      * @param hostname - may be empty (in which case a local host is created).
      * @ returns host object (owned by caller).
      */
-    static COPCHost *makeHost(const std::string &hostName);
+    static COPCHost *makeHost(const std::wstring &hostName);
 
     static const GUID CATID_OPCDAv10;
 
     static const GUID CATID_OPCDAv20;
-};
 
-#endif // !defined(AFX_OPCCLIENT_H__1C1AA002_F7C5_4537_B569_8352FBA27544__INCLUDED_)
+}; // COPCClient
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

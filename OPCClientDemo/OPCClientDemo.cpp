@@ -21,14 +21,15 @@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
 
+#include <stdio.h>
+#include <sys\timeb.h>
+
 #include "OPCClient.h"
 #include "OPCGroup.h"
 #include "OPCHost.h"
 #include "OPCItem.h"
 #include "OPCServer.h"
 #include "opcda.h"
-#include <stdio.h>
-#include <sys\timeb.h>
 
 /**
  * Code demonstrates
@@ -36,253 +37,294 @@ Boston, MA  02111-1307, USA.
  * 2) Connection to local server.
  * 3) Browsing local server namespace
  * 4) Creation of OPC item and group
- * 5) synch and asynch read of OPC item.
- * 6) synch and asynch write of OPC item.
+ * 5) sync and async read of OPC item.
+ * 6) sync and async write of OPC item.
  * 7) The receipt of changes to items within a group (subscribe)
  * 8) group refresh.
- * 9) Synch read of multiple OPC items.
+ * 9) Sync read of multiple OPC items.
  */
 
 /**
- * Handle asynch data coming from changes in the OPC group
+ * Handle async data coming from changes in the OPC group
  */
-class CMyCallback : public IAsynchDataCallback
+class CMyCallback : public IAsyncDataCallback
 {
   public:
-    void OnDataChange(COPCGroup &group, CAtlMap<COPCItem *, OPCItemData *> &changes)
+    void OnDataChange(COPCGroup &group, COPCItemDataMap &changes)
     {
-        printf("Group %s, item changes\n", group.getName().c_str());
+        printf("group '%ws', item(s) changed:\n", group.getName().c_str());
         POSITION pos = changes.GetStartPosition();
-        while (pos != NULL)
+        while (pos)
         {
-            COPCItem *item = changes.GetNextKey(pos);
-            printf("-----> %s\n", item->getName().c_str());
-        }
-    }
-};
+            OPCHANDLE handle = changes.GetKeyAt(pos);
+            OPCItemData *data = changes.GetNextValue(pos);
+
+            if (data)
+            {
+                const COPCItem *item = data->item(); // retrieve original item pointer from item data..
+
+                if (item)
+                    printf("-----> '%ws', handle: %u, changed async read quality %d value %d\n",
+                           item->getName().c_str(), handle, data->wQuality, data->vDataValue.iVal);
+            } // if
+        }     // while
+
+    } // OnDataChange
+
+}; // CMyCallback
 
 /**
- *	Handle completion of asynch operation
+ *	Handle completion of async operation
  */
 class CTransComplete : public ITransactionComplete
 {
-    std::string completionMessage;
+  private:
+    std::string CompletionMessage;
 
   public:
     CTransComplete()
     {
-        completionMessage = "Asynch operation is completed";
-    };
+        CompletionMessage = "async operation completed";
+    }
 
-    void complete(CTransaction &transaction)
+    void complete(CTransaction &)
     {
-        printf("%s\n", completionMessage.c_str());
+        printf("%s\n", CompletionMessage.c_str());
     }
 
     void setCompletionMessage(const std::string &message)
     {
-        completionMessage = message;
+        CompletionMessage = message;
     }
-};
+
+}; // CTransComplete
 
 //---------------------------------------------------------
 // main
 
-#define MESSAGEPUMPUNTIL(x)                                                                                            \
+#define MESSAGE_PUMP_UNTIL(x)                                                                                          \
     while (!x)                                                                                                         \
     {                                                                                                                  \
+        MSG msg;                                                                                                       \
+        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))                                                            \
         {                                                                                                              \
-            MSG msg;                                                                                                   \
-            while (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))                                                     \
-            {                                                                                                          \
-                TranslateMessage(&msg);                                                                                \
-                DispatchMessage(&msg);                                                                                 \
-            }                                                                                                          \
-            Sleep(1);                                                                                                  \
+            TranslateMessage(&msg);                                                                                    \
+            DispatchMessage(&msg);                                                                                     \
         }                                                                                                              \
-    }
+        Sleep(10);                                                                                                     \
+    } // while
 
 void main(void)
 {
     COPCClient::init();
 
-    printf("Input hostname: \nWarning: NOT IP ADDRESS, use sucn "
-           "as:\"Jhon-PC\"\n"); // See readme to find reason
-    char C_str_name[100];
-    scanf("%s", C_str_name);
-    std::string hostName = C_str_name;
-    COPCHost *host = COPCClient::makeHost(hostName);
+    printf(
+        "input hostname (warning: NOT an IP address, use such as: 'Jhon-PC' or 'localhost' / <ENTER> ):\n"); // See
+                                                                                                             // readme
+                                                                                                             // to find
+                                                                                                             // reason
+    char c_string[100] = {0};
+    gets_s(c_string);
+    if (!strlen(c_string))
+        strcpy_s(c_string, sizeof(c_string), "localhost");
+    COPCHost *host = COPCClient::makeHost(COPCHost::S2WS(c_string));
 
-    // List servers
-    std::vector<std::string> localServerList;
-    host->getListOfDAServers(IID_CATID_OPCDAServer20, localServerList);
-    unsigned i = 0;
-    printf("\nServer ID List:\n");
-    for (; i < localServerList.size(); i++)
+    // list servers
+    std::vector<CLSID> localClassIdList;
+    std::vector<std::wstring> localServerList;
+    host->getListOfDAServers(IID_CATID_OPCDAServer20, localServerList, localClassIdList);
+
+    printf("\nserver ID list:\n");
+    int server_id = -1;
+    for (unsigned i = 0; i < localServerList.size(); ++i)
     {
-        printf("%d. %s\n", i, localServerList[i].c_str());
-    }
+        printf("%d: '%ws'\n", i, localServerList[i].c_str());
+        if (localServerList[i] == L"Matrikon.OPC.Simulation.1")
+            server_id = i;
+    } // for
 
     // connect to OPC
-    printf("\nSelect a Server ID:\n");
-    int server_id;
-    scanf("%d", &server_id);
-    std::string serverName = localServerList[server_id];
+    printf("\nselect server ID or <ENTER> for Matrikon:\n");
+    gets_s(c_string);
+    if (strlen(c_string))
+        server_id = atol(c_string);
+    std::wstring serverName = localServerList[server_id];
+    printf("server name: '%ws'\n", serverName.c_str());
     COPCServer *opcServer = host->connectDAServer(serverName);
 
-    // Check status
-    ServerStatus status;
-    opcServer->getStatus(status);
-    printf("Server state is %ld\n", status.dwServerState);
+    // check server status
+    ServerStatus status = {0};
+    const char *serverStateMsg[] = {"unknown", "running", "failed", "co-config", "suspended", "test", "comm-fault"};
+    do
+    {
+        Sleep(100);
+        opcServer->getStatus(status);
+        printf("server state is %s, vendor is '%ws'\r", serverStateMsg[status.dwServerState],
+               status.vendorInfo.c_str());
+    } while (status.dwServerState != OPC_STATUS_RUNNING);
 
     // browse server
-    std::vector<std::string> opcItemNames;
+    std::vector<std::wstring> opcItemNames;
     opcServer->getItemNames(opcItemNames);
-    printf("Got %d names\n", opcItemNames.size());
-    for (i = 0; i < opcItemNames.size(); i++)
-    {
-        printf("%s\n", opcItemNames[i].c_str());
-    }
+    printf("\n\ngot %d names:\n", static_cast<int>(opcItemNames.size()));
+    for (unsigned i = 0; i < opcItemNames.size(); ++i)
+        printf("%3d: '%ws'\n", i + 1, opcItemNames[i].c_str());
 
-    // make group
+    // make demo group
     unsigned long refreshRate;
-    COPCGroup *group = opcServer->makeGroup("Group", true, 1000, refreshRate, 0.0);
-    std::vector<COPCItem *> items;
+    COPCGroup *demoGroup = opcServer->makeGroup(L"DemoGroup", true, 1000, refreshRate, 0.0);
 
-    // make  a single item
-    std::string changeChanNameName = opcItemNames[5];
-    COPCItem *readWritableItem = group->addItem(changeChanNameName, true);
+    // make a single item
+    std::wstring itemName = opcItemNames[5];
+    COPCItem *readWritableItem = demoGroup->addItem(itemName, true);
 
     // make several items
-    std::vector<std::string> itemNames;
+    std::vector<std::wstring> itemNames;
     std::vector<COPCItem *> itemsCreated;
     std::vector<HRESULT> errors;
 
-    itemNames.push_back(opcItemNames[15]);
-    itemNames.push_back(opcItemNames[16]);
-    if (group->addItems(itemNames, itemsCreated, errors, true) != 0)
-    {
-        printf("Item create failed\n");
-    }
+    itemNames.push_back(opcItemNames[21]); // 15 -> Bucket Brigade.UInt2
+    itemNames.push_back(opcItemNames[22]); // 16 -> Bucket Brigade.UInt4
+    if (demoGroup->addItems(itemNames, itemsCreated, errors, true) != 0)
+        printf("add items to group FAILED\n");
 
     // get properties
     std::vector<CPropertyDescription> propDesc;
     readWritableItem->getSupportedProperties(propDesc);
-    printf("Supported properties for %s\n", readWritableItem->getName().c_str());
-    for (i = 0; i < propDesc.size(); i++)
-    {
-        printf("%d id = %u, description = %s, type = %d\n", i, propDesc[i].id, propDesc[i].desc.c_str(),
+    printf("supported properties for '%ws'\n", readWritableItem->getName().c_str());
+    for (unsigned i = 0; i < propDesc.size(); ++i)
+        printf("%3d: ID = %u, description = '%ws', type = %d\n", i, propDesc[i].id, propDesc[i].desc.c_str(),
                propDesc[i].type);
-    }
 
     CAutoPtrArray<SPropertyValue> propVals;
     readWritableItem->getProperties(propDesc, propVals);
-    for (i = 0; i < propDesc.size(); i++)
-    {
-        if (propVals[i] == NULL)
-        {
-            printf("Failed to get property %u\n", propDesc[i].id);
-        }
+    for (unsigned i = 0; i < propDesc.size(); ++i)
+        if (!propVals[i])
+            printf("FAILED to get property %u\n", propDesc[i].id);
         else
         {
             printf("Property %u=", propDesc[i].id);
+
             switch (propDesc[i].type)
             {
             case VT_R4:
                 printf("%f\n", propVals[i]->value.fltVal);
                 break;
+
             case VT_I4:
                 printf("%d\n", propVals[i]->value.iVal);
                 break;
+
             case VT_I2:
                 printf("%d\n", propVals[i]->value.iVal);
                 break;
+
             case VT_I1: {
                 int v = propVals[i]->value.bVal;
                 printf("%d\n", v);
             }
             break;
+
             default:
                 printf("\n");
                 break;
-            }
-        }
-    }
+            } // switch
+        }     // else
 
-    // SYNCH READ of item
+    // sync read of item
     OPCItemData data;
     readWritableItem->readSync(data, OPC_DS_DEVICE);
-    printf("Synch read quality %d value %d\n", data.wQuality, data.vDataValue.iVal);
+    printf("-----> '%ws', handle: %u, item sync read quality %u value %d\n", readWritableItem->getName().c_str(),
+           readWritableItem->getHandle(), data.wQuality, data.vDataValue.iVal);
 
-    // SYNCH read on Group
-    COPCItem_DataMap opcData;
-    group->readSync(itemsCreated, opcData, OPC_DS_DEVICE);
-
-    // Enable asynch - must be done before any asynch call will work
-    CMyCallback usrCallBack;
-    group->enableAsynch(usrCallBack);
-
-    // ASYNCH OPC item READ
-    CTransComplete complete;
-    complete.setCompletionMessage("*******Asynch read completion handler has been invoked (OPC item)");
-    CTransaction *t = readWritableItem->readAsynch(&complete);
-    MESSAGEPUMPUNTIL(t->isCompeleted())
-
-    const OPCItemData *asychData = t->getItemValue(readWritableItem); // not owned
-    if (!FAILED(asychData->error))
+    // sync read on demo group
+    COPCItemDataMap itemDataMap;
+    demoGroup->readSync(itemsCreated, itemDataMap, OPC_DS_DEVICE);
+    POSITION pos = itemDataMap.GetStartPosition();
+    while (pos)
     {
-        printf("Asynch read quality %d value %d\n", asychData->wQuality, asychData->vDataValue.iVal);
-    }
-    delete t;
+        OPCHANDLE handle = itemDataMap.GetKeyAt(pos);
+        OPCItemData *data = itemDataMap.GetNextValue(pos);
+        if (data)
+        {
+            const COPCItem *item = data->item(); // retrieve original item pointer from item data..
+            if (item)
+                printf("-----> '%ws', handle: %u, group sync read quality %d value %d\n", item->getName().c_str(),
+                       handle, data->wQuality, data->vDataValue.iVal);
+        } // if
+    }     // while
 
-    // Aysnch read opc items from a group
-    complete.setCompletionMessage("*******Asynch read completion handler has been invoked (OPC GROUP)");
-    t = group->readAsync(itemsCreated, &complete);
-    MESSAGEPUMPUNTIL(t->isCompeleted())
-    delete t;
+    // enable async - must be done before any async call will work
+    CMyCallback usrCallBack;
+    demoGroup->enableAsync(&usrCallBack);
 
-    // SYNCH write
+    // async OPC item read
+    CTransComplete complete;
+    complete.setCompletionMessage("******* async read completion handler has been invoked (OPC item)");
+    CTransaction *transaction = readWritableItem->readAsync(&complete);
+    MESSAGE_PUMP_UNTIL(transaction->isCompleted())
+
+    const OPCItemData *asyncData = transaction->getItemValue(readWritableItem); // not owned
+    if (asyncData && !FAILED(asyncData->Error))
+    {
+        OPCHANDLE handle = COPCGroup::getOpcHandle(readWritableItem);
+        printf("-----> '%ws', handle: %u, item async read quality %d value %d\n", readWritableItem->getName().c_str(),
+               handle, asyncData->wQuality, asyncData->vDataValue.iVal);
+    } // if
+    demoGroup->deleteTransaction(transaction);
+
+    // async read opc items from demo group
+    complete.setCompletionMessage("******* async read completion handler has been invoked (OPC group)");
+    transaction = demoGroup->readAsync(itemsCreated, &complete);
+    MESSAGE_PUMP_UNTIL(transaction->isCompleted())
+
+    for (unsigned i = 0; i < itemsCreated.size(); ++i)
+    {
+        const OPCItemData *asyncData = transaction->getItemValue(itemsCreated[i]); // not owned
+        if (asyncData && !FAILED(asyncData->Error))
+        {
+            OPCHANDLE handle = COPCGroup::getOpcHandle(itemsCreated[i]);
+            printf("-----> '%ws', handle: %u, group async read quality %d value %d\n",
+                   itemsCreated[i]->getName().c_str(), handle, asyncData->wQuality, asyncData->vDataValue.iVal);
+        } // if
+    }     // for
+    demoGroup->deleteTransaction(transaction);
+
+    // sync write
     VARIANT var;
     var.vt = VT_I2;
     var.iVal = 99;
     readWritableItem->writeSync(var);
 
-    // ASYNCH write
+    // async write
     var.vt = VT_I2;
     var.iVal = 32;
-    complete.setCompletionMessage("*******Asynch write completion handler has been invoked");
-    t = readWritableItem->writeAsynch(var, &complete);
-    MESSAGEPUMPUNTIL(t->isCompeleted())
+    complete.setCompletionMessage("******* async write completion handler has been invoked");
+    transaction = readWritableItem->writeAsync(var, &complete);
+    MESSAGE_PUMP_UNTIL(transaction->isCompleted())
 
-    asychData = t->getItemValue(readWritableItem); // not owned
-    if (!FAILED(asychData->error))
-    {
-        printf("Asynch write comleted OK\n");
-    }
+    asyncData = transaction->getItemValue(readWritableItem); // not owned
+    if (asyncData && !FAILED(asyncData->Error))
+        printf("async write completed OK\n");
     else
-    {
-        printf("Asynch write failed\n");
-    }
-    delete t;
+        printf("async write FAILED\n");
+    demoGroup->deleteTransaction(transaction);
 
-    // Group refresh (asynch operation) - pass results to CMyCallback as well
-    complete.setCompletionMessage("*******Refresh completion handler has been invoked");
-    t = group->refresh(OPC_DS_DEVICE, /*true,*/ &complete);
-    MESSAGEPUMPUNTIL(t->isCompeleted())
+    // group refresh (async operation) - pass results to CMyCallback as well
+    complete.setCompletionMessage("******* refresh completion handler has been invoked");
+    transaction = demoGroup->refresh(OPC_DS_DEVICE, &complete);
+    MESSAGE_PUMP_UNTIL(transaction->isCompleted())
 
-    // readWritableItem is member of group - look for this and use it as a guide
-    // to see if operation succeeded.
-    asychData = t->getItemValue(readWritableItem);
-    if (!FAILED(asychData->error))
-    {
-        printf("refresh compeleted OK\n");
-    }
+    // readWritableItem is member of demo group - look for this and use it as a guide to see if operation succeeded.
+    asyncData = transaction->getItemValue(readWritableItem);
+    if (!FAILED(asyncData->Error))
+        printf("refresh completed OK\n");
     else
-    {
-        printf("refresh failed\n");
-    }
-    delete t;
+        printf("refresh FAILED\n");
+    demoGroup->deleteTransaction(transaction);
 
-    // just loop - changes to Items within a group are picked up here
-    MESSAGEPUMPUNTIL(false)
-}
+    // just loop - changes to items within demo group are picked up here
+
+    MESSAGE_PUMP_UNTIL(false)
+
+} // main

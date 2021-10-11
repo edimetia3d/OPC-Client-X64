@@ -17,191 +17,173 @@ License along with this library; if not, write to the
 Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
+
 #include "OPCItem.h"
 #include "OPCGroup.h"
 #include "OPCServer.h"
 
-COPCItem::COPCItem(std::string &itemName, COPCGroup &g) : name(itemName), group(g)
+#ifdef OPCDA_CLIENT_NAMESPACE
+namespace opcda_client
 {
-}
+#endif
+
+COPCItem::COPCItem(std::wstring &itemName, COPCGroup &itemGroup) : ItemName(itemName), ItemGroup(itemGroup)
+{
+} // COPCItem::COPCItem
 
 COPCItem::~COPCItem()
 {
-    HRESULT *itemResult;
-    group.getItemManagementInterface()->RemoveItems(1, &serversItemHandle, &itemResult);
+    HRESULT *itemResult = nullptr;
+    ItemGroup.getItemManagementInterface()->RemoveItems(1, &ServersItemHandle, &itemResult);
     COPCClient::comFree(itemResult);
-}
 
-void COPCItem::setOPCParams(OPCHANDLE handle, VARTYPE type, DWORD dwAccess)
+} // COPCItem::~COPCItem
+
+void COPCItem::setOPCParameters(OPCHANDLE handle, VARTYPE type, DWORD dwAccess)
 {
-    serversItemHandle = handle;
-    vtCanonicalDataType = type;
-    dwAccessRights = dwAccess;
-}
+    ServersItemHandle = handle;
+    VtCanonicalDataType = type;
+    DwAccessRights = dwAccess;
 
-void COPCItem::writeSync(VARIANT &data)
+} // COPCItem::setOPCParameters
+
+bool COPCItem::writeSync(VARIANT &data)
 {
     HRESULT *itemWriteErrors;
-    HRESULT result = group.getSychIOInterface()->Write(1, &serversItemHandle, &data, &itemWriteErrors);
+    HRESULT result = ItemGroup.getSyncIOInterface()->Write(1, &ServersItemHandle, &data, &itemWriteErrors);
     if (FAILED(result))
-    {
-        throw OPCException("write failed");
-    }
+        throw OPCException(L"COPCItem::writeSync: synchronous write FAILED");
 
     if (FAILED(itemWriteErrors[0]))
     {
         COPCClient::comFree(itemWriteErrors);
-        throw OPCException("write failed");
-    }
+        throw OPCException(L"COPCItem::writeSync: synchronous write FAILED");
+    } // if
 
     COPCClient::comFree(itemWriteErrors);
-}
+    return true;
 
-void COPCItem::readSync(OPCItemData &data, OPCDATASOURCE source)
+} // COPCItem::writeSync
+
+bool COPCItem::readSync(OPCItemData &data, OPCDATASOURCE source)
 {
     std::vector<COPCItem *> items;
+    OPCHANDLE handle = COPCGroup::getOpcHandle(this);
     items.push_back(this);
-    COPCItem_DataMap opcData;
-    group.readSync(items, opcData, source);
+    COPCItemDataMap opcData;
+    ItemGroup.readSync(items, opcData, source);
 
-    COPCItem_DataMap::CPair *pos = opcData.Lookup(this);
+    COPCItemDataMap::CPair *pos = opcData.Lookup(handle);
     if (pos)
     {
         OPCItemData *readData = opcData.GetValueAt(pos);
-        if (readData && !FAILED(readData->error))
+        if (readData && !FAILED(readData->Error))
         {
             data = *readData;
-            return;
-        }
-    }
+            return true;
+        } // if
+    }     // if
 
-    throw OPCException("Read failed");
-}
+    throw OPCException(L"COPCItem::readSync: synchronous read FAILED");
+    return false;
 
-/*
-if ((dwAccessRights && OPC_READABLE) != OPC_READABLE){
-        throw OPCException("Item is not readable");
-}
+} // COPCItem::readSync
 
-HRESULT *itemResult;
-OPCITEMSTATE *itemState;
-
-HRESULT	result = group.getSychIOInterface()->Read(source, 1, &serversItemHandle,
-&itemState, &itemResult); if (FAILED(result))
-{
-        throw OPCException("Read failed");
-}
-
-if (FAILED(itemResult[0])){
-        COPCClient::comFree(itemResult);
-        COPCClient::comFree(itemState);
-        throw OPCException("Read failed");
-}
-
-COPCClient::comFree(itemResult);
-
-data.set(itemState[0]);
-
-VariantClear(&itemState[0].vDataValue);
-COPCClient::comFree(itemState);
-}*/
-
-CTransaction *COPCItem::readAsynch(ITransactionComplete *transactionCB)
+CTransaction *COPCItem::readAsync(ITransactionComplete *transactionCB)
 {
     std::vector<COPCItem *> items;
     items.push_back(this);
-    return group.readAsync(items, transactionCB);
-}
+    return ItemGroup.readAsync(items, transactionCB);
 
-CTransaction *COPCItem::writeAsynch(VARIANT &data, ITransactionComplete *transactionCB)
+} // COPCItem::readAsync
+
+CTransaction *COPCItem::writeAsync(VARIANT &data, ITransactionComplete *transactionCB)
 {
-    DWORD cancelID;
-    HRESULT *individualResults;
+    DWORD cancelID = 0;
+    HRESULT *individualResults = nullptr;
     std::vector<COPCItem *> items;
     items.push_back(this);
-    CTransaction *trans = new CTransaction(items, transactionCB);
+    CTransaction *transaction = new CTransaction(items, transactionCB);
+    DWORD transactionID = ItemGroup.addTransaction(transaction);
 
-    HRESULT result =
-        group.getAsych2IOInterface()->Write(1, &serversItemHandle, &data, (DWORD)trans, &cancelID, &individualResults);
+    HRESULT result = ItemGroup.getAsync2IOInterface()->Write(1, &ServersItemHandle, &data, transactionID, &cancelID,
+                                                             &individualResults);
 
     if (FAILED(result))
     {
-        delete trans;
-        throw OPCException("Asynch Write failed");
-    }
+        ItemGroup.deleteTransaction(transaction);
+        throw OPCException(L"COPCItem::writeAsync: async write FAILED");
+    } // if
 
-    trans->setCancelId(cancelID);
+    transaction->setCancelId(cancelID);
     if (FAILED(individualResults[0]))
     {
-        trans->setItemError(this, individualResults[0]);
-        trans->setCompleted(); // if all items return error then no callback will
-                               // occur. p 104
-    }
+        transaction->setItemError(this, individualResults[0]);
+        transaction->setCompleted(); // if all items return error then no callback will occur. p 104
+    }                                // if
 
     COPCClient::comFree(individualResults);
-    return trans;
-}
+    return transaction;
 
-void COPCItem::getSupportedProperties(std::vector<CPropertyDescription> &desc)
+} // COPCItem::writeAsync
+
+bool COPCItem::getSupportedProperties(std::vector<CPropertyDescription> &desc)
 {
-    DWORD noProperties = 0;
-    DWORD *pPropertyIDs;
-    LPWSTR *pDescriptions;
-    VARTYPE *pvtDataTypes;
+    DWORD nbrProperties = 0;
+    DWORD *pPropertyIDs = nullptr;
+    LPWSTR *pDescriptions = nullptr;
+    VARTYPE *pvtDataTypes = nullptr;
 
     USES_CONVERSION;
-    HRESULT res = group.getServer().getPropertiesInterface()->QueryAvailableProperties(
-        T2OLE(name.c_str()), &noProperties, &pPropertyIDs, &pDescriptions, &pvtDataTypes);
-    if (FAILED(res))
-    {
-        throw OPCException("Failed to restrieve properties", res);
-    }
+    HRESULT result = ItemGroup.getServer().getPropertiesInterface()->QueryAvailableProperties(
+        &ItemName[0], &nbrProperties, &pPropertyIDs, &pDescriptions, &pvtDataTypes);
+    if (FAILED(result))
+        throw OPCException(L"COPCItem::getSupportedProperties: FAILED to retrieve properties", result);
 
-    std::string tmp;
-    for (unsigned i = 0; i < noProperties; i++)
-    {
-        tmp = CW2A(pDescriptions[i]);
-        desc.push_back(CPropertyDescription(pPropertyIDs[i], std::string(tmp), pvtDataTypes[i]));
-    }
+    for (unsigned i = 0; i < nbrProperties; ++i)
+        desc.push_back(CPropertyDescription(pPropertyIDs[i], pDescriptions[i], pvtDataTypes[i]));
 
     COPCClient::comFree(pPropertyIDs);
     COPCClient::comFree(pDescriptions);
     COPCClient::comFree(pvtDataTypes);
-}
+    return true;
 
-void COPCItem::getProperties(const std::vector<CPropertyDescription> &propsToRead,
+} // COPCItem::getSupportedProperties
+
+bool COPCItem::getProperties(const std::vector<CPropertyDescription> &propsToRead,
                              ATL::CAutoPtrArray<SPropertyValue> &propsRead)
 {
-    unsigned noProperties = (DWORD)propsToRead.size();
-    VARIANT *pValues = NULL;
-    HRESULT *pErrors = NULL;
-    DWORD *pPropertyIDs = new DWORD[noProperties];
-    for (unsigned i = 0; i < noProperties; i++)
-    {
+    DWORD nbrProperties = static_cast<DWORD>(propsToRead.size());
+    VARIANT *pValues = nullptr;
+    HRESULT *pErrors = nullptr;
+    DWORD *pPropertyIDs = new DWORD[nbrProperties];
+    for (unsigned i = 0; i < nbrProperties; ++i)
         pPropertyIDs[i] = propsToRead[i].id;
-    }
+
     propsRead.RemoveAll();
-    propsRead.SetCount(noProperties);
+    propsRead.SetCount(nbrProperties);
 
     USES_CONVERSION;
-    HRESULT res = group.getServer().getPropertiesInterface()->GetItemProperties(T2OLE(name.c_str()), noProperties,
-                                                                                pPropertyIDs, &pValues, &pErrors);
+    HRESULT result = ItemGroup.getServer().getPropertiesInterface()->GetItemProperties(
+        &ItemName[0], nbrProperties, pPropertyIDs, &pValues, &pErrors);
     delete[] pPropertyIDs;
-    if (FAILED(res))
-    {
-        throw OPCException("Failed to restrieve property values", res);
-    }
+    if (FAILED(result))
+        throw OPCException(L"COPCItem::getProperties: FAILED to retrieve property values", result);
 
-    for (unsigned i = 0; i < noProperties; i++)
+    for (unsigned i = 0; i < nbrProperties; ++i)
     {
-        CAutoPtr<SPropertyValue> v;
+        CAutoPtr<SPropertyValue> value;
         if (!FAILED(pErrors[i]))
-        {
-            v.Attach(new SPropertyValue(propsToRead[i], pValues[i]));
-        }
-        propsRead[i] = v;
-    }
+            value.Attach(new SPropertyValue(propsToRead[i], pValues[i]));
+        propsRead[i] = value;
+    } // for
 
     COPCClient::comFree(pErrors);
-    COPCClient::comFreeVariant(pValues, noProperties);
-}
+    COPCClient::comFreeVariant(pValues, nbrProperties);
+    return true;
+
+} // COPCItem::getProperties
+
+#ifdef OPCDA_CLIENT_NAMESPACE
+} // namespace opcda_client
+#endif

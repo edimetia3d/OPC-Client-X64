@@ -1,4 +1,3 @@
-
 /*
 OPCClientToolKit
 Copyright (C) 2006 Mark C. Beharrell
@@ -19,15 +18,20 @@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA  02111-1307, USA.
 */
 
+#include "stdafx.h"
+
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <sys/timeb.h>
+#include <sys/types.h>
+
 #include "OPCClient.h"
 #include "OPCGroup.h"
 #include "OPCHost.h"
 #include "OPCItem.h"
 #include "OPCServer.h"
 #include "opcda.h"
-#include "stdafx.h"
-#include <fstream>
-#include <sys\timeb.h>
 
 using namespace std;
 
@@ -36,94 +40,99 @@ class CTransComplete : public ITransactionComplete
     unsigned completeCount;
 
   public:
-    CTransComplete() : completeCount(0){};
+    CTransComplete() : completeCount(0)
+    {
+    }
 
     void complete(CTransaction &transaction)
     {
         printf("-");
         ++completeCount;
-        unsigned noErrors = 0;
-        POSITION pos = transaction.opcData.GetStartPosition();
-        while (pos != NULL)
+        unsigned nbrErrors = 0;
+        POSITION pos = transaction.getItemDataMap().GetStartPosition();
+        while (pos)
         {
-            OPCItemData *data = transaction.opcData.GetNextValue(pos);
+            OPCItemData *data = transaction.getItemDataMap().GetNextValue(pos);
             if (!data || FAILED(data->wQuality))
-            {
-                ++noErrors;
-            }
-        }
-        printf("Refresh %d completed with %d errors\n", completeCount, noErrors);
-    }
+                ++nbrErrors;
+        } // while
+
+        printf("refresh %d completed with %d errors\n", completeCount, nbrErrors);
+    } // complete
 
     const unsigned getNumberOfCompletes() const
     {
         return completeCount;
     }
-};
 
-class CMyCallback : public IAsynchDataCallback
+}; // CTransComplete
+
+class CMyCallback : public IAsyncDataCallback
 {
   public:
-    void OnDataChange(COPCGroup &group, CAtlMap<COPCItem *, OPCItemData *> &changes)
+    void OnDataChange(COPCGroup &group, COPCItemDataMap &changes)
     {
-        printf("Group %s, item changes\n", group.getName().c_str());
+        printf("group '%ws', item changes:\n", group.getName().c_str());
         POSITION pos = changes.GetStartPosition();
-        while (pos != NULL)
+        while (pos)
         {
-            COPCItem *item = changes.GetNextKey(pos);
-            printf("-----> %s\n", item->getName().c_str());
-        }
-    }
-};
+            OPCItemData *data = changes.GetNextValue(pos);
+            printf("-----> %ws\n", data->item()->getName().c_str());
+        } // while
+    }     // OnDataChange
 
-void recordTheNameSpace(COPCServer &opcServer, const char *fileName)
+}; // CMyCallback
+
+void recordNameSpace(COPCServer &opcServer, const char *fileName)
 {
-    std::vector<std::string> opcItemNames;
+    std::vector<std::wstring> opcItemNames;
     opcServer.getItemNames(opcItemNames);
-    printf("Namespace holds %d items\n", opcItemNames.size());
+    printf("namespace holds %d items\n", static_cast<int>(opcItemNames.size()));
     Sleep(1000);
 
     fstream itemListFile(fileName, ios::out);
-    for (unsigned i = 0; i < opcItemNames.size(); i++)
-    {
-        opcItemNames[i].c_str();
-        itemListFile << opcItemNames[i].c_str() << "\n";
-    }
+
+    for (unsigned i = 0; i < opcItemNames.size(); ++i)
+        itemListFile << COPCHost::WS2S(opcItemNames[i]) << "\n";
+
     itemListFile.close();
 
-    printf("Wrote item names to %s\n", fileName);
+    printf("wrote item names to %s\n", fileName);
     Sleep(1000);
-}
 
-void runRefreshTest(COPCServer &opcServer, const char *fileName, unsigned noRefreshs)
+} // recordNameSpace
+
+void runRefreshTest(COPCServer &opcServer, const char *fileName, unsigned nbrRefreshs)
 {
-    char str[256];
+    std::vector<std::wstring> itemNames;
     fstream itemListFile(fileName, ios::in);
-    std::vector<std::string> itemNames;
+
     while (!itemListFile.eof())
     {
-        itemListFile.getline(str, 2000);
-        itemNames.push_back(str);
-    }
+        char str[256] = {0};
+        itemListFile.getline(str, 255);
+        if (strlen(str))
+            itemNames.push_back(COPCHost::S2WS(str));
+    } // while
+
     itemListFile.close();
 
     unsigned long revisedRefreshRate;
-    COPCGroup *group = opcServer.makeGroup("testGroup", true, 100000, revisedRefreshRate, 0.0);
-
-    printf("Made OPC group\n");
+    COPCGroup *group = opcServer.makeGroup(L"testGroup", true, 100000, revisedRefreshRate, 0.0);
+    printf("made OPC group\n");
     Sleep(1000);
 
     std::vector<COPCItem *> itemsCreated;
     std::vector<HRESULT> errors;
     group->addItems(itemNames, itemsCreated, errors, true);
 
-    printf("Added %d items to the OPC group\n", itemsCreated.size());
+    printf("added %d items to the OPC group\n", static_cast<int>(itemsCreated.size()));
     Sleep(1000);
 
     CMyCallback usrCallBack;
-    group->enableAsynch(usrCallBack);
+    group->enableAsync(&usrCallBack);
 
-    printf("About to start refresh test\n");
+    printf("about to start refresh test\n");
     Sleep(1000);
 
     CTransComplete complete;
@@ -132,65 +141,62 @@ void runRefreshTest(COPCServer &opcServer, const char *fileName, unsigned noRefr
     CTransaction *t = group->refresh(OPC_DS_DEVICE, &complete);
     ATL::CAutoPtrArray<CTransaction> transactions;
     CAutoPtr<CTransaction> trans;
-    for (unsigned i = 0; i < noRefreshs; i++)
+    for (unsigned i = 0; i < nbrRefreshs; ++i)
     {
         trans.Attach(group->refresh(OPC_DS_DEVICE, &complete));
         transactions.Add(trans);
-    }
+    } // for
 
-    while (complete.getNumberOfCompletes() != noRefreshs)
+    while (complete.getNumberOfCompletes() != nbrRefreshs)
     {
         MSG msg;
-        while (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
+        while (PeekMessage(&msg, nullptr, NULL, NULL, PM_REMOVE))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-        }
+        } // while
         Sleep(1);
-    }
+    } // while
+
     timeb endTime;
     ftime(&endTime);
 
-    unsigned long processTime_mS = ((endTime.time - startTime.time) * 1000) + (endTime.millitm - startTime.millitm);
-    printf("It took %d mSec to make %d refreshes (%f refreshs per second)\n", processTime_mS, noRefreshs,
-           ((float)processTime_mS) / ((float)noRefreshs * 1000.0f));
-    printf("Each refresh represents a hardware read of %d items\n", itemsCreated.size());
+    int processTime_mS =
+        static_cast<int>(((endTime.time - startTime.time) * 1000) + (endTime.millitm - startTime.millitm));
+    printf("It took %d mSec to make %d refreshes (%f refreshs per second)\n", processTime_mS, nbrRefreshs,
+           ((float)processTime_mS) / ((float)nbrRefreshs * 1000.0f));
+    printf("Each refresh represents a hardware read of %d items\n", static_cast<int>(itemsCreated.size()));
     delete t;
 
     Sleep(1000);
-}
 
-int _tmain(int argc, _TCHAR *argv[])
+} // runRefreshTest
+
+int main(int argc, char *argv[])
 {
     if ((argc != 5) && (argc != 4))
     {
-        cout << "usage: \n To measure the performance of refreshs for a given OPC "
-                "server, use \nOPCPerformance.exe <OPCItemList> <Host> <OPCServer> "
-                "<noRefreshs> or "
+        cout << "usage: \n To measure the performance of refreshs for a given OPC server, use \nOPCPerformance.exe "
+                "<OPCItemList> <Host> <OPCServer> <nbrRefreshs> or "
              << endl;
-        cout << "To store the namespace in the supplied file "
-                "use\nOPCPerformance.exe <OPCItemList> <Host> <OPCServer>"
+        cout << "To store the namespace in the supplied file use\nOPCPerformance.exe <OPCItemList> <Host> <OPCServer>"
              << endl;
         return 1;
-    }
+    } // if
 
     bool saveNameSpace = (argc == 4);
 
     COPCClient::init();
-    COPCHost *host = COPCClient::makeHost(argv[2]);
-    COPCServer *opcServer = host->connectDAServer(argv[3]);
+    COPCHost *host = COPCClient::makeHost(COPCHost::LPCSTR2WS(argv[2]));
+    COPCServer *opcServer = host->connectDAServer(COPCHost::LPCSTR2WS(argv[3]));
 
-    printf("Connected to %s\n", argv[3]);
+    printf("connected to %s\n", argv[3]);
     Sleep(1000);
 
     if (saveNameSpace)
-    {
-        recordTheNameSpace(*opcServer, argv[1]);
-    }
+        recordNameSpace(*opcServer, argv[1]);
     else
-    {
         runRefreshTest(*opcServer, argv[1], atoi(argv[4]));
-    }
 
     return 0;
 }

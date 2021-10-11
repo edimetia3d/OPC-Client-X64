@@ -2,24 +2,24 @@
 
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
-/* File created by MIDL compiler version 8.00.0603 */
-/* at Mon May 23 14:09:33 2016
+/* File created by MIDL compiler version 6.00.0366 */
+/* at Thu Feb 05 03:02:55 2009
  */
-/* Compiler settings for opcda.idl:
-    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.00.0603
-    protocol : dce , ms_ext, c_ext, robust
+/* Compiler settings for .\opcda.idl:
+    Oicf, W1, Zp8, env=Win32 (32b run)
+    protocol : dce , ms_ext, c_ext
     error checks: allocation ref bounds_check enum stub_data
     VC __declspec() decoration level:
          __declspec(uuid()), __declspec(selectany), __declspec(novtable)
          DECLSPEC_UUID(), MIDL_INTERFACE()
 */
-/* @@MIDL_FILE_HEADING(  ) */
+//@@MIDL_FILE_HEADING(  )
 
 #pragma warning(disable : 4049) /* more than 64k source lines */
 
 /* verify that the <rpcndr.h> version is high enough to compile this file*/
 #ifndef __REQUIRED_RPCNDR_H_VERSION__
-#define __REQUIRED_RPCNDR_H_VERSION__ 475
+#define __REQUIRED_RPCNDR_H_VERSION__ 440
 #endif
 
 #include "rpc.h"
@@ -48,277 +48,231 @@
 #ifndef __CATID_OPCDAServer10_FWD_DEFINED__
 #define __CATID_OPCDAServer10_FWD_DEFINED__
 typedef interface CATID_OPCDAServer10 CATID_OPCDAServer10;
-
 #endif /* __CATID_OPCDAServer10_FWD_DEFINED__ */
 
 #ifndef __CATID_OPCDAServer20_FWD_DEFINED__
 #define __CATID_OPCDAServer20_FWD_DEFINED__
 typedef interface CATID_OPCDAServer20 CATID_OPCDAServer20;
-
 #endif /* __CATID_OPCDAServer20_FWD_DEFINED__ */
 
 #ifndef __CATID_OPCDAServer30_FWD_DEFINED__
 #define __CATID_OPCDAServer30_FWD_DEFINED__
 typedef interface CATID_OPCDAServer30 CATID_OPCDAServer30;
-
 #endif /* __CATID_OPCDAServer30_FWD_DEFINED__ */
 
 #ifndef __CATID_XMLDAServer10_FWD_DEFINED__
 #define __CATID_XMLDAServer10_FWD_DEFINED__
 typedef interface CATID_XMLDAServer10 CATID_XMLDAServer10;
-
 #endif /* __CATID_XMLDAServer10_FWD_DEFINED__ */
 
 #ifndef __IOPCServer_FWD_DEFINED__
 #define __IOPCServer_FWD_DEFINED__
 typedef interface IOPCServer IOPCServer;
-
 #endif /* __IOPCServer_FWD_DEFINED__ */
 
 #ifndef __IOPCServerPublicGroups_FWD_DEFINED__
 #define __IOPCServerPublicGroups_FWD_DEFINED__
 typedef interface IOPCServerPublicGroups IOPCServerPublicGroups;
-
 #endif /* __IOPCServerPublicGroups_FWD_DEFINED__ */
 
 #ifndef __IOPCBrowseServerAddressSpace_FWD_DEFINED__
 #define __IOPCBrowseServerAddressSpace_FWD_DEFINED__
 typedef interface IOPCBrowseServerAddressSpace IOPCBrowseServerAddressSpace;
-
 #endif /* __IOPCBrowseServerAddressSpace_FWD_DEFINED__ */
 
 #ifndef __IOPCGroupStateMgt_FWD_DEFINED__
 #define __IOPCGroupStateMgt_FWD_DEFINED__
 typedef interface IOPCGroupStateMgt IOPCGroupStateMgt;
-
 #endif /* __IOPCGroupStateMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCPublicGroupStateMgt_FWD_DEFINED__
 #define __IOPCPublicGroupStateMgt_FWD_DEFINED__
 typedef interface IOPCPublicGroupStateMgt IOPCPublicGroupStateMgt;
-
 #endif /* __IOPCPublicGroupStateMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCSyncIO_FWD_DEFINED__
 #define __IOPCSyncIO_FWD_DEFINED__
 typedef interface IOPCSyncIO IOPCSyncIO;
-
 #endif /* __IOPCSyncIO_FWD_DEFINED__ */
 
 #ifndef __IOPCAsyncIO_FWD_DEFINED__
 #define __IOPCAsyncIO_FWD_DEFINED__
 typedef interface IOPCAsyncIO IOPCAsyncIO;
-
 #endif /* __IOPCAsyncIO_FWD_DEFINED__ */
 
 #ifndef __IOPCItemMgt_FWD_DEFINED__
 #define __IOPCItemMgt_FWD_DEFINED__
 typedef interface IOPCItemMgt IOPCItemMgt;
-
 #endif /* __IOPCItemMgt_FWD_DEFINED__ */
 
 #ifndef __IEnumOPCItemAttributes_FWD_DEFINED__
 #define __IEnumOPCItemAttributes_FWD_DEFINED__
 typedef interface IEnumOPCItemAttributes IEnumOPCItemAttributes;
-
 #endif /* __IEnumOPCItemAttributes_FWD_DEFINED__ */
 
 #ifndef __IOPCDataCallback_FWD_DEFINED__
 #define __IOPCDataCallback_FWD_DEFINED__
 typedef interface IOPCDataCallback IOPCDataCallback;
-
 #endif /* __IOPCDataCallback_FWD_DEFINED__ */
 
 #ifndef __IOPCAsyncIO2_FWD_DEFINED__
 #define __IOPCAsyncIO2_FWD_DEFINED__
 typedef interface IOPCAsyncIO2 IOPCAsyncIO2;
-
 #endif /* __IOPCAsyncIO2_FWD_DEFINED__ */
 
 #ifndef __IOPCItemProperties_FWD_DEFINED__
 #define __IOPCItemProperties_FWD_DEFINED__
 typedef interface IOPCItemProperties IOPCItemProperties;
-
 #endif /* __IOPCItemProperties_FWD_DEFINED__ */
 
 #ifndef __IOPCItemDeadbandMgt_FWD_DEFINED__
 #define __IOPCItemDeadbandMgt_FWD_DEFINED__
 typedef interface IOPCItemDeadbandMgt IOPCItemDeadbandMgt;
-
 #endif /* __IOPCItemDeadbandMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCItemSamplingMgt_FWD_DEFINED__
 #define __IOPCItemSamplingMgt_FWD_DEFINED__
 typedef interface IOPCItemSamplingMgt IOPCItemSamplingMgt;
-
 #endif /* __IOPCItemSamplingMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCBrowse_FWD_DEFINED__
 #define __IOPCBrowse_FWD_DEFINED__
 typedef interface IOPCBrowse IOPCBrowse;
-
 #endif /* __IOPCBrowse_FWD_DEFINED__ */
 
 #ifndef __IOPCItemIO_FWD_DEFINED__
 #define __IOPCItemIO_FWD_DEFINED__
 typedef interface IOPCItemIO IOPCItemIO;
-
 #endif /* __IOPCItemIO_FWD_DEFINED__ */
 
 #ifndef __IOPCSyncIO2_FWD_DEFINED__
 #define __IOPCSyncIO2_FWD_DEFINED__
 typedef interface IOPCSyncIO2 IOPCSyncIO2;
-
 #endif /* __IOPCSyncIO2_FWD_DEFINED__ */
 
 #ifndef __IOPCAsyncIO3_FWD_DEFINED__
 #define __IOPCAsyncIO3_FWD_DEFINED__
 typedef interface IOPCAsyncIO3 IOPCAsyncIO3;
-
 #endif /* __IOPCAsyncIO3_FWD_DEFINED__ */
 
 #ifndef __IOPCGroupStateMgt2_FWD_DEFINED__
 #define __IOPCGroupStateMgt2_FWD_DEFINED__
 typedef interface IOPCGroupStateMgt2 IOPCGroupStateMgt2;
-
 #endif /* __IOPCGroupStateMgt2_FWD_DEFINED__ */
 
 #ifndef __CATID_OPCDAServer10_FWD_DEFINED__
 #define __CATID_OPCDAServer10_FWD_DEFINED__
 typedef interface CATID_OPCDAServer10 CATID_OPCDAServer10;
-
 #endif /* __CATID_OPCDAServer10_FWD_DEFINED__ */
 
 #ifndef __CATID_OPCDAServer20_FWD_DEFINED__
 #define __CATID_OPCDAServer20_FWD_DEFINED__
 typedef interface CATID_OPCDAServer20 CATID_OPCDAServer20;
-
 #endif /* __CATID_OPCDAServer20_FWD_DEFINED__ */
 
 #ifndef __CATID_OPCDAServer30_FWD_DEFINED__
 #define __CATID_OPCDAServer30_FWD_DEFINED__
 typedef interface CATID_OPCDAServer30 CATID_OPCDAServer30;
-
 #endif /* __CATID_OPCDAServer30_FWD_DEFINED__ */
 
 #ifndef __CATID_XMLDAServer10_FWD_DEFINED__
 #define __CATID_XMLDAServer10_FWD_DEFINED__
 typedef interface CATID_XMLDAServer10 CATID_XMLDAServer10;
-
 #endif /* __CATID_XMLDAServer10_FWD_DEFINED__ */
 
 #ifndef __IOPCServer_FWD_DEFINED__
 #define __IOPCServer_FWD_DEFINED__
 typedef interface IOPCServer IOPCServer;
-
 #endif /* __IOPCServer_FWD_DEFINED__ */
 
 #ifndef __IOPCServerPublicGroups_FWD_DEFINED__
 #define __IOPCServerPublicGroups_FWD_DEFINED__
 typedef interface IOPCServerPublicGroups IOPCServerPublicGroups;
-
 #endif /* __IOPCServerPublicGroups_FWD_DEFINED__ */
 
 #ifndef __IOPCBrowseServerAddressSpace_FWD_DEFINED__
 #define __IOPCBrowseServerAddressSpace_FWD_DEFINED__
 typedef interface IOPCBrowseServerAddressSpace IOPCBrowseServerAddressSpace;
-
 #endif /* __IOPCBrowseServerAddressSpace_FWD_DEFINED__ */
 
 #ifndef __IOPCGroupStateMgt_FWD_DEFINED__
 #define __IOPCGroupStateMgt_FWD_DEFINED__
 typedef interface IOPCGroupStateMgt IOPCGroupStateMgt;
-
 #endif /* __IOPCGroupStateMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCPublicGroupStateMgt_FWD_DEFINED__
 #define __IOPCPublicGroupStateMgt_FWD_DEFINED__
 typedef interface IOPCPublicGroupStateMgt IOPCPublicGroupStateMgt;
-
 #endif /* __IOPCPublicGroupStateMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCSyncIO_FWD_DEFINED__
 #define __IOPCSyncIO_FWD_DEFINED__
 typedef interface IOPCSyncIO IOPCSyncIO;
-
 #endif /* __IOPCSyncIO_FWD_DEFINED__ */
 
 #ifndef __IOPCAsyncIO_FWD_DEFINED__
 #define __IOPCAsyncIO_FWD_DEFINED__
 typedef interface IOPCAsyncIO IOPCAsyncIO;
-
 #endif /* __IOPCAsyncIO_FWD_DEFINED__ */
 
 #ifndef __IOPCDataCallback_FWD_DEFINED__
 #define __IOPCDataCallback_FWD_DEFINED__
 typedef interface IOPCDataCallback IOPCDataCallback;
-
 #endif /* __IOPCDataCallback_FWD_DEFINED__ */
 
 #ifndef __IOPCItemMgt_FWD_DEFINED__
 #define __IOPCItemMgt_FWD_DEFINED__
 typedef interface IOPCItemMgt IOPCItemMgt;
-
 #endif /* __IOPCItemMgt_FWD_DEFINED__ */
 
 #ifndef __IEnumOPCItemAttributes_FWD_DEFINED__
 #define __IEnumOPCItemAttributes_FWD_DEFINED__
 typedef interface IEnumOPCItemAttributes IEnumOPCItemAttributes;
-
 #endif /* __IEnumOPCItemAttributes_FWD_DEFINED__ */
 
 #ifndef __IOPCAsyncIO2_FWD_DEFINED__
 #define __IOPCAsyncIO2_FWD_DEFINED__
 typedef interface IOPCAsyncIO2 IOPCAsyncIO2;
-
 #endif /* __IOPCAsyncIO2_FWD_DEFINED__ */
 
 #ifndef __IOPCItemProperties_FWD_DEFINED__
 #define __IOPCItemProperties_FWD_DEFINED__
 typedef interface IOPCItemProperties IOPCItemProperties;
-
 #endif /* __IOPCItemProperties_FWD_DEFINED__ */
 
 #ifndef __IOPCItemDeadbandMgt_FWD_DEFINED__
 #define __IOPCItemDeadbandMgt_FWD_DEFINED__
 typedef interface IOPCItemDeadbandMgt IOPCItemDeadbandMgt;
-
 #endif /* __IOPCItemDeadbandMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCItemSamplingMgt_FWD_DEFINED__
 #define __IOPCItemSamplingMgt_FWD_DEFINED__
 typedef interface IOPCItemSamplingMgt IOPCItemSamplingMgt;
-
 #endif /* __IOPCItemSamplingMgt_FWD_DEFINED__ */
 
 #ifndef __IOPCBrowse_FWD_DEFINED__
 #define __IOPCBrowse_FWD_DEFINED__
 typedef interface IOPCBrowse IOPCBrowse;
-
 #endif /* __IOPCBrowse_FWD_DEFINED__ */
 
 #ifndef __IOPCItemIO_FWD_DEFINED__
 #define __IOPCItemIO_FWD_DEFINED__
 typedef interface IOPCItemIO IOPCItemIO;
-
 #endif /* __IOPCItemIO_FWD_DEFINED__ */
 
 #ifndef __IOPCSyncIO2_FWD_DEFINED__
 #define __IOPCSyncIO2_FWD_DEFINED__
 typedef interface IOPCSyncIO2 IOPCSyncIO2;
-
 #endif /* __IOPCSyncIO2_FWD_DEFINED__ */
 
 #ifndef __IOPCAsyncIO3_FWD_DEFINED__
 #define __IOPCAsyncIO3_FWD_DEFINED__
 typedef interface IOPCAsyncIO3 IOPCAsyncIO3;
-
 #endif /* __IOPCAsyncIO3_FWD_DEFINED__ */
 
 #ifndef __IOPCGroupStateMgt2_FWD_DEFINED__
 #define __IOPCGroupStateMgt2_FWD_DEFINED__
 typedef interface IOPCGroupStateMgt2 IOPCGroupStateMgt2;
-
 #endif /* __IOPCGroupStateMgt2_FWD_DEFINED__ */
 
 /* header files for imported files */
@@ -329,6 +283,11 @@ typedef interface IOPCGroupStateMgt2 IOPCGroupStateMgt2;
 extern "C"
 {
 #endif
+
+    void *__RPC_USER MIDL_user_allocate(size_t);
+    void __RPC_USER
+
+    MIDL_user_free(void *);
 
 #ifndef __CATID_OPCDAServer10_INTERFACE_DEFINED__
 #define __CATID_OPCDAServer10_INTERFACE_DEFINED__
@@ -352,8 +311,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (CATID_OPCDAServer10 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (CATID_OPCDAServer10 *This);
@@ -371,12 +329,11 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define CATID_OPCDAServer10_QueryInterface(This, riid, ppvObject)                                                      \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define CATID_OPCDAServer10_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define CATID_OPCDAServer10_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define CATID_OPCDAServer10_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define CATID_OPCDAServer10_Release(This) ((This)->lpVtbl->Release(This))
+#define CATID_OPCDAServer10_Release(This) (This)->lpVtbl->Release(This)
 
 #endif /* COBJMACROS */
 
@@ -406,8 +363,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (CATID_OPCDAServer20 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (CATID_OPCDAServer20 *This);
@@ -425,12 +381,11 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define CATID_OPCDAServer20_QueryInterface(This, riid, ppvObject)                                                      \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define CATID_OPCDAServer20_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define CATID_OPCDAServer20_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define CATID_OPCDAServer20_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define CATID_OPCDAServer20_Release(This) ((This)->lpVtbl->Release(This))
+#define CATID_OPCDAServer20_Release(This) (This)->lpVtbl->Release(This)
 
 #endif /* COBJMACROS */
 
@@ -460,8 +415,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (CATID_OPCDAServer30 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (CATID_OPCDAServer30 *This);
@@ -479,12 +433,11 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define CATID_OPCDAServer30_QueryInterface(This, riid, ppvObject)                                                      \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define CATID_OPCDAServer30_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define CATID_OPCDAServer30_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define CATID_OPCDAServer30_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define CATID_OPCDAServer30_Release(This) ((This)->lpVtbl->Release(This))
+#define CATID_OPCDAServer30_Release(This) (This)->lpVtbl->Release(This)
 
 #endif /* COBJMACROS */
 
@@ -514,8 +467,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (CATID_XMLDAServer10 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (CATID_XMLDAServer10 *This);
@@ -533,12 +485,11 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define CATID_XMLDAServer10_QueryInterface(This, riid, ppvObject)                                                      \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define CATID_XMLDAServer10_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define CATID_XMLDAServer10_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define CATID_XMLDAServer10_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define CATID_XMLDAServer10_Release(This) ((This)->lpVtbl->Release(This))
+#define CATID_XMLDAServer10_Release(This) (This)->lpVtbl->Release(This)
 
 #endif /* COBJMACROS */
 
@@ -546,7 +497,7 @@ extern "C"
 
 #endif /* __CATID_XMLDAServer10_INTERFACE_DEFINED__ */
 
-    /* interface __MIDL_itf_opcda_0000_0004 */
+    /* interface __MIDL_itf_opcda_0266 */
     /* [local] */
 
 #define CATID_OPCDAServer10 IID_CATID_OPCDAServer10
@@ -558,54 +509,54 @@ extern "C"
     typedef enum tagOPCDATASOURCE
     {
         OPC_DS_CACHE = 1,
-        OPC_DS_DEVICE = (OPC_DS_CACHE + 1)
+        OPC_DS_DEVICE = OPC_DS_CACHE + 1
     } OPCDATASOURCE;
 
     typedef enum tagOPCBROWSETYPE
     {
         OPC_BRANCH = 1,
-        OPC_LEAF = (OPC_BRANCH + 1),
-        OPC_FLAT = (OPC_LEAF + 1)
+        OPC_LEAF = OPC_BRANCH + 1,
+        OPC_FLAT = OPC_LEAF + 1
     } OPCBROWSETYPE;
 
     typedef enum tagOPCNAMESPACETYPE
     {
         OPC_NS_HIERARCHIAL = 1,
-        OPC_NS_FLAT = (OPC_NS_HIERARCHIAL + 1)
+        OPC_NS_FLAT = OPC_NS_HIERARCHIAL + 1
     } OPCNAMESPACETYPE;
 
     typedef enum tagOPCBROWSEDIRECTION
     {
         OPC_BROWSE_UP = 1,
-        OPC_BROWSE_DOWN = (OPC_BROWSE_UP + 1),
-        OPC_BROWSE_TO = (OPC_BROWSE_DOWN + 1)
+        OPC_BROWSE_DOWN = OPC_BROWSE_UP + 1,
+        OPC_BROWSE_TO = OPC_BROWSE_DOWN + 1
     } OPCBROWSEDIRECTION;
 
     typedef enum tagOPCEUTYPE
     {
         OPC_NOENUM = 0,
-        OPC_ANALOG = (OPC_NOENUM + 1),
-        OPC_ENUMERATED = (OPC_ANALOG + 1)
+        OPC_ANALOG = OPC_NOENUM + 1,
+        OPC_ENUMERATED = OPC_ANALOG + 1
     } OPCEUTYPE;
 
     typedef enum tagOPCSERVERSTATE
     {
         OPC_STATUS_RUNNING = 1,
-        OPC_STATUS_FAILED = (OPC_STATUS_RUNNING + 1),
-        OPC_STATUS_NOCONFIG = (OPC_STATUS_FAILED + 1),
-        OPC_STATUS_SUSPENDED = (OPC_STATUS_NOCONFIG + 1),
-        OPC_STATUS_TEST = (OPC_STATUS_SUSPENDED + 1),
-        OPC_STATUS_COMM_FAULT = (OPC_STATUS_TEST + 1)
+        OPC_STATUS_FAILED = OPC_STATUS_RUNNING + 1,
+        OPC_STATUS_NOCONFIG = OPC_STATUS_FAILED + 1,
+        OPC_STATUS_SUSPENDED = OPC_STATUS_NOCONFIG + 1,
+        OPC_STATUS_TEST = OPC_STATUS_SUSPENDED + 1,
+        OPC_STATUS_COMM_FAULT = OPC_STATUS_TEST + 1
     } OPCSERVERSTATE;
 
     typedef enum tagOPCENUMSCOPE
     {
         OPC_ENUM_PRIVATE_CONNECTIONS = 1,
-        OPC_ENUM_PUBLIC_CONNECTIONS = (OPC_ENUM_PRIVATE_CONNECTIONS + 1),
-        OPC_ENUM_ALL_CONNECTIONS = (OPC_ENUM_PUBLIC_CONNECTIONS + 1),
-        OPC_ENUM_PRIVATE = (OPC_ENUM_ALL_CONNECTIONS + 1),
-        OPC_ENUM_PUBLIC = (OPC_ENUM_PRIVATE + 1),
-        OPC_ENUM_ALL = (OPC_ENUM_PUBLIC + 1)
+        OPC_ENUM_PUBLIC_CONNECTIONS = OPC_ENUM_PRIVATE_CONNECTIONS + 1,
+        OPC_ENUM_ALL_CONNECTIONS = OPC_ENUM_PUBLIC_CONNECTIONS + 1,
+        OPC_ENUM_PRIVATE = OPC_ENUM_ALL_CONNECTIONS + 1,
+        OPC_ENUM_PUBLIC = OPC_ENUM_PRIVATE + 1,
+        OPC_ENUM_ALL = OPC_ENUM_PUBLIC + 1
     } OPCENUMSCOPE;
 
     typedef struct tagOPCGROUPHEADER
@@ -753,12 +704,12 @@ extern "C"
     typedef enum tagOPCBROWSEFILTER
     {
         OPC_BROWSE_FILTER_ALL = 1,
-        OPC_BROWSE_FILTER_BRANCHES = (OPC_BROWSE_FILTER_ALL + 1),
-        OPC_BROWSE_FILTER_ITEMS = (OPC_BROWSE_FILTER_BRANCHES + 1)
+        OPC_BROWSE_FILTER_BRANCHES = OPC_BROWSE_FILTER_ALL + 1,
+        OPC_BROWSE_FILTER_ITEMS = OPC_BROWSE_FILTER_BRANCHES + 1
     } OPCBROWSEFILTER;
 
-    extern RPC_IF_HANDLE __MIDL_itf_opcda_0000_0004_v0_0_c_ifspec;
-    extern RPC_IF_HANDLE __MIDL_itf_opcda_0000_0004_v0_0_s_ifspec;
+    extern RPC_IF_HANDLE __MIDL_itf_opcda_0266_v0_0_c_ifspec;
+    extern RPC_IF_HANDLE __MIDL_itf_opcda_0266_v0_0_s_ifspec;
 
 #ifndef __IOPCServer_INTERFACE_DEFINED__
 #define __IOPCServer_INTERFACE_DEFINED__
@@ -819,8 +770,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCServer *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCServer *This);
@@ -879,32 +829,85 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCServer_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCServer_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCServer_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCServer_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCServer_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCServer_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCServer_AddGroup(This, szName, bActive, dwRequestedUpdateRate, hClientGroup, pTimeBias, pPercentDeadband,   \
                             dwLCID, phServerGroup, pRevisedUpdateRate, riid, ppUnk)                                    \
-    ((This)->lpVtbl->AddGroup(This, szName, bActive, dwRequestedUpdateRate, hClientGroup, pTimeBias, pPercentDeadband, \
-                              dwLCID, phServerGroup, pRevisedUpdateRate, riid, ppUnk))
+    (This)->lpVtbl->AddGroup(This, szName, bActive, dwRequestedUpdateRate, hClientGroup, pTimeBias, pPercentDeadband,  \
+                             dwLCID, phServerGroup, pRevisedUpdateRate, riid, ppUnk)
 
 #define IOPCServer_GetErrorString(This, dwError, dwLocale, ppString)                                                   \
-    ((This)->lpVtbl->GetErrorString(This, dwError, dwLocale, ppString))
+    (This)->lpVtbl->GetErrorString(This, dwError, dwLocale, ppString)
 
-#define IOPCServer_GetGroupByName(This, szName, riid, ppUnk) ((This)->lpVtbl->GetGroupByName(This, szName, riid, ppUnk))
+#define IOPCServer_GetGroupByName(This, szName, riid, ppUnk) (This)->lpVtbl->GetGroupByName(This, szName, riid, ppUnk)
 
-#define IOPCServer_GetStatus(This, ppServerStatus) ((This)->lpVtbl->GetStatus(This, ppServerStatus))
+#define IOPCServer_GetStatus(This, ppServerStatus) (This)->lpVtbl->GetStatus(This, ppServerStatus)
 
-#define IOPCServer_RemoveGroup(This, hServerGroup, bForce) ((This)->lpVtbl->RemoveGroup(This, hServerGroup, bForce))
+#define IOPCServer_RemoveGroup(This, hServerGroup, bForce) (This)->lpVtbl->RemoveGroup(This, hServerGroup, bForce)
 
 #define IOPCServer_CreateGroupEnumerator(This, dwScope, riid, ppUnk)                                                   \
-    ((This)->lpVtbl->CreateGroupEnumerator(This, dwScope, riid, ppUnk))
+    (This)->lpVtbl->CreateGroupEnumerator(This, dwScope, riid, ppUnk)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCServer_AddGroup_Proxy(IOPCServer *This,
+                                                        /* [string][in] */ LPCWSTR szName,
+                                                        /* [in] */ BOOL bActive,
+                                                        /* [in] */ DWORD dwRequestedUpdateRate,
+                                                        /* [in] */ OPCHANDLE hClientGroup,
+                                                        /* [in][unique] */ LONG *pTimeBias,
+                                                        /* [in][unique] */ FLOAT *pPercentDeadband,
+                                                        /* [in] */ DWORD dwLCID,
+                                                        /* [out] */ OPCHANDLE *phServerGroup,
+                                                        /* [out] */ DWORD *pRevisedUpdateRate,
+                                                        /* [in] */ REFIID riid,
+                                                        /* [iid_is][out] */ LPUNKNOWN *ppUnk);
+
+    void __RPC_STUB IOPCServer_AddGroup_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                             PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCServer_GetErrorString_Proxy(IOPCServer *This,
+                                                              /* [in] */ HRESULT dwError,
+                                                              /* [in] */ LCID dwLocale,
+                                                              /* [string][out] */ LPWSTR *ppString);
+
+    void __RPC_STUB IOPCServer_GetErrorString_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                   PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCServer_GetGroupByName_Proxy(IOPCServer *This,
+                                                              /* [string][in] */ LPCWSTR szName,
+                                                              /* [in] */ REFIID riid,
+                                                              /* [iid_is][out] */ LPUNKNOWN *ppUnk);
+
+    void __RPC_STUB IOPCServer_GetGroupByName_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                   PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCServer_GetStatus_Proxy(IOPCServer *This,
+                                                         /* [out] */ OPCSERVERSTATUS **ppServerStatus);
+
+    void __RPC_STUB IOPCServer_GetStatus_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                              PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCServer_RemoveGroup_Proxy(IOPCServer *This,
+                                                           /* [in] */ OPCHANDLE hServerGroup,
+                                                           /* [in] */ BOOL bForce);
+
+    void __RPC_STUB IOPCServer_RemoveGroup_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCServer_CreateGroupEnumerator_Proxy(IOPCServer *This,
+                                                                     /* [in] */ OPCENUMSCOPE dwScope,
+                                                                     /* [in] */ REFIID riid,
+                                                                     /* [iid_is][out] */ LPUNKNOWN *ppUnk);
+
+    void __RPC_STUB IOPCServer_CreateGroupEnumerator_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                          PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCServer_INTERFACE_DEFINED__ */
 
@@ -941,8 +944,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCServerPublicGroups *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCServerPublicGroups *This);
@@ -972,21 +974,38 @@ extern "C"
 #ifdef COBJMACROS
 
 #define IOPCServerPublicGroups_QueryInterface(This, riid, ppvObject)                                                   \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+    (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCServerPublicGroups_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCServerPublicGroups_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCServerPublicGroups_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCServerPublicGroups_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCServerPublicGroups_GetPublicGroupByName(This, szName, riid, ppUnk)                                         \
-    ((This)->lpVtbl->GetPublicGroupByName(This, szName, riid, ppUnk))
+    (This)->lpVtbl->GetPublicGroupByName(This, szName, riid, ppUnk)
 
 #define IOPCServerPublicGroups_RemovePublicGroup(This, hServerGroup, bForce)                                           \
-    ((This)->lpVtbl->RemovePublicGroup(This, hServerGroup, bForce))
+    (This)->lpVtbl->RemovePublicGroup(This, hServerGroup, bForce)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCServerPublicGroups_GetPublicGroupByName_Proxy(IOPCServerPublicGroups *This,
+                                                                                /* [string][in] */ LPCWSTR szName,
+                                                                                /* [in] */ REFIID riid,
+                                                                                /* [iid_is][out] */ LPUNKNOWN *ppUnk);
+
+    void __RPC_STUB IOPCServerPublicGroups_GetPublicGroupByName_Stub(IRpcStubBuffer *This,
+                                                                     IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                     PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCServerPublicGroups_RemovePublicGroup_Proxy(IOPCServerPublicGroups *This,
+                                                                             /* [in] */ OPCHANDLE hServerGroup,
+                                                                             /* [in] */ BOOL bForce);
+
+    void __RPC_STUB IOPCServerPublicGroups_RemovePublicGroup_Stub(IRpcStubBuffer *This,
+                                                                  IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                  PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCServerPublicGroups_INTERFACE_DEFINED__ */
 
@@ -1036,8 +1055,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCBrowseServerAddressSpace *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCBrowseServerAddressSpace *This);
@@ -1083,32 +1101,81 @@ extern "C"
 #ifdef COBJMACROS
 
 #define IOPCBrowseServerAddressSpace_QueryInterface(This, riid, ppvObject)                                             \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+    (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCBrowseServerAddressSpace_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCBrowseServerAddressSpace_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCBrowseServerAddressSpace_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCBrowseServerAddressSpace_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCBrowseServerAddressSpace_QueryOrganization(This, pNameSpaceType)                                           \
-    ((This)->lpVtbl->QueryOrganization(This, pNameSpaceType))
+    (This)->lpVtbl->QueryOrganization(This, pNameSpaceType)
 
 #define IOPCBrowseServerAddressSpace_ChangeBrowsePosition(This, dwBrowseDirection, szString)                           \
-    ((This)->lpVtbl->ChangeBrowsePosition(This, dwBrowseDirection, szString))
+    (This)->lpVtbl->ChangeBrowsePosition(This, dwBrowseDirection, szString)
 
 #define IOPCBrowseServerAddressSpace_BrowseOPCItemIDs(This, dwBrowseFilterType, szFilterCriteria, vtDataTypeFilter,    \
                                                       dwAccessRightsFilter, ppIEnumString)                             \
-    ((This)->lpVtbl->BrowseOPCItemIDs(This, dwBrowseFilterType, szFilterCriteria, vtDataTypeFilter,                    \
-                                      dwAccessRightsFilter, ppIEnumString))
+    (This)->lpVtbl->BrowseOPCItemIDs(This, dwBrowseFilterType, szFilterCriteria, vtDataTypeFilter,                     \
+                                     dwAccessRightsFilter, ppIEnumString)
 
 #define IOPCBrowseServerAddressSpace_GetItemID(This, szItemDataID, szItemID)                                           \
-    ((This)->lpVtbl->GetItemID(This, szItemDataID, szItemID))
+    (This)->lpVtbl->GetItemID(This, szItemDataID, szItemID)
 
 #define IOPCBrowseServerAddressSpace_BrowseAccessPaths(This, szItemID, ppIEnumString)                                  \
-    ((This)->lpVtbl->BrowseAccessPaths(This, szItemID, ppIEnumString))
+    (This)->lpVtbl->BrowseAccessPaths(This, szItemID, ppIEnumString)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCBrowseServerAddressSpace_QueryOrganization_Proxy(IOPCBrowseServerAddressSpace *This,
+                                                         /* [out] */ OPCNAMESPACETYPE *pNameSpaceType);
+
+    void __RPC_STUB IOPCBrowseServerAddressSpace_QueryOrganization_Stub(IRpcStubBuffer *This,
+                                                                        IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                        PRPC_MESSAGE _pRpcMessage,
+                                                                        DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCBrowseServerAddressSpace_ChangeBrowsePosition_Proxy(IOPCBrowseServerAddressSpace *This,
+                                                            /* [in] */ OPCBROWSEDIRECTION dwBrowseDirection,
+                                                            /* [string][in] */ LPCWSTR szString);
+
+    void __RPC_STUB IOPCBrowseServerAddressSpace_ChangeBrowsePosition_Stub(IRpcStubBuffer *This,
+                                                                           IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                           PRPC_MESSAGE _pRpcMessage,
+                                                                           DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCBrowseServerAddressSpace_BrowseOPCItemIDs_Proxy(IOPCBrowseServerAddressSpace *This,
+                                                        /* [in] */ OPCBROWSETYPE dwBrowseFilterType,
+                                                        /* [string][in] */ LPCWSTR szFilterCriteria,
+                                                        /* [in] */ VARTYPE vtDataTypeFilter,
+                                                        /* [in] */ DWORD dwAccessRightsFilter,
+                                                        /* [out] */ LPENUMSTRING *ppIEnumString);
+
+    void __RPC_STUB IOPCBrowseServerAddressSpace_BrowseOPCItemIDs_Stub(IRpcStubBuffer *This,
+                                                                       IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                       PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCBrowseServerAddressSpace_GetItemID_Proxy(IOPCBrowseServerAddressSpace *This,
+                                                                           /* [in] */ LPWSTR szItemDataID,
+                                                                           /* [string][out] */ LPWSTR *szItemID);
+
+    void __RPC_STUB IOPCBrowseServerAddressSpace_GetItemID_Stub(IRpcStubBuffer *This,
+                                                                IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCBrowseServerAddressSpace_BrowseAccessPaths_Proxy(IOPCBrowseServerAddressSpace *This,
+                                                         /* [string][in] */ LPCWSTR szItemID,
+                                                         /* [out] */ LPENUMSTRING *ppIEnumString);
+
+    void __RPC_STUB IOPCBrowseServerAddressSpace_BrowseAccessPaths_Stub(IRpcStubBuffer *This,
+                                                                        IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                        PRPC_MESSAGE _pRpcMessage,
+                                                                        DWORD *_pdwStubPhase);
 
 #endif /* __IOPCBrowseServerAddressSpace_INTERFACE_DEFINED__ */
 
@@ -1163,8 +1230,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCGroupStateMgt *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCGroupStateMgt *This);
@@ -1213,29 +1279,68 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCGroupStateMgt_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCGroupStateMgt_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCGroupStateMgt_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCGroupStateMgt_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCGroupStateMgt_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCGroupStateMgt_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCGroupStateMgt_GetState(This, pUpdateRate, pActive, ppName, pTimeBias, pPercentDeadband, pLCID,             \
                                    phClientGroup, phServerGroup)                                                       \
-    ((This)->lpVtbl->GetState(This, pUpdateRate, pActive, ppName, pTimeBias, pPercentDeadband, pLCID, phClientGroup,   \
-                              phServerGroup))
+    (This)->lpVtbl->GetState(This, pUpdateRate, pActive, ppName, pTimeBias, pPercentDeadband, pLCID, phClientGroup,    \
+                             phServerGroup)
 
 #define IOPCGroupStateMgt_SetState(This, pRequestedUpdateRate, pRevisedUpdateRate, pActive, pTimeBias,                 \
                                    pPercentDeadband, pLCID, phClientGroup)                                             \
-    ((This)->lpVtbl->SetState(This, pRequestedUpdateRate, pRevisedUpdateRate, pActive, pTimeBias, pPercentDeadband,    \
-                              pLCID, phClientGroup))
+    (This)->lpVtbl->SetState(This, pRequestedUpdateRate, pRevisedUpdateRate, pActive, pTimeBias, pPercentDeadband,     \
+                             pLCID, phClientGroup)
 
-#define IOPCGroupStateMgt_SetName(This, szName) ((This)->lpVtbl->SetName(This, szName))
+#define IOPCGroupStateMgt_SetName(This, szName) (This)->lpVtbl->SetName(This, szName)
 
-#define IOPCGroupStateMgt_CloneGroup(This, szName, riid, ppUnk) ((This)->lpVtbl->CloneGroup(This, szName, riid, ppUnk))
+#define IOPCGroupStateMgt_CloneGroup(This, szName, riid, ppUnk) (This)->lpVtbl->CloneGroup(This, szName, riid, ppUnk)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCGroupStateMgt_GetState_Proxy(IOPCGroupStateMgt *This,
+                                                               /* [out] */ DWORD *pUpdateRate,
+                                                               /* [out] */ BOOL *pActive,
+                                                               /* [string][out] */ LPWSTR *ppName,
+                                                               /* [out] */ LONG *pTimeBias,
+                                                               /* [out] */ FLOAT *pPercentDeadband,
+                                                               /* [out] */ DWORD *pLCID,
+                                                               /* [out] */ OPCHANDLE *phClientGroup,
+                                                               /* [out] */ OPCHANDLE *phServerGroup);
+
+    void __RPC_STUB IOPCGroupStateMgt_GetState_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                    PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCGroupStateMgt_SetState_Proxy(IOPCGroupStateMgt *This,
+                                                               /* [in][unique] */ DWORD *pRequestedUpdateRate,
+                                                               /* [out] */ DWORD *pRevisedUpdateRate,
+                                                               /* [in][unique] */ BOOL *pActive,
+                                                               /* [in][unique] */ LONG *pTimeBias,
+                                                               /* [in][unique] */ FLOAT *pPercentDeadband,
+                                                               /* [in][unique] */ DWORD *pLCID,
+                                                               /* [in][unique] */ OPCHANDLE *phClientGroup);
+
+    void __RPC_STUB IOPCGroupStateMgt_SetState_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                    PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCGroupStateMgt_SetName_Proxy(IOPCGroupStateMgt *This,
+                                                              /* [string][in] */ LPCWSTR szName);
+
+    void __RPC_STUB IOPCGroupStateMgt_SetName_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                   PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCGroupStateMgt_CloneGroup_Proxy(IOPCGroupStateMgt *This,
+                                                                 /* [string][in] */ LPCWSTR szName,
+                                                                 /* [in] */ REFIID riid,
+                                                                 /* [iid_is][out] */ LPUNKNOWN *ppUnk);
+
+    void __RPC_STUB IOPCGroupStateMgt_CloneGroup_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                      PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCGroupStateMgt_INTERFACE_DEFINED__ */
 
@@ -1268,8 +1373,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCPublicGroupStateMgt *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCPublicGroupStateMgt *This);
@@ -1295,19 +1399,31 @@ extern "C"
 #ifdef COBJMACROS
 
 #define IOPCPublicGroupStateMgt_QueryInterface(This, riid, ppvObject)                                                  \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+    (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCPublicGroupStateMgt_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCPublicGroupStateMgt_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCPublicGroupStateMgt_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCPublicGroupStateMgt_Release(This) (This)->lpVtbl->Release(This)
 
-#define IOPCPublicGroupStateMgt_GetState(This, pPublic) ((This)->lpVtbl->GetState(This, pPublic))
+#define IOPCPublicGroupStateMgt_GetState(This, pPublic) (This)->lpVtbl->GetState(This, pPublic)
 
-#define IOPCPublicGroupStateMgt_MoveToPublic(This) ((This)->lpVtbl->MoveToPublic(This))
+#define IOPCPublicGroupStateMgt_MoveToPublic(This) (This)->lpVtbl->MoveToPublic(This)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCPublicGroupStateMgt_GetState_Proxy(IOPCPublicGroupStateMgt *This,
+                                                                     /* [out] */ BOOL *pPublic);
+
+    void __RPC_STUB IOPCPublicGroupStateMgt_GetState_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                          PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCPublicGroupStateMgt_MoveToPublic_Proxy(IOPCPublicGroupStateMgt *This);
+
+    void __RPC_STUB IOPCPublicGroupStateMgt_MoveToPublic_Stub(IRpcStubBuffer *This,
+                                                              IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                              PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCPublicGroupStateMgt_INTERFACE_DEFINED__ */
 
@@ -1348,8 +1464,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCSyncIO *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCSyncIO *This);
@@ -1382,21 +1497,40 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCSyncIO_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCSyncIO_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCSyncIO_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCSyncIO_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCSyncIO_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCSyncIO_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCSyncIO_Read(This, dwSource, dwCount, phServer, ppItemValues, ppErrors)                                     \
-    ((This)->lpVtbl->Read(This, dwSource, dwCount, phServer, ppItemValues, ppErrors))
+    (This)->lpVtbl->Read(This, dwSource, dwCount, phServer, ppItemValues, ppErrors)
 
 #define IOPCSyncIO_Write(This, dwCount, phServer, pItemValues, ppErrors)                                               \
-    ((This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, ppErrors))
+    (This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, ppErrors)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCSyncIO_Read_Proxy(IOPCSyncIO *This,
+                                                    /* [in] */ OPCDATASOURCE dwSource,
+                                                    /* [in] */ DWORD dwCount,
+                                                    /* [size_is][in] */ OPCHANDLE *phServer,
+                                                    /* [size_is][size_is][out] */ OPCITEMSTATE **ppItemValues,
+                                                    /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCSyncIO_Read_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                         PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCSyncIO_Write_Proxy(IOPCSyncIO *This,
+                                                     /* [in] */ DWORD dwCount,
+                                                     /* [size_is][in] */ OPCHANDLE *phServer,
+                                                     /* [size_is][in] */ VARIANT *pItemValues,
+                                                     /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCSyncIO_Write_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                          PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCSyncIO_INTERFACE_DEFINED__ */
 
@@ -1448,8 +1582,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCAsyncIO *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCAsyncIO *This);
@@ -1495,26 +1628,62 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCAsyncIO_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCAsyncIO_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCAsyncIO_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCAsyncIO_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCAsyncIO_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCAsyncIO_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCAsyncIO_Read(This, dwConnection, dwSource, dwCount, phServer, pTransactionID, ppErrors)                    \
-    ((This)->lpVtbl->Read(This, dwConnection, dwSource, dwCount, phServer, pTransactionID, ppErrors))
+    (This)->lpVtbl->Read(This, dwConnection, dwSource, dwCount, phServer, pTransactionID, ppErrors)
 
 #define IOPCAsyncIO_Write(This, dwConnection, dwCount, phServer, pItemValues, pTransactionID, ppErrors)                \
-    ((This)->lpVtbl->Write(This, dwConnection, dwCount, phServer, pItemValues, pTransactionID, ppErrors))
+    (This)->lpVtbl->Write(This, dwConnection, dwCount, phServer, pItemValues, pTransactionID, ppErrors)
 
 #define IOPCAsyncIO_Refresh(This, dwConnection, dwSource, pTransactionID)                                              \
-    ((This)->lpVtbl->Refresh(This, dwConnection, dwSource, pTransactionID))
+    (This)->lpVtbl->Refresh(This, dwConnection, dwSource, pTransactionID)
 
-#define IOPCAsyncIO_Cancel(This, dwTransactionID) ((This)->lpVtbl->Cancel(This, dwTransactionID))
+#define IOPCAsyncIO_Cancel(This, dwTransactionID) (This)->lpVtbl->Cancel(This, dwTransactionID)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO_Read_Proxy(IOPCAsyncIO *This,
+                                                     /* [in] */ DWORD dwConnection,
+                                                     /* [in] */ OPCDATASOURCE dwSource,
+                                                     /* [in] */ DWORD dwCount,
+                                                     /* [size_is][in] */ OPCHANDLE *phServer,
+                                                     /* [out] */ DWORD *pTransactionID,
+                                                     /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCAsyncIO_Read_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                          PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO_Write_Proxy(IOPCAsyncIO *This,
+                                                      /* [in] */ DWORD dwConnection,
+                                                      /* [in] */ DWORD dwCount,
+                                                      /* [size_is][in] */ OPCHANDLE *phServer,
+                                                      /* [size_is][in] */ VARIANT *pItemValues,
+                                                      /* [out] */ DWORD *pTransactionID,
+                                                      /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCAsyncIO_Write_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                           PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO_Refresh_Proxy(IOPCAsyncIO *This,
+                                                        /* [in] */ DWORD dwConnection,
+                                                        /* [in] */ OPCDATASOURCE dwSource,
+                                                        /* [out] */ DWORD *pTransactionID);
+
+    void __RPC_STUB IOPCAsyncIO_Refresh_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                             PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO_Cancel_Proxy(IOPCAsyncIO *This,
+                                                       /* [in] */ DWORD dwTransactionID);
+
+    void __RPC_STUB IOPCAsyncIO_Cancel_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                            PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCAsyncIO_INTERFACE_DEFINED__ */
 
@@ -1582,8 +1751,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCItemMgt *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCItemMgt *This);
@@ -1648,35 +1816,97 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCItemMgt_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCItemMgt_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCItemMgt_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCItemMgt_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCItemMgt_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCItemMgt_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCItemMgt_AddItems(This, dwCount, pItemArray, ppAddResults, ppErrors)                                        \
-    ((This)->lpVtbl->AddItems(This, dwCount, pItemArray, ppAddResults, ppErrors))
+    (This)->lpVtbl->AddItems(This, dwCount, pItemArray, ppAddResults, ppErrors)
 
 #define IOPCItemMgt_ValidateItems(This, dwCount, pItemArray, bBlobUpdate, ppValidationResults, ppErrors)               \
-    ((This)->lpVtbl->ValidateItems(This, dwCount, pItemArray, bBlobUpdate, ppValidationResults, ppErrors))
+    (This)->lpVtbl->ValidateItems(This, dwCount, pItemArray, bBlobUpdate, ppValidationResults, ppErrors)
 
 #define IOPCItemMgt_RemoveItems(This, dwCount, phServer, ppErrors)                                                     \
-    ((This)->lpVtbl->RemoveItems(This, dwCount, phServer, ppErrors))
+    (This)->lpVtbl->RemoveItems(This, dwCount, phServer, ppErrors)
 
 #define IOPCItemMgt_SetActiveState(This, dwCount, phServer, bActive, ppErrors)                                         \
-    ((This)->lpVtbl->SetActiveState(This, dwCount, phServer, bActive, ppErrors))
+    (This)->lpVtbl->SetActiveState(This, dwCount, phServer, bActive, ppErrors)
 
 #define IOPCItemMgt_SetClientHandles(This, dwCount, phServer, phClient, ppErrors)                                      \
-    ((This)->lpVtbl->SetClientHandles(This, dwCount, phServer, phClient, ppErrors))
+    (This)->lpVtbl->SetClientHandles(This, dwCount, phServer, phClient, ppErrors)
 
 #define IOPCItemMgt_SetDatatypes(This, dwCount, phServer, pRequestedDatatypes, ppErrors)                               \
-    ((This)->lpVtbl->SetDatatypes(This, dwCount, phServer, pRequestedDatatypes, ppErrors))
+    (This)->lpVtbl->SetDatatypes(This, dwCount, phServer, pRequestedDatatypes, ppErrors)
 
-#define IOPCItemMgt_CreateEnumerator(This, riid, ppUnk) ((This)->lpVtbl->CreateEnumerator(This, riid, ppUnk))
+#define IOPCItemMgt_CreateEnumerator(This, riid, ppUnk) (This)->lpVtbl->CreateEnumerator(This, riid, ppUnk)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCItemMgt_AddItems_Proxy(IOPCItemMgt *This,
+                                                         /* [in] */ DWORD dwCount,
+                                                         /* [size_is][in] */ OPCITEMDEF *pItemArray,
+                                                         /* [size_is][size_is][out] */ OPCITEMRESULT **ppAddResults,
+                                                         /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemMgt_AddItems_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                              PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemMgt_ValidateItems_Proxy(IOPCItemMgt *This,
+                                    /* [in] */ DWORD dwCount,
+                                    /* [size_is][in] */ OPCITEMDEF *pItemArray,
+                                    /* [in] */ BOOL bBlobUpdate,
+                                    /* [size_is][size_is][out] */ OPCITEMRESULT **ppValidationResults,
+                                    /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemMgt_ValidateItems_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                   PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCItemMgt_RemoveItems_Proxy(IOPCItemMgt *This,
+                                                            /* [in] */ DWORD dwCount,
+                                                            /* [size_is][in] */ OPCHANDLE *phServer,
+                                                            /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemMgt_RemoveItems_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                 PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCItemMgt_SetActiveState_Proxy(IOPCItemMgt *This,
+                                                               /* [in] */ DWORD dwCount,
+                                                               /* [size_is][in] */ OPCHANDLE *phServer,
+                                                               /* [in] */ BOOL bActive,
+                                                               /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemMgt_SetActiveState_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                    PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCItemMgt_SetClientHandles_Proxy(IOPCItemMgt *This,
+                                                                 /* [in] */ DWORD dwCount,
+                                                                 /* [size_is][in] */ OPCHANDLE *phServer,
+                                                                 /* [size_is][in] */ OPCHANDLE *phClient,
+                                                                 /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemMgt_SetClientHandles_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                      PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCItemMgt_SetDatatypes_Proxy(IOPCItemMgt *This,
+                                                             /* [in] */ DWORD dwCount,
+                                                             /* [size_is][in] */ OPCHANDLE *phServer,
+                                                             /* [size_is][in] */ VARTYPE *pRequestedDatatypes,
+                                                             /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemMgt_SetDatatypes_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                  PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCItemMgt_CreateEnumerator_Proxy(IOPCItemMgt *This,
+                                                                 /* [in] */ REFIID riid,
+                                                                 /* [iid_is][out] */ LPUNKNOWN *ppUnk);
+
+    void __RPC_STUB IOPCItemMgt_CreateEnumerator_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                      PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCItemMgt_INTERFACE_DEFINED__ */
 
@@ -1717,8 +1947,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IEnumOPCItemAttributes *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IEnumOPCItemAttributes *This);
@@ -1754,24 +1983,51 @@ extern "C"
 #ifdef COBJMACROS
 
 #define IEnumOPCItemAttributes_QueryInterface(This, riid, ppvObject)                                                   \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+    (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IEnumOPCItemAttributes_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IEnumOPCItemAttributes_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IEnumOPCItemAttributes_Release(This) ((This)->lpVtbl->Release(This))
+#define IEnumOPCItemAttributes_Release(This) (This)->lpVtbl->Release(This)
 
 #define IEnumOPCItemAttributes_Next(This, celt, ppItemArray, pceltFetched)                                             \
-    ((This)->lpVtbl->Next(This, celt, ppItemArray, pceltFetched))
+    (This)->lpVtbl->Next(This, celt, ppItemArray, pceltFetched)
 
-#define IEnumOPCItemAttributes_Skip(This, celt) ((This)->lpVtbl->Skip(This, celt))
+#define IEnumOPCItemAttributes_Skip(This, celt) (This)->lpVtbl->Skip(This, celt)
 
-#define IEnumOPCItemAttributes_Reset(This) ((This)->lpVtbl->Reset(This))
+#define IEnumOPCItemAttributes_Reset(This) (This)->lpVtbl->Reset(This)
 
-#define IEnumOPCItemAttributes_Clone(This, ppEnumItemAttributes) ((This)->lpVtbl->Clone(This, ppEnumItemAttributes))
+#define IEnumOPCItemAttributes_Clone(This, ppEnumItemAttributes) (This)->lpVtbl->Clone(This, ppEnumItemAttributes)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE
+    IEnumOPCItemAttributes_Next_Proxy(IEnumOPCItemAttributes *This,
+                                      /* [in] */ ULONG celt,
+                                      /* [size_is][size_is][out] */ OPCITEMATTRIBUTES **ppItemArray,
+                                      /* [out] */ ULONG *pceltFetched);
+
+    void __RPC_STUB IEnumOPCItemAttributes_Next_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                     PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IEnumOPCItemAttributes_Skip_Proxy(IEnumOPCItemAttributes *This,
+                                                                /* [in] */ ULONG celt);
+
+    void __RPC_STUB IEnumOPCItemAttributes_Skip_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                     PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IEnumOPCItemAttributes_Reset_Proxy(IEnumOPCItemAttributes *This);
+
+    void __RPC_STUB IEnumOPCItemAttributes_Reset_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                      PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IEnumOPCItemAttributes_Clone_Proxy(IEnumOPCItemAttributes *This,
+                                       /* [out] */ IEnumOPCItemAttributes **ppEnumItemAttributes);
+
+    void __RPC_STUB IEnumOPCItemAttributes_Clone_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                      PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IEnumOPCItemAttributes_INTERFACE_DEFINED__ */
 
@@ -1835,8 +2091,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCDataCallback *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCDataCallback *This);
@@ -1894,31 +2149,79 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCDataCallback_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCDataCallback_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCDataCallback_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCDataCallback_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCDataCallback_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCDataCallback_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCDataCallback_OnDataChange(This, dwTransid, hGroup, hrMasterquality, hrMastererror, dwCount, phClientItems, \
                                       pvValues, pwQualities, pftTimeStamps, pErrors)                                   \
-    ((This)->lpVtbl->OnDataChange(This, dwTransid, hGroup, hrMasterquality, hrMastererror, dwCount, phClientItems,     \
-                                  pvValues, pwQualities, pftTimeStamps, pErrors))
+    (This)->lpVtbl->OnDataChange(This, dwTransid, hGroup, hrMasterquality, hrMastererror, dwCount, phClientItems,      \
+                                 pvValues, pwQualities, pftTimeStamps, pErrors)
 
 #define IOPCDataCallback_OnReadComplete(This, dwTransid, hGroup, hrMasterquality, hrMastererror, dwCount,              \
                                         phClientItems, pvValues, pwQualities, pftTimeStamps, pErrors)                  \
-    ((This)->lpVtbl->OnReadComplete(This, dwTransid, hGroup, hrMasterquality, hrMastererror, dwCount, phClientItems,   \
-                                    pvValues, pwQualities, pftTimeStamps, pErrors))
+    (This)->lpVtbl->OnReadComplete(This, dwTransid, hGroup, hrMasterquality, hrMastererror, dwCount, phClientItems,    \
+                                   pvValues, pwQualities, pftTimeStamps, pErrors)
 
 #define IOPCDataCallback_OnWriteComplete(This, dwTransid, hGroup, hrMastererr, dwCount, pClienthandles, pErrors)       \
-    ((This)->lpVtbl->OnWriteComplete(This, dwTransid, hGroup, hrMastererr, dwCount, pClienthandles, pErrors))
+    (This)->lpVtbl->OnWriteComplete(This, dwTransid, hGroup, hrMastererr, dwCount, pClienthandles, pErrors)
 
 #define IOPCDataCallback_OnCancelComplete(This, dwTransid, hGroup)                                                     \
-    ((This)->lpVtbl->OnCancelComplete(This, dwTransid, hGroup))
+    (This)->lpVtbl->OnCancelComplete(This, dwTransid, hGroup)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCDataCallback_OnDataChange_Proxy(IOPCDataCallback *This,
+                                                                  /* [in] */ DWORD dwTransid,
+                                                                  /* [in] */ OPCHANDLE hGroup,
+                                                                  /* [in] */ HRESULT hrMasterquality,
+                                                                  /* [in] */ HRESULT hrMastererror,
+                                                                  /* [in] */ DWORD dwCount,
+                                                                  /* [size_is][in] */ OPCHANDLE *phClientItems,
+                                                                  /* [size_is][in] */ VARIANT *pvValues,
+                                                                  /* [size_is][in] */ WORD *pwQualities,
+                                                                  /* [size_is][in] */ FILETIME *pftTimeStamps,
+                                                                  /* [size_is][in] */ HRESULT *pErrors);
+
+    void __RPC_STUB IOPCDataCallback_OnDataChange_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                       PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCDataCallback_OnReadComplete_Proxy(IOPCDataCallback *This,
+                                                                    /* [in] */ DWORD dwTransid,
+                                                                    /* [in] */ OPCHANDLE hGroup,
+                                                                    /* [in] */ HRESULT hrMasterquality,
+                                                                    /* [in] */ HRESULT hrMastererror,
+                                                                    /* [in] */ DWORD dwCount,
+                                                                    /* [size_is][in] */ OPCHANDLE *phClientItems,
+                                                                    /* [size_is][in] */ VARIANT *pvValues,
+                                                                    /* [size_is][in] */ WORD *pwQualities,
+                                                                    /* [size_is][in] */ FILETIME *pftTimeStamps,
+                                                                    /* [size_is][in] */ HRESULT *pErrors);
+
+    void __RPC_STUB IOPCDataCallback_OnReadComplete_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                         PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCDataCallback_OnWriteComplete_Proxy(IOPCDataCallback *This,
+                                                                     /* [in] */ DWORD dwTransid,
+                                                                     /* [in] */ OPCHANDLE hGroup,
+                                                                     /* [in] */ HRESULT hrMastererr,
+                                                                     /* [in] */ DWORD dwCount,
+                                                                     /* [size_is][in] */ OPCHANDLE *pClienthandles,
+                                                                     /* [size_is][in] */ HRESULT *pErrors);
+
+    void __RPC_STUB IOPCDataCallback_OnWriteComplete_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                          PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCDataCallback_OnCancelComplete_Proxy(IOPCDataCallback *This,
+                                                                      /* [in] */ DWORD dwTransid,
+                                                                      /* [in] */ OPCHANDLE hGroup);
+
+    void __RPC_STUB IOPCDataCallback_OnCancelComplete_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                           PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCDataCallback_INTERFACE_DEFINED__ */
 
@@ -1975,8 +2278,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCAsyncIO2 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCAsyncIO2 *This);
@@ -2029,30 +2331,77 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCAsyncIO2_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCAsyncIO2_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCAsyncIO2_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCAsyncIO2_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCAsyncIO2_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCAsyncIO2_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCAsyncIO2_Read(This, dwCount, phServer, dwTransactionID, pdwCancelID, ppErrors)                             \
-    ((This)->lpVtbl->Read(This, dwCount, phServer, dwTransactionID, pdwCancelID, ppErrors))
+    (This)->lpVtbl->Read(This, dwCount, phServer, dwTransactionID, pdwCancelID, ppErrors)
 
 #define IOPCAsyncIO2_Write(This, dwCount, phServer, pItemValues, dwTransactionID, pdwCancelID, ppErrors)               \
-    ((This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, dwTransactionID, pdwCancelID, ppErrors))
+    (This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, dwTransactionID, pdwCancelID, ppErrors)
 
 #define IOPCAsyncIO2_Refresh2(This, dwSource, dwTransactionID, pdwCancelID)                                            \
-    ((This)->lpVtbl->Refresh2(This, dwSource, dwTransactionID, pdwCancelID))
+    (This)->lpVtbl->Refresh2(This, dwSource, dwTransactionID, pdwCancelID)
 
-#define IOPCAsyncIO2_Cancel2(This, dwCancelID) ((This)->lpVtbl->Cancel2(This, dwCancelID))
+#define IOPCAsyncIO2_Cancel2(This, dwCancelID) (This)->lpVtbl->Cancel2(This, dwCancelID)
 
-#define IOPCAsyncIO2_SetEnable(This, bEnable) ((This)->lpVtbl->SetEnable(This, bEnable))
+#define IOPCAsyncIO2_SetEnable(This, bEnable) (This)->lpVtbl->SetEnable(This, bEnable)
 
-#define IOPCAsyncIO2_GetEnable(This, pbEnable) ((This)->lpVtbl->GetEnable(This, pbEnable))
+#define IOPCAsyncIO2_GetEnable(This, pbEnable) (This)->lpVtbl->GetEnable(This, pbEnable)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO2_Read_Proxy(IOPCAsyncIO2 *This,
+                                                      /* [in] */ DWORD dwCount,
+                                                      /* [size_is][in] */ OPCHANDLE *phServer,
+                                                      /* [in] */ DWORD dwTransactionID,
+                                                      /* [out] */ DWORD *pdwCancelID,
+                                                      /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCAsyncIO2_Read_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                           PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO2_Write_Proxy(IOPCAsyncIO2 *This,
+                                                       /* [in] */ DWORD dwCount,
+                                                       /* [size_is][in] */ OPCHANDLE *phServer,
+                                                       /* [size_is][in] */ VARIANT *pItemValues,
+                                                       /* [in] */ DWORD dwTransactionID,
+                                                       /* [out] */ DWORD *pdwCancelID,
+                                                       /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCAsyncIO2_Write_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                            PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO2_Refresh2_Proxy(IOPCAsyncIO2 *This,
+                                                          /* [in] */ OPCDATASOURCE dwSource,
+                                                          /* [in] */ DWORD dwTransactionID,
+                                                          /* [out] */ DWORD *pdwCancelID);
+
+    void __RPC_STUB IOPCAsyncIO2_Refresh2_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                               PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO2_Cancel2_Proxy(IOPCAsyncIO2 *This,
+                                                         /* [in] */ DWORD dwCancelID);
+
+    void __RPC_STUB IOPCAsyncIO2_Cancel2_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                              PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO2_SetEnable_Proxy(IOPCAsyncIO2 *This,
+                                                           /* [in] */ BOOL bEnable);
+
+    void __RPC_STUB IOPCAsyncIO2_SetEnable_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO2_GetEnable_Proxy(IOPCAsyncIO2 *This,
+                                                           /* [out] */ BOOL *pbEnable);
+
+    void __RPC_STUB IOPCAsyncIO2_GetEnable_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCAsyncIO2_INTERFACE_DEFINED__ */
 
@@ -2101,8 +2450,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCItemProperties *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCItemProperties *This);
@@ -2144,25 +2492,60 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCItemProperties_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCItemProperties_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCItemProperties_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCItemProperties_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCItemProperties_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCItemProperties_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCItemProperties_QueryAvailableProperties(This, szItemID, pdwCount, ppPropertyIDs, ppDescriptions,           \
                                                     ppvtDataTypes)                                                     \
-    ((This)->lpVtbl->QueryAvailableProperties(This, szItemID, pdwCount, ppPropertyIDs, ppDescriptions, ppvtDataTypes))
+    (This)->lpVtbl->QueryAvailableProperties(This, szItemID, pdwCount, ppPropertyIDs, ppDescriptions, ppvtDataTypes)
 
 #define IOPCItemProperties_GetItemProperties(This, szItemID, dwCount, pdwPropertyIDs, ppvData, ppErrors)               \
-    ((This)->lpVtbl->GetItemProperties(This, szItemID, dwCount, pdwPropertyIDs, ppvData, ppErrors))
+    (This)->lpVtbl->GetItemProperties(This, szItemID, dwCount, pdwPropertyIDs, ppvData, ppErrors)
 
 #define IOPCItemProperties_LookupItemIDs(This, szItemID, dwCount, pdwPropertyIDs, ppszNewItemIDs, ppErrors)            \
-    ((This)->lpVtbl->LookupItemIDs(This, szItemID, dwCount, pdwPropertyIDs, ppszNewItemIDs, ppErrors))
+    (This)->lpVtbl->LookupItemIDs(This, szItemID, dwCount, pdwPropertyIDs, ppszNewItemIDs, ppErrors)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemProperties_QueryAvailableProperties_Proxy(IOPCItemProperties *This,
+                                                      /* [in] */ LPWSTR szItemID,
+                                                      /* [out] */ DWORD *pdwCount,
+                                                      /* [size_is][size_is][out] */ DWORD **ppPropertyIDs,
+                                                      /* [size_is][size_is][out] */ LPWSTR **ppDescriptions,
+                                                      /* [size_is][size_is][out] */ VARTYPE **ppvtDataTypes);
+
+    void __RPC_STUB IOPCItemProperties_QueryAvailableProperties_Stub(IRpcStubBuffer *This,
+                                                                     IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                     PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemProperties_GetItemProperties_Proxy(IOPCItemProperties *This,
+                                               /* [in] */ LPWSTR szItemID,
+                                               /* [in] */ DWORD dwCount,
+                                               /* [size_is][in] */ DWORD *pdwPropertyIDs,
+                                               /* [size_is][size_is][out] */ VARIANT **ppvData,
+                                               /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemProperties_GetItemProperties_Stub(IRpcStubBuffer *This,
+                                                              IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                              PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemProperties_LookupItemIDs_Proxy(IOPCItemProperties *This,
+                                           /* [in] */ LPWSTR szItemID,
+                                           /* [in] */ DWORD dwCount,
+                                           /* [size_is][in] */ DWORD *pdwPropertyIDs,
+                                           /* [size_is][size_is][string][out] */ LPWSTR **ppszNewItemIDs,
+                                           /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemProperties_LookupItemIDs_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                          PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCItemProperties_INTERFACE_DEFINED__ */
 
@@ -2207,8 +2590,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCItemDeadbandMgt *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCItemDeadbandMgt *This);
@@ -2246,25 +2628,56 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCItemDeadbandMgt_QueryInterface(This, riid, ppvObject)                                                      \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCItemDeadbandMgt_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCItemDeadbandMgt_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCItemDeadbandMgt_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCItemDeadbandMgt_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCItemDeadbandMgt_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCItemDeadbandMgt_SetItemDeadband(This, dwCount, phServer, pPercentDeadband, ppErrors)                       \
-    ((This)->lpVtbl->SetItemDeadband(This, dwCount, phServer, pPercentDeadband, ppErrors))
+    (This)->lpVtbl->SetItemDeadband(This, dwCount, phServer, pPercentDeadband, ppErrors)
 
 #define IOPCItemDeadbandMgt_GetItemDeadband(This, dwCount, phServer, ppPercentDeadband, ppErrors)                      \
-    ((This)->lpVtbl->GetItemDeadband(This, dwCount, phServer, ppPercentDeadband, ppErrors))
+    (This)->lpVtbl->GetItemDeadband(This, dwCount, phServer, ppPercentDeadband, ppErrors)
 
 #define IOPCItemDeadbandMgt_ClearItemDeadband(This, dwCount, phServer, ppErrors)                                       \
-    ((This)->lpVtbl->ClearItemDeadband(This, dwCount, phServer, ppErrors))
+    (This)->lpVtbl->ClearItemDeadband(This, dwCount, phServer, ppErrors)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemDeadbandMgt_SetItemDeadband_Proxy(IOPCItemDeadbandMgt *This,
+                                              /* [in] */ DWORD dwCount,
+                                              /* [size_is][in] */ OPCHANDLE *phServer,
+                                              /* [size_is][in] */ FLOAT *pPercentDeadband,
+                                              /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemDeadbandMgt_SetItemDeadband_Stub(IRpcStubBuffer *This,
+                                                             IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                             PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemDeadbandMgt_GetItemDeadband_Proxy(IOPCItemDeadbandMgt *This,
+                                              /* [in] */ DWORD dwCount,
+                                              /* [size_is][in] */ OPCHANDLE *phServer,
+                                              /* [size_is][size_is][out] */ FLOAT **ppPercentDeadband,
+                                              /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemDeadbandMgt_GetItemDeadband_Stub(IRpcStubBuffer *This,
+                                                             IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                             PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemDeadbandMgt_ClearItemDeadband_Proxy(IOPCItemDeadbandMgt *This,
+                                                /* [in] */ DWORD dwCount,
+                                                /* [size_is][in] */ OPCHANDLE *phServer,
+                                                /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemDeadbandMgt_ClearItemDeadband_Stub(IRpcStubBuffer *This,
+                                                               IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                               PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCItemDeadbandMgt_INTERFACE_DEFINED__ */
 
@@ -2322,8 +2735,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCItemSamplingMgt *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCItemSamplingMgt *This);
@@ -2376,33 +2788,87 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCItemSamplingMgt_QueryInterface(This, riid, ppvObject)                                                      \
-    ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCItemSamplingMgt_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCItemSamplingMgt_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCItemSamplingMgt_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCItemSamplingMgt_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCItemSamplingMgt_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCItemSamplingMgt_SetItemSamplingRate(This, dwCount, phServer, pdwRequestedSamplingRate,                     \
                                                 ppdwRevisedSamplingRate, ppErrors)                                     \
-    ((This)->lpVtbl->SetItemSamplingRate(This, dwCount, phServer, pdwRequestedSamplingRate, ppdwRevisedSamplingRate,   \
-                                         ppErrors))
+    (This)->lpVtbl->SetItemSamplingRate(This, dwCount, phServer, pdwRequestedSamplingRate, ppdwRevisedSamplingRate,    \
+                                        ppErrors)
 
 #define IOPCItemSamplingMgt_GetItemSamplingRate(This, dwCount, phServer, ppdwSamplingRate, ppErrors)                   \
-    ((This)->lpVtbl->GetItemSamplingRate(This, dwCount, phServer, ppdwSamplingRate, ppErrors))
+    (This)->lpVtbl->GetItemSamplingRate(This, dwCount, phServer, ppdwSamplingRate, ppErrors)
 
 #define IOPCItemSamplingMgt_ClearItemSamplingRate(This, dwCount, phServer, ppErrors)                                   \
-    ((This)->lpVtbl->ClearItemSamplingRate(This, dwCount, phServer, ppErrors))
+    (This)->lpVtbl->ClearItemSamplingRate(This, dwCount, phServer, ppErrors)
 
 #define IOPCItemSamplingMgt_SetItemBufferEnable(This, dwCount, phServer, pbEnable, ppErrors)                           \
-    ((This)->lpVtbl->SetItemBufferEnable(This, dwCount, phServer, pbEnable, ppErrors))
+    (This)->lpVtbl->SetItemBufferEnable(This, dwCount, phServer, pbEnable, ppErrors)
 
 #define IOPCItemSamplingMgt_GetItemBufferEnable(This, dwCount, phServer, ppbEnable, ppErrors)                          \
-    ((This)->lpVtbl->GetItemBufferEnable(This, dwCount, phServer, ppbEnable, ppErrors))
+    (This)->lpVtbl->GetItemBufferEnable(This, dwCount, phServer, ppbEnable, ppErrors)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemSamplingMgt_SetItemSamplingRate_Proxy(IOPCItemSamplingMgt *This,
+                                                  /* [in] */ DWORD dwCount,
+                                                  /* [size_is][in] */ OPCHANDLE *phServer,
+                                                  /* [size_is][in] */ DWORD *pdwRequestedSamplingRate,
+                                                  /* [size_is][size_is][out] */ DWORD **ppdwRevisedSamplingRate,
+                                                  /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemSamplingMgt_SetItemSamplingRate_Stub(IRpcStubBuffer *This,
+                                                                 IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                 PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemSamplingMgt_GetItemSamplingRate_Proxy(IOPCItemSamplingMgt *This,
+                                                  /* [in] */ DWORD dwCount,
+                                                  /* [size_is][in] */ OPCHANDLE *phServer,
+                                                  /* [size_is][size_is][out] */ DWORD **ppdwSamplingRate,
+                                                  /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemSamplingMgt_GetItemSamplingRate_Stub(IRpcStubBuffer *This,
+                                                                 IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                 PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemSamplingMgt_ClearItemSamplingRate_Proxy(IOPCItemSamplingMgt *This,
+                                                    /* [in] */ DWORD dwCount,
+                                                    /* [size_is][in] */ OPCHANDLE *phServer,
+                                                    /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemSamplingMgt_ClearItemSamplingRate_Stub(IRpcStubBuffer *This,
+                                                                   IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                   PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemSamplingMgt_SetItemBufferEnable_Proxy(IOPCItemSamplingMgt *This,
+                                                  /* [in] */ DWORD dwCount,
+                                                  /* [size_is][in] */ OPCHANDLE *phServer,
+                                                  /* [size_is][in] */ BOOL *pbEnable,
+                                                  /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemSamplingMgt_SetItemBufferEnable_Stub(IRpcStubBuffer *This,
+                                                                 IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                 PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCItemSamplingMgt_GetItemBufferEnable_Proxy(IOPCItemSamplingMgt *This,
+                                                  /* [in] */ DWORD dwCount,
+                                                  /* [size_is][in] */ OPCHANDLE *phServer,
+                                                  /* [size_is][size_is][out] */ BOOL **ppbEnable,
+                                                  /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemSamplingMgt_GetItemBufferEnable_Stub(IRpcStubBuffer *This,
+                                                                 IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                                 PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCItemSamplingMgt_INTERFACE_DEFINED__ */
 
@@ -2453,8 +2919,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCBrowse *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCBrowse *This);
@@ -2497,27 +2962,58 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCBrowse_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCBrowse_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCBrowse_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCBrowse_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCBrowse_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCBrowse_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCBrowse_GetProperties(This, dwItemCount, pszItemIDs, bReturnPropertyValues, dwPropertyCount,                \
                                  pdwPropertyIDs, ppItemProperties)                                                     \
-    ((This)->lpVtbl->GetProperties(This, dwItemCount, pszItemIDs, bReturnPropertyValues, dwPropertyCount,              \
-                                   pdwPropertyIDs, ppItemProperties))
+    (This)->lpVtbl->GetProperties(This, dwItemCount, pszItemIDs, bReturnPropertyValues, dwPropertyCount,               \
+                                  pdwPropertyIDs, ppItemProperties)
 
 #define IOPCBrowse_Browse(This, szItemID, pszContinuationPoint, dwMaxElementsReturned, dwBrowseFilter,                 \
                           szElementNameFilter, szVendorFilter, bReturnAllProperties, bReturnPropertyValues,            \
                           dwPropertyCount, pdwPropertyIDs, pbMoreElements, pdwCount, ppBrowseElements)                 \
-    ((This)->lpVtbl->Browse(This, szItemID, pszContinuationPoint, dwMaxElementsReturned, dwBrowseFilter,               \
-                            szElementNameFilter, szVendorFilter, bReturnAllProperties, bReturnPropertyValues,          \
-                            dwPropertyCount, pdwPropertyIDs, pbMoreElements, pdwCount, ppBrowseElements))
+    (This)->lpVtbl->Browse(This, szItemID, pszContinuationPoint, dwMaxElementsReturned, dwBrowseFilter,                \
+                           szElementNameFilter, szVendorFilter, bReturnAllProperties, bReturnPropertyValues,           \
+                           dwPropertyCount, pdwPropertyIDs, pbMoreElements, pdwCount, ppBrowseElements)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCBrowse_GetProperties_Proxy(IOPCBrowse *This,
+                                   /* [in] */ DWORD dwItemCount,
+                                   /* [size_is][string][in] */ LPWSTR *pszItemIDs,
+                                   /* [in] */ BOOL bReturnPropertyValues,
+                                   /* [in] */ DWORD dwPropertyCount,
+                                   /* [size_is][in] */ DWORD *pdwPropertyIDs,
+                                   /* [size_is][size_is][out] */ OPCITEMPROPERTIES **ppItemProperties);
+
+    void __RPC_STUB IOPCBrowse_GetProperties_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                  PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE
+    IOPCBrowse_Browse_Proxy(IOPCBrowse *This,
+                            /* [string][in] */ LPWSTR szItemID,
+                            /* [string][out][in] */ LPWSTR *pszContinuationPoint,
+                            /* [in] */ DWORD dwMaxElementsReturned,
+                            /* [in] */ OPCBROWSEFILTER dwBrowseFilter,
+                            /* [string][in] */ LPWSTR szElementNameFilter,
+                            /* [string][in] */ LPWSTR szVendorFilter,
+                            /* [in] */ BOOL bReturnAllProperties,
+                            /* [in] */ BOOL bReturnPropertyValues,
+                            /* [in] */ DWORD dwPropertyCount,
+                            /* [size_is][in] */ DWORD *pdwPropertyIDs,
+                            /* [out] */ BOOL *pbMoreElements,
+                            /* [out] */ DWORD *pdwCount,
+                            /* [size_is][size_is][out] */ OPCBROWSEELEMENT **ppBrowseElements);
+
+    void __RPC_STUB IOPCBrowse_Browse_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                           PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCBrowse_INTERFACE_DEFINED__ */
 
@@ -2560,8 +3056,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCItemIO *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCItemIO *This);
@@ -2596,21 +3091,42 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCItemIO_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCItemIO_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCItemIO_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCItemIO_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCItemIO_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCItemIO_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCItemIO_Read(This, dwCount, pszItemIDs, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors)       \
-    ((This)->lpVtbl->Read(This, dwCount, pszItemIDs, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors))
+    (This)->lpVtbl->Read(This, dwCount, pszItemIDs, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors)
 
 #define IOPCItemIO_WriteVQT(This, dwCount, pszItemIDs, pItemVQT, ppErrors)                                             \
-    ((This)->lpVtbl->WriteVQT(This, dwCount, pszItemIDs, pItemVQT, ppErrors))
+    (This)->lpVtbl->WriteVQT(This, dwCount, pszItemIDs, pItemVQT, ppErrors)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCItemIO_Read_Proxy(IOPCItemIO *This,
+                                                    /* [in] */ DWORD dwCount,
+                                                    /* [size_is][in] */ LPCWSTR *pszItemIDs,
+                                                    /* [size_is][in] */ DWORD *pdwMaxAge,
+                                                    /* [size_is][size_is][out] */ VARIANT **ppvValues,
+                                                    /* [size_is][size_is][out] */ WORD **ppwQualities,
+                                                    /* [size_is][size_is][out] */ FILETIME **ppftTimeStamps,
+                                                    /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemIO_Read_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                         PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCItemIO_WriteVQT_Proxy(IOPCItemIO *This,
+                                                        /* [in] */ DWORD dwCount,
+                                                        /* [size_is][in] */ LPCWSTR *pszItemIDs,
+                                                        /* [size_is][in] */ OPCITEMVQT *pItemVQT,
+                                                        /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCItemIO_WriteVQT_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                             PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCItemIO_INTERFACE_DEFINED__ */
 
@@ -2653,8 +3169,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCSyncIO2 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCSyncIO2 *This);
@@ -2704,27 +3219,48 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCSyncIO2_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCSyncIO2_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCSyncIO2_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCSyncIO2_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCSyncIO2_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCSyncIO2_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCSyncIO2_Read(This, dwSource, dwCount, phServer, ppItemValues, ppErrors)                                    \
-    ((This)->lpVtbl->Read(This, dwSource, dwCount, phServer, ppItemValues, ppErrors))
+    (This)->lpVtbl->Read(This, dwSource, dwCount, phServer, ppItemValues, ppErrors)
 
 #define IOPCSyncIO2_Write(This, dwCount, phServer, pItemValues, ppErrors)                                              \
-    ((This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, ppErrors))
+    (This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, ppErrors)
 
 #define IOPCSyncIO2_ReadMaxAge(This, dwCount, phServer, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors)  \
-    ((This)->lpVtbl->ReadMaxAge(This, dwCount, phServer, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors))
+    (This)->lpVtbl->ReadMaxAge(This, dwCount, phServer, pdwMaxAge, ppvValues, ppwQualities, ppftTimeStamps, ppErrors)
 
 #define IOPCSyncIO2_WriteVQT(This, dwCount, phServer, pItemVQT, ppErrors)                                              \
-    ((This)->lpVtbl->WriteVQT(This, dwCount, phServer, pItemVQT, ppErrors))
+    (This)->lpVtbl->WriteVQT(This, dwCount, phServer, pItemVQT, ppErrors)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCSyncIO2_ReadMaxAge_Proxy(IOPCSyncIO2 *This,
+                                                           /* [in] */ DWORD dwCount,
+                                                           /* [size_is][in] */ OPCHANDLE *phServer,
+                                                           /* [size_is][in] */ DWORD *pdwMaxAge,
+                                                           /* [size_is][size_is][out] */ VARIANT **ppvValues,
+                                                           /* [size_is][size_is][out] */ WORD **ppwQualities,
+                                                           /* [size_is][size_is][out] */ FILETIME **ppftTimeStamps,
+                                                           /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCSyncIO2_ReadMaxAge_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCSyncIO2_WriteVQT_Proxy(IOPCSyncIO2 *This,
+                                                         /* [in] */ DWORD dwCount,
+                                                         /* [size_is][in] */ OPCHANDLE *phServer,
+                                                         /* [size_is][in] */ OPCITEMVQT *pItemVQT,
+                                                         /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCSyncIO2_WriteVQT_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                              PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCSyncIO2_INTERFACE_DEFINED__ */
 
@@ -2773,8 +3309,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCAsyncIO3 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCAsyncIO3 *This);
@@ -2851,39 +3386,69 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCAsyncIO3_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCAsyncIO3_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCAsyncIO3_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCAsyncIO3_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCAsyncIO3_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCAsyncIO3_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCAsyncIO3_Read(This, dwCount, phServer, dwTransactionID, pdwCancelID, ppErrors)                             \
-    ((This)->lpVtbl->Read(This, dwCount, phServer, dwTransactionID, pdwCancelID, ppErrors))
+    (This)->lpVtbl->Read(This, dwCount, phServer, dwTransactionID, pdwCancelID, ppErrors)
 
 #define IOPCAsyncIO3_Write(This, dwCount, phServer, pItemValues, dwTransactionID, pdwCancelID, ppErrors)               \
-    ((This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, dwTransactionID, pdwCancelID, ppErrors))
+    (This)->lpVtbl->Write(This, dwCount, phServer, pItemValues, dwTransactionID, pdwCancelID, ppErrors)
 
 #define IOPCAsyncIO3_Refresh2(This, dwSource, dwTransactionID, pdwCancelID)                                            \
-    ((This)->lpVtbl->Refresh2(This, dwSource, dwTransactionID, pdwCancelID))
+    (This)->lpVtbl->Refresh2(This, dwSource, dwTransactionID, pdwCancelID)
 
-#define IOPCAsyncIO3_Cancel2(This, dwCancelID) ((This)->lpVtbl->Cancel2(This, dwCancelID))
+#define IOPCAsyncIO3_Cancel2(This, dwCancelID) (This)->lpVtbl->Cancel2(This, dwCancelID)
 
-#define IOPCAsyncIO3_SetEnable(This, bEnable) ((This)->lpVtbl->SetEnable(This, bEnable))
+#define IOPCAsyncIO3_SetEnable(This, bEnable) (This)->lpVtbl->SetEnable(This, bEnable)
 
-#define IOPCAsyncIO3_GetEnable(This, pbEnable) ((This)->lpVtbl->GetEnable(This, pbEnable))
+#define IOPCAsyncIO3_GetEnable(This, pbEnable) (This)->lpVtbl->GetEnable(This, pbEnable)
 
 #define IOPCAsyncIO3_ReadMaxAge(This, dwCount, phServer, pdwMaxAge, dwTransactionID, pdwCancelID, ppErrors)            \
-    ((This)->lpVtbl->ReadMaxAge(This, dwCount, phServer, pdwMaxAge, dwTransactionID, pdwCancelID, ppErrors))
+    (This)->lpVtbl->ReadMaxAge(This, dwCount, phServer, pdwMaxAge, dwTransactionID, pdwCancelID, ppErrors)
 
 #define IOPCAsyncIO3_WriteVQT(This, dwCount, phServer, pItemVQT, dwTransactionID, pdwCancelID, ppErrors)               \
-    ((This)->lpVtbl->WriteVQT(This, dwCount, phServer, pItemVQT, dwTransactionID, pdwCancelID, ppErrors))
+    (This)->lpVtbl->WriteVQT(This, dwCount, phServer, pItemVQT, dwTransactionID, pdwCancelID, ppErrors)
 
 #define IOPCAsyncIO3_RefreshMaxAge(This, dwMaxAge, dwTransactionID, pdwCancelID)                                       \
-    ((This)->lpVtbl->RefreshMaxAge(This, dwMaxAge, dwTransactionID, pdwCancelID))
+    (This)->lpVtbl->RefreshMaxAge(This, dwMaxAge, dwTransactionID, pdwCancelID)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO3_ReadMaxAge_Proxy(IOPCAsyncIO3 *This,
+                                                            /* [in] */ DWORD dwCount,
+                                                            /* [size_is][in] */ OPCHANDLE *phServer,
+                                                            /* [size_is][in] */ DWORD *pdwMaxAge,
+                                                            /* [in] */ DWORD dwTransactionID,
+                                                            /* [out] */ DWORD *pdwCancelID,
+                                                            /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCAsyncIO3_ReadMaxAge_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                 PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO3_WriteVQT_Proxy(IOPCAsyncIO3 *This,
+                                                          /* [in] */ DWORD dwCount,
+                                                          /* [size_is][in] */ OPCHANDLE *phServer,
+                                                          /* [size_is][in] */ OPCITEMVQT *pItemVQT,
+                                                          /* [in] */ DWORD dwTransactionID,
+                                                          /* [out] */ DWORD *pdwCancelID,
+                                                          /* [size_is][size_is][out] */ HRESULT **ppErrors);
+
+    void __RPC_STUB IOPCAsyncIO3_WriteVQT_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                               PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCAsyncIO3_RefreshMaxAge_Proxy(IOPCAsyncIO3 *This,
+                                                               /* [in] */ DWORD dwMaxAge,
+                                                               /* [in] */ DWORD dwTransactionID,
+                                                               /* [out] */ DWORD *pdwCancelID);
+
+    void __RPC_STUB IOPCAsyncIO3_RefreshMaxAge_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                    PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCAsyncIO3_INTERFACE_DEFINED__ */
 
@@ -2918,8 +3483,7 @@ extern "C"
         HRESULT(STDMETHODCALLTYPE *QueryInterface)
         (IOPCGroupStateMgt2 *This,
          /* [in] */ REFIID riid,
-         /* [annotation][iid_is][out] */
-         _COM_Outptr_ void **ppvObject);
+         /* [iid_is][out] */ void **ppvObject);
 
         ULONG(STDMETHODCALLTYPE *AddRef)
         (IOPCGroupStateMgt2 *This);
@@ -2977,34 +3541,47 @@ extern "C"
 
 #ifdef COBJMACROS
 
-#define IOPCGroupStateMgt2_QueryInterface(This, riid, ppvObject) ((This)->lpVtbl->QueryInterface(This, riid, ppvObject))
+#define IOPCGroupStateMgt2_QueryInterface(This, riid, ppvObject) (This)->lpVtbl->QueryInterface(This, riid, ppvObject)
 
-#define IOPCGroupStateMgt2_AddRef(This) ((This)->lpVtbl->AddRef(This))
+#define IOPCGroupStateMgt2_AddRef(This) (This)->lpVtbl->AddRef(This)
 
-#define IOPCGroupStateMgt2_Release(This) ((This)->lpVtbl->Release(This))
+#define IOPCGroupStateMgt2_Release(This) (This)->lpVtbl->Release(This)
 
 #define IOPCGroupStateMgt2_GetState(This, pUpdateRate, pActive, ppName, pTimeBias, pPercentDeadband, pLCID,            \
                                     phClientGroup, phServerGroup)                                                      \
-    ((This)->lpVtbl->GetState(This, pUpdateRate, pActive, ppName, pTimeBias, pPercentDeadband, pLCID, phClientGroup,   \
-                              phServerGroup))
+    (This)->lpVtbl->GetState(This, pUpdateRate, pActive, ppName, pTimeBias, pPercentDeadband, pLCID, phClientGroup,    \
+                             phServerGroup)
 
 #define IOPCGroupStateMgt2_SetState(This, pRequestedUpdateRate, pRevisedUpdateRate, pActive, pTimeBias,                \
                                     pPercentDeadband, pLCID, phClientGroup)                                            \
-    ((This)->lpVtbl->SetState(This, pRequestedUpdateRate, pRevisedUpdateRate, pActive, pTimeBias, pPercentDeadband,    \
-                              pLCID, phClientGroup))
+    (This)->lpVtbl->SetState(This, pRequestedUpdateRate, pRevisedUpdateRate, pActive, pTimeBias, pPercentDeadband,     \
+                             pLCID, phClientGroup)
 
-#define IOPCGroupStateMgt2_SetName(This, szName) ((This)->lpVtbl->SetName(This, szName))
+#define IOPCGroupStateMgt2_SetName(This, szName) (This)->lpVtbl->SetName(This, szName)
 
-#define IOPCGroupStateMgt2_CloneGroup(This, szName, riid, ppUnk) ((This)->lpVtbl->CloneGroup(This, szName, riid, ppUnk))
+#define IOPCGroupStateMgt2_CloneGroup(This, szName, riid, ppUnk) (This)->lpVtbl->CloneGroup(This, szName, riid, ppUnk)
 
 #define IOPCGroupStateMgt2_SetKeepAlive(This, dwKeepAliveTime, pdwRevisedKeepAliveTime)                                \
-    ((This)->lpVtbl->SetKeepAlive(This, dwKeepAliveTime, pdwRevisedKeepAliveTime))
+    (This)->lpVtbl->SetKeepAlive(This, dwKeepAliveTime, pdwRevisedKeepAliveTime)
 
-#define IOPCGroupStateMgt2_GetKeepAlive(This, pdwKeepAliveTime) ((This)->lpVtbl->GetKeepAlive(This, pdwKeepAliveTime))
+#define IOPCGroupStateMgt2_GetKeepAlive(This, pdwKeepAliveTime) (This)->lpVtbl->GetKeepAlive(This, pdwKeepAliveTime)
 
 #endif /* COBJMACROS */
 
 #endif /* C style interface */
+
+    HRESULT STDMETHODCALLTYPE IOPCGroupStateMgt2_SetKeepAlive_Proxy(IOPCGroupStateMgt2 *This,
+                                                                    /* [in] */ DWORD dwKeepAliveTime,
+                                                                    /* [out] */ DWORD *pdwRevisedKeepAliveTime);
+
+    void __RPC_STUB IOPCGroupStateMgt2_SetKeepAlive_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                         PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
+
+    HRESULT STDMETHODCALLTYPE IOPCGroupStateMgt2_GetKeepAlive_Proxy(IOPCGroupStateMgt2 *This,
+                                                                    /* [out] */ DWORD *pdwKeepAliveTime);
+
+    void __RPC_STUB IOPCGroupStateMgt2_GetKeepAlive_Stub(IRpcStubBuffer *This, IRpcChannelBuffer *_pRpcChannelBuffer,
+                                                         PRPC_MESSAGE _pRpcMessage, DWORD *_pdwStubPhase);
 
 #endif /* __IOPCGroupStateMgt2_INTERFACE_DEFINED__ */
 

@@ -87,7 +87,9 @@ void COPCHost::getListOfDAServersEx(std::wstring hostName, tagCLSCTX serverLocat
 
     HRESULT result = iCatInfo->EnumClassesOfCategories(1, implist, 0, nullptr, &iEnum);
     if (FAILED(result))
+    {
         throw OPCException(L"COPCHost::getListOfDAServersEx: FAILED to get enum for categeories");
+    }
 
     GUID classID = {0, 0, 0, {0}};
     ULONG actual = 0;
@@ -99,7 +101,9 @@ void COPCHost::getListOfDAServersEx(std::wstring hostName, tagCLSCTX serverLocat
         result = iCatInfo->GetClassDetails(classID, &progID, &userType); // ProgIDFromCLSID ( classID, &progID )
 
         if (FAILED(result))
+        {
             throw OPCException(L"COPCHost::getListOfDAServersEx: FAILED to get prog ID from class ID");
+        }
         else
         {
             listOfClassIDs.push_back(classID);
@@ -108,7 +112,9 @@ void COPCHost::getListOfDAServersEx(std::wstring hostName, tagCLSCTX serverLocat
             LPOLESTR classIDStr = nullptr;
             result = StringFromCLSID(classID, &classIDStr);
             if (FAILED(result))
+            {
                 throw OPCException(L"COPCHost::getListOfDAServersEx: FAILED to get class ID string from class ID");
+            }
 
             printf("prog ID: '%ws' - class ID: %ws\n", progID, classIDStr);
 
@@ -132,11 +138,15 @@ COPCServer *CRemoteHost::connectDAServer(const std::wstring &serverProgIDOrClsID
         LPCOLESTR strClsId = serverProgIDOrClsID.c_str();
         HRESULT result = CLSIDFromString(strClsId, &clsid);
         if (FAILED(result))
+        {
             throw OPCException(L"CRemoteHost::connectDAServer: invalid class ID string");
+        }
     } // if
 
     else
+    {
         clsid = GetCLSIDFromRemoteRegistry(HostName, serverProgIDOrClsID);
+    }
 
     return connectDAServer(clsid);
 
@@ -162,14 +172,18 @@ CLSID CRemoteHost::GetCLSIDFromRemoteRegistry(const std::wstring &hostName, cons
             unsigned bufferSize = 100;
             result = RegQueryValueEx(keyHandle, nullptr, 0, &entryType, (LPBYTE)classIdStr, (LPDWORD)&bufferSize);
             if (FAILED(result))
+            {
                 throw OPCException(
                     L"CRemoteHost::GetCLSIDFromRemoteRegistry: FAILED to get class ID from remote registry");
+            }
             else
             {
                 USES_CONVERSION;
                 LPOLESTR sz = A2W(classIdStr);
                 if (CLSIDFromString(sz, &classId) != S_OK)
+                {
                     printf("FAILED sz:(%ws) classIdStr(%s)\n", sz, classIdStr);
+                }
             } // else
         }     // if
     }         // if
@@ -188,7 +202,9 @@ COPCServer *CRemoteHost::connectDAServer(const CLSID &serverClassID)
 
     HRESULT result = iUnknown->QueryInterface(IID_IOPCServer, (void **)&iOpcServer);
     if (FAILED(result))
+    {
         throw OPCException(L"CRemoteHost::connectDAServer: FAILED to obtain IID_IOPCServer interface from server");
+    }
 
     return new COPCServer(iOpcServer);
 
@@ -210,7 +226,9 @@ CLSID CRemoteHost::getCLSID(const std::wstring &serverProgID)
 
     HRESULT result = iCatInfo->CLSIDFromProgID(progId, &clsId);
     if (FAILED(result))
+    {
         throw OPCException(L"CRemoteHost::getCLSID: FAILED to get class ID");
+    }
 
     return clsId;
 
@@ -226,22 +244,30 @@ COPCServer *CLocalHost::connectDAServer(const std::wstring &serverProgID)
     LPCOLESTR strClsId = serverProgID.c_str();
     HRESULT result = CLSIDFromProgID(strClsId, &clsid);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED to convert prog ID to class ID");
+    }
 
     ATL::CComPtr<IClassFactory> iClassFactory;
     result = CoGetClassObject(clsid, CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, (void **)&iClassFactory);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED get class factory");
+    }
 
     ATL::CComPtr<IUnknown> iUnknown;
     result = iClassFactory->CreateInstance(nullptr, IID_IUnknown, (void **)&iUnknown);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED get create OPC server ref");
+    }
 
     ATL::CComPtr<IOPCServer> iOpcServer;
     result = iUnknown->QueryInterface(IID_IOPCServer, (void **)&iOpcServer);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED to obtain IID_IOPCServer interface from server");
+    }
 
     return new COPCServer(iOpcServer);
 
@@ -252,17 +278,23 @@ COPCServer *CLocalHost::connectDAServer(const CLSID &clsid)
     ATL::CComPtr<IClassFactory> iClassFactory;
     HRESULT result = CoGetClassObject(clsid, CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, (void **)&iClassFactory);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED get class factory");
+    }
 
     ATL::CComPtr<IUnknown> iUnknown;
     result = iClassFactory->CreateInstance(nullptr, IID_IUnknown, (void **)&iUnknown);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED get create OPC server ref");
+    }
 
     ATL::CComPtr<IOPCServer> iOpcServer;
     result = iUnknown->QueryInterface(IID_IOPCServer, (void **)&iOpcServer);
     if (FAILED(result))
+    {
         throw OPCException(L"CLocalHost::connectDAServer: FAILED obtain IID_IOPCServer interface from server");
+    }
 
     return new COPCServer(iOpcServer);
 

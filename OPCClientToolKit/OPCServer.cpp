@@ -31,12 +31,16 @@ COPCServer::COPCServer(ATL::CComPtr<IOPCServer> &opcServerInterface)
 
     HRESULT result = opcServerInterface->QueryInterface(IID_IOPCBrowseServerAddressSpace, (void **)&iOpcNameSpace);
     if (FAILED(result))
+    {
         throw OPCException(L"COPCServer::COPCServer: FAILED to obtain IID_IOPCBrowseServerAddressSpace interface",
                            result);
+    }
 
     result = opcServerInterface->QueryInterface(IID_IOPCItemProperties, (void **)&iOpcProperties);
     if (FAILED(result))
+    {
         throw OPCException(L"COPCServer::COPCServer: FAILED to obtain IID_IOPCItemProperties interface", result);
+    }
 
 } // COPCServer::COPCServer
 
@@ -54,7 +58,9 @@ COPCGroup *COPCServer::makeGroup(const std::wstring &groupName, bool active, uns
 bool COPCServer::getItemNames(std::vector<std::wstring> &opcItemNames)
 {
     if (!iOpcNameSpace)
+    {
         return false;
+    }
 
     OPCNAMESPACETYPE nameSpaceType = OPC_NS_FLAT;
     HRESULT result = iOpcNameSpace->QueryOrganization(&nameSpaceType);
@@ -67,7 +73,9 @@ bool COPCServer::getItemNames(std::vector<std::wstring> &opcItemNames)
     ATL::CComPtr<IEnumString> iEnum;
     result = iOpcNameSpace->BrowseOPCItemIDs(OPC_FLAT, emptyString, VT_EMPTY, 0, &iEnum);
     if (FAILED(result))
+    {
         return false;
+    }
 
     LPWSTR name = nullptr;
     ULONG nameSize = 0;
@@ -94,7 +102,9 @@ bool COPCServer::getStatus(ServerStatus &status)
     OPCSERVERSTATUS *serverStatus = nullptr;
     HRESULT result = iOpcServer->GetStatus(&serverStatus);
     if (FAILED(result))
+    {
         throw OPCException(L"COPCServer::getStatus: FAILED to get status");
+    }
 
     status.ftStartTime = serverStatus->ftStartTime;
     status.ftCurrentTime = serverStatus->ftCurrentTime;

@@ -54,7 +54,9 @@ class CTransComplete : public ITransactionComplete
         {
             OPCItemData *data = transaction.getItemDataMap().GetNextValue(pos);
             if (!data || FAILED(data->wQuality))
+            {
                 ++nbrErrors;
+            }
         } // while
 
         printf("refresh %d completed with %d errors\n", completeCount, nbrErrors);
@@ -93,7 +95,9 @@ void recordNameSpace(COPCServer &opcServer, const char *fileName)
     fstream itemListFile(fileName, ios::out);
 
     for (unsigned i = 0; i < opcItemNames.size(); ++i)
+    {
         itemListFile << COPCHost::WS2S(opcItemNames[i]) << "\n";
+    }
 
     itemListFile.close();
 
@@ -112,7 +116,9 @@ void runRefreshTest(COPCServer &opcServer, const char *fileName, unsigned nbrRef
         char str[256] = {0};
         itemListFile.getline(str, 255);
         if (strlen(str))
+        {
             itemNames.push_back(COPCHost::S2WS(str));
+        }
     } // while
 
     itemListFile.close();
@@ -194,9 +200,13 @@ int main(int argc, char *argv[])
     Sleep(1000);
 
     if (saveNameSpace)
+    {
         recordNameSpace(*opcServer, argv[1]);
+    }
     else
+    {
         runRefreshTest(*opcServer, argv[1], atoi(argv[4]));
+    }
 
     return 0;
 }

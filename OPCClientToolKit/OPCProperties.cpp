@@ -30,7 +30,9 @@ SPropertyValue::SPropertyValue(const CPropertyDescription &desc, VARIANT &val) :
     value.vt = VT_EMPTY;
     HRESULT result = VariantCopy(&value, &val);
     if (FAILED(result))
+    {
         throw OPCException(L"SPropertyValue::SPropertyValue: VariantCopy() FAILED", result);
+    }
 
 } // SPropertyValue::SPropertyValue
 

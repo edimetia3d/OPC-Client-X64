@@ -51,7 +51,9 @@ OPCItemData::OPCItemData(COPCItem *item, VARIANT &value, WORD quality, FILETIME 
     VariantInit(&vDataValue); // initialize variant..
     HRESULT result = VariantCopy(&vDataValue, &value);
     if (FAILED(result))
+    {
         throw OPCException(L"OPCItemData::OPCItemData: VarCopy FAILED");
+    }
 
 } // OPCItemData::OPCItemData
 
@@ -60,7 +62,9 @@ OPCItemData::OPCItemData(const OPCItemData &other)
     VariantInit(&vDataValue); // initialize variant..
     HRESULT result = VariantCopy(&vDataValue, &other.vDataValue);
     if (FAILED(result))
+    {
         throw OPCException(L"OPCItemData::OPCItemData: VariantCopy() FAILED");
+    }
 
     Item = other.Item;
     wQuality = other.wQuality;
@@ -79,7 +83,9 @@ OPCItemData &OPCItemData::operator=(const OPCItemData &other)
 {
     HRESULT result = VariantCopy(&vDataValue, &other.vDataValue);
     if (FAILED(result))
+    {
         throw OPCException(L"OPCItemData::operator=: VariantCopy() FAILED");
+    }
 
     Item = other.Item;
     wQuality = other.wQuality;
@@ -93,7 +99,9 @@ void OPCItemData::set(OPCITEMSTATE &itemState)
 {
     HRESULT result = VariantCopy(&vDataValue, &itemState.vDataValue);
     if (FAILED(result))
+    {
         throw OPCException(L"OPCItemData::set: VariantCopy() FAILED");
+    }
 
     wQuality = itemState.wQuality;
     ftTimeStamp = itemState.ftTimeStamp;
@@ -119,7 +127,9 @@ COPCItemDataMap::~COPCItemDataMap()
     {
         OPCItemData *data = GetNextValue(pos);
         if (data)
+        {
             delete data;
+        }
     } // while
 
     RemoveAll();

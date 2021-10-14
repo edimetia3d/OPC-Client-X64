@@ -39,7 +39,9 @@ bool LocalSyncOPCCLient::Connect(std::string serverName)
 {
     // check if opc service runing
     if (!DetectService("OpcEnum"))
+    {
         return false;
+    }
     is_env_ready = true;
 
     // create local host
@@ -55,7 +57,9 @@ bool LocalSyncOPCCLient::Connect(std::string serverName)
     std::vector<std::wstring> localServerList;
     p_host_->getListOfDAServers(IID_CATID_OPCDAServer20, localServerList, localClassIdList);
     if (!localServerList.size())
+    {
         return false;
+    }
 
     p_opc_server_ = p_host_->connectDAServer(COPCHost::S2WS(serverName));
     std::vector<std::wstring> item_name_vector;
@@ -67,11 +71,13 @@ bool LocalSyncOPCCLient::Connect(std::string serverName)
     // add items
     int item_index = 0;
     for (unsigned int i = 0; i < item_name_vector.size(); ++i)
+    {
         if (ItemNameFilter(COPCHost::WS2S(item_name_vector[i])))
         {
             name_item_map_[item_name_vector[i]] = p_group_->addItem(item_name_vector[i], true);
             ++item_index;
-        } // if
+        }
+    } // if
 
     if (!IsConnected())
     {
@@ -87,11 +93,15 @@ bool LocalSyncOPCCLient::Connect(std::string serverName)
 bool LocalSyncOPCCLient::IsConnected()
 {
     if (!is_env_ready)
+    {
         return false;
+    }
 
     // check is opc server runing
     if (IsOPCRuning() && IsOPCConnectedPLC())
+    {
         return true;
+    }
 
     return false;
 
@@ -100,7 +110,9 @@ bool LocalSyncOPCCLient::IsConnected()
 bool LocalSyncOPCCLient::DisConnect()
 {
     if (!is_env_ready)
+    {
         return true;
+    }
 
     CleanOPCMember();
     return true;
@@ -110,12 +122,16 @@ bool LocalSyncOPCCLient::DisConnect()
 bool LocalSyncOPCCLient::IsOPCRuning()
 {
     if (!p_opc_server_)
+    {
         return false;
+    }
 
     ServerStatus status = {0};
     p_opc_server_->getStatus(status);
     if (status.dwServerState != OPC_STATUS_RUNNING)
+    {
         return false;
+    }
 
     return true;
 
@@ -241,7 +257,9 @@ bool LocalSyncOPCCLient::ReadUint16Array(std::string item_name, uint16_t *item_v
     uint16_t *buf;
     SafeArrayAccessData(array_variant.parray, (void **)&buf);
     for (int i = 0; i < array_size; ++i)
+    {
         item_value_array[i] = buf[i];
+    }
 
     SafeArrayUnaccessData(array_variant.parray);
     VariantClear(&array_variant);
@@ -263,7 +281,9 @@ bool LocalSyncOPCCLient::WriteUint16Array(std::string item_name, uint16_t *item_
     uint16_t *buf;
     SafeArrayAccessData(array_variant.parray, (void **)&buf);
     for (int i = 0; i < array_size; ++i)
+    {
         buf[i] = item_value_array[i];
+    }
 
     SafeArrayUnaccessData(array_variant.parray);
     // write variant
@@ -278,7 +298,9 @@ bool LocalSyncOPCCLient::CleanOPCMember()
     if (IsOPCRuning()) // delete heap if connected
     {
         for (auto iter = name_item_map_.begin(); iter != name_item_map_.end(); ++iter)
+        {
             delete iter->second;
+        }
 
         name_item_map_.clear();
 

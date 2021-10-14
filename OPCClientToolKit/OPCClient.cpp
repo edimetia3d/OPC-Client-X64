@@ -41,12 +41,18 @@ bool COPCClient::init(OPCOLEInitMode mode)
 {
     HRESULT result = -1;
     if (mode == APARTMENTTHREADED)
+    {
         result = CoInitialize(nullptr);
+    }
     if (mode == MULTITHREADED)
+    {
         result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+    }
 
     if (FAILED(result))
+    {
         throw OPCException(L"COPCClient::init: CoInitialize failed");
+    }
 
     CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_NONE, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr,
                          EOAC_NONE, nullptr);
@@ -55,7 +61,9 @@ bool COPCClient::init(OPCOLEInitMode mode)
     {
         result = CoGetMalloc(MEMCTX_TASK, &iMalloc);
         if (FAILED(result))
+        {
             throw OPCException(L"COPCClient::init: CoGetMalloc FAILED");
+        }
     } // if
 
     ++ReleaseCount;
@@ -66,7 +74,9 @@ bool COPCClient::init(OPCOLEInitMode mode)
 void COPCClient::stop()
 {
     if (--ReleaseCount <= 0)
+    {
         iMalloc.Release();
+    }
 
     CoUninitialize();
 
@@ -90,7 +100,9 @@ void COPCClient::comFreeVariant(VARIANT *memory, unsigned size)
 COPCHost *COPCClient::makeHost(const std::wstring &hostName)
 {
     if (!hostName.size() || (hostName == L"localhost") || (hostName == L"127.0.0.1"))
+    {
         return new CLocalHost();
+    }
 
     return new CRemoteHost(hostName);
 

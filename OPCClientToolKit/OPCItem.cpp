@@ -52,7 +52,9 @@ bool COPCItem::writeSync(VARIANT &data)
     HRESULT *itemWriteErrors;
     HRESULT result = ItemGroup.getSyncIOInterface()->Write(1, &ServersItemHandle, &data, &itemWriteErrors);
     if (FAILED(result))
+    {
         throw OPCException(L"COPCItem::writeSync: synchronous write FAILED");
+    }
 
     if (FAILED(itemWriteErrors[0]))
     {
@@ -138,10 +140,14 @@ bool COPCItem::getSupportedProperties(std::vector<CPropertyDescription> &desc)
     HRESULT result = ItemGroup.getServer().getPropertiesInterface()->QueryAvailableProperties(
         &ItemName[0], &nbrProperties, &pPropertyIDs, &pDescriptions, &pvtDataTypes);
     if (FAILED(result))
+    {
         throw OPCException(L"COPCItem::getSupportedProperties: FAILED to retrieve properties", result);
+    }
 
     for (unsigned i = 0; i < nbrProperties; ++i)
+    {
         desc.push_back(CPropertyDescription(pPropertyIDs[i], pDescriptions[i], pvtDataTypes[i]));
+    }
 
     COPCClient::comFree(pPropertyIDs);
     COPCClient::comFree(pDescriptions);
@@ -158,7 +164,9 @@ bool COPCItem::getProperties(const std::vector<CPropertyDescription> &propsToRea
     HRESULT *pErrors = nullptr;
     DWORD *pPropertyIDs = new DWORD[nbrProperties];
     for (unsigned i = 0; i < nbrProperties; ++i)
+    {
         pPropertyIDs[i] = propsToRead[i].id;
+    }
 
     propsRead.RemoveAll();
     propsRead.SetCount(nbrProperties);
@@ -168,13 +176,17 @@ bool COPCItem::getProperties(const std::vector<CPropertyDescription> &propsToRea
         &ItemName[0], nbrProperties, pPropertyIDs, &pValues, &pErrors);
     delete[] pPropertyIDs;
     if (FAILED(result))
+    {
         throw OPCException(L"COPCItem::getProperties: FAILED to retrieve property values", result);
+    }
 
     for (unsigned i = 0; i < nbrProperties; ++i)
     {
         CAutoPtr<SPropertyValue> value;
         if (!FAILED(pErrors[i]))
+        {
             value.Attach(new SPropertyValue(propsToRead[i], pValues[i]));
+        }
         propsRead[i] = value;
     } // for
 

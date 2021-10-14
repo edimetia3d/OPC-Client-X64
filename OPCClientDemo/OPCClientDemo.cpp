@@ -64,8 +64,10 @@ class CMyCallback : public IAsyncDataCallback
                 const COPCItem *item = data->item(); // retrieve original item pointer from item data..
 
                 if (item)
+                {
                     printf("-----> '%ws', handle: %u, changed async read quality %d value %d\n",
                            item->getName().c_str(), handle, data->wQuality, data->vDataValue.iVal);
+                }
             } // if
         }     // while
 
@@ -118,15 +120,16 @@ void main(void)
 {
     COPCClient::init();
 
-    printf(
-        "input hostname (warning: NOT an IP address, use such as: 'Jhon-PC' or 'localhost' / <ENTER> ):\n"); // See
-                                                                                                             // readme
-                                                                                                             // to find
-                                                                                                             // reason
+    printf("input hostname (warning: NOT an IP address, use such as: 'Jhon-PC' or 'localhost' / <ENTER> ):\n"); // See
+    // readme
+    // to find
+    // reason
     char c_string[100] = {0};
     gets_s(c_string);
     if (!strlen(c_string))
+    {
         strcpy_s(c_string, sizeof(c_string), "localhost");
+    }
     COPCHost *host = COPCClient::makeHost(COPCHost::S2WS(c_string));
 
     // list servers
@@ -140,14 +143,18 @@ void main(void)
     {
         printf("%d: '%ws'\n", i, localServerList[i].c_str());
         if (localServerList[i] == L"Matrikon.OPC.Simulation.1")
+        {
             server_id = i;
+        }
     } // for
 
     // connect to OPC
     printf("\nselect server ID or <ENTER> for Matrikon:\n");
     gets_s(c_string);
     if (strlen(c_string))
+    {
         server_id = atol(c_string);
+    }
     std::wstring serverName = localServerList[server_id];
     printf("server name: '%ws'\n", serverName.c_str());
     COPCServer *opcServer = host->connectDAServer(serverName);
@@ -168,7 +175,9 @@ void main(void)
     opcServer->getItemNames(opcItemNames);
     printf("\n\ngot %d names:\n", static_cast<int>(opcItemNames.size()));
     for (unsigned i = 0; i < opcItemNames.size(); ++i)
+    {
         printf("%3d: '%ws'\n", i + 1, opcItemNames[i].c_str());
+    }
 
     // make demo group
     unsigned long refreshRate;
@@ -186,21 +195,28 @@ void main(void)
     itemNames.push_back(opcItemNames[21]); // 15 -> Bucket Brigade.UInt2
     itemNames.push_back(opcItemNames[22]); // 16 -> Bucket Brigade.UInt4
     if (demoGroup->addItems(itemNames, itemsCreated, errors, true) != 0)
+    {
         printf("add items to group FAILED\n");
+    }
 
     // get properties
     std::vector<CPropertyDescription> propDesc;
     readWritableItem->getSupportedProperties(propDesc);
     printf("supported properties for '%ws'\n", readWritableItem->getName().c_str());
     for (unsigned i = 0; i < propDesc.size(); ++i)
+    {
         printf("%3d: ID = %u, description = '%ws', type = %d\n", i, propDesc[i].id, propDesc[i].desc.c_str(),
                propDesc[i].type);
+    }
 
     CAutoPtrArray<SPropertyValue> propVals;
     readWritableItem->getProperties(propDesc, propVals);
     for (unsigned i = 0; i < propDesc.size(); ++i)
+    {
         if (!propVals[i])
+        {
             printf("FAILED to get property %u\n", propDesc[i].id);
+        }
         else
         {
             printf("Property %u=", propDesc[i].id);
@@ -229,7 +245,8 @@ void main(void)
                 printf("\n");
                 break;
             } // switch
-        }     // else
+        }
+    } // else
 
     // sync read of item
     OPCItemData data;

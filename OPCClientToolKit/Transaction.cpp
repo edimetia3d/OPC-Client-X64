@@ -35,7 +35,9 @@ CTransaction::CTransaction(std::vector<COPCItem *> &items, ITransactionComplete 
     : Completed(false), CancelID(0xffffffff), CompleteCallBack(completeCB)
 {
     for (unsigned i = 0; i < items.size(); ++i)
+    {
         COPCGroup::addItemData(ItemDataMap, items[i]);
+    }
 
 } // CTransaction::CTransaction
 
@@ -51,12 +53,18 @@ void CTransaction::setItemError(COPCItem *item, HRESULT error)
     OPCHANDLE handle = COPCGroup::getOpcHandle(item);
     COPCItemDataMap::CPair *pair = ItemDataMap.Lookup(handle);
     if (!pair)
+    {
         throw OPCException(L"CTransaction::setItemError: FAILED to find OPC item in OPC data map");
+    }
 
     if (!pair->m_value)
+    {
         ItemDataMap.SetValueAt(pair, new OPCItemData(item, error));
+    }
     else
-        pair->m_value->set(error); // just set error of existing item data..
+    {
+        pair->m_value->set(error);
+    } // just set error of existing item data..
 
 } // CTransaction::setItemError
 
@@ -65,12 +73,18 @@ void CTransaction::setItemValue(COPCItem *item, FILETIME time, WORD quality, VAR
     OPCHANDLE handle = COPCGroup::getOpcHandle(item);
     COPCItemDataMap::CPair *pair = ItemDataMap.Lookup(handle);
     if (!pair)
+    {
         throw OPCException(L"CTransaction::setItemValue: FAILED to find OPC item in OPC data map");
+    }
 
     if (!pair->m_value)
+    {
         ItemDataMap.SetValueAt(pair, new OPCItemData(item, value, quality, time, error)); // make new item data..
+    }
     else
-        pair->m_value->set(value, quality, time, error); // just set values of existing item data..
+    {
+        pair->m_value->set(value, quality, time, error);
+    } // just set values of existing item data..
 
 } // CTransaction::setItemValue
 
@@ -79,7 +93,9 @@ const OPCItemData *CTransaction::getItemValue(COPCItem *item) const
     OPCHANDLE handle = COPCGroup::getOpcHandle(item);
     const COPCItemDataMap::CPair *pair = ItemDataMap.Lookup(handle);
     if (!pair)
+    {
         throw OPCException(L"CTransaction::getItemValue: FAILED to find OPC item in transaction OPC data map");
+    }
 
     return pair->m_value;
 
@@ -89,7 +105,9 @@ void CTransaction::setCompleted()
 {
     Completed = true;
     if (CompleteCallBack)
+    {
         CompleteCallBack->complete(*this);
+    }
 
 } // CTransaction::setCompleted
 

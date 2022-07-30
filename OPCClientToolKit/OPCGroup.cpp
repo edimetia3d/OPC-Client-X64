@@ -62,9 +62,8 @@ class CAsyncDataCallback : public IOPCDataCallback
 
         if (iid == IID_IUnknown)
         {
-            *ppInterface = (IUnknown *)
+            *ppInterface = (IUnknown *)this;
         }
-        this;
         else if (iid == IID_IOPCDataCallback)
         {
             *ppInterface = (IOPCDataCallback *)this;

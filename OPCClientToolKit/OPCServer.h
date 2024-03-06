@@ -23,7 +23,6 @@ Boston, MA  02111-1307, USA.
 #pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
 
 #include "OPCClient.h"
-#include "OPCClientToolKitDLL.h"
 #include "OPCGroup.h"
 
 #ifdef OPCDA_CLIENT_NAMESPACE
@@ -52,7 +51,7 @@ struct ServerStatus
 /**
  * Local representation of a local or remote OPC server. Wrapper for the COM interfaces to the server.
  */
-class OPCDACLIENT_API COPCServer
+class COPCServer
 {
   private:
     /**

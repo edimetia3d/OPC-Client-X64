@@ -23,7 +23,6 @@ Boston, MA  02111-1307, USA.
 #include <vector>
 
 #include "OPCClient.h"
-#include "OPCClientToolKitDLL.h"
 
 #ifdef OPCDA_CLIENT_NAMESPACE
 namespace opcda_client

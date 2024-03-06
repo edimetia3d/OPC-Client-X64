@@ -27,7 +27,6 @@ Boston, MA  02111-1307, USA.
 #include <vector>
 
 #include "OPCClient.h"
-#include "OPCClientToolKitDLL.h"
 
 #ifdef OPCDA_CLIENT_NAMESPACE
 namespace opcda_client
@@ -38,7 +37,7 @@ namespace opcda_client
  * Abstract class that represents a PC which may host one or more OPC servers. Provides means of getting a list
  * of OPC servers on the host and creating connections to OPC servers.
  */
-class OPCDACLIENT_API COPCHost
+class COPCHost
 {
     /**
      * TCHAR:    WCHAR if UNICODE is defined, a CHAR otherwise.
@@ -138,7 +137,7 @@ class OPCDACLIENT_API COPCHost
 /**
  * Used for accessing OPC servers on a remote host. Make use of OpcEnum to browse servers.
  */
-class OPCDACLIENT_API CRemoteHost : public COPCHost
+class CRemoteHost : public COPCHost
 {
   private:
     /**
@@ -178,7 +177,7 @@ class OPCDACLIENT_API CRemoteHost : public COPCHost
  * Used for accessing OPC servers on a local (this) host. Uses the Component Categories manger to enumerate
  * the OPC servers on the local machine.
  */
-class OPCDACLIENT_API CLocalHost : public COPCHost
+class CLocalHost : public COPCHost
 {
   public:
     CLocalHost();

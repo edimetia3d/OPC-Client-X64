@@ -20,7 +20,6 @@ Boston, MA  02111-1307, USA.
 
 #pragma once
 
-#include "OPCClientToolKitDLL.h"
 #include "opcda.h"
 
 #ifdef OPCDA_CLIENT_NAMESPACE
@@ -33,7 +32,7 @@ class COPCItem;
 /**
  *Wrapper for OPC data. Hides COM memory management.
  */
-struct OPCDACLIENT_API OPCItemData
+struct OPCItemData
 {
     FILETIME ftTimeStamp;
     WORD wQuality;
@@ -72,7 +71,7 @@ struct OPCDACLIENT_API OPCItemData
 /**
  * Can't find an ATL autoptr map - this class provides the functionality I want.
  */
-class OPCDACLIENT_API COPCItemDataMap : public CAtlMap<OPCHANDLE, OPCItemData *>
+class COPCItemDataMap : public CAtlMap<OPCHANDLE, OPCItemData *>
 {
   public:
     ~COPCItemDataMap();

@@ -4,6 +4,16 @@
 
 #include <Winsvc.h>
 
+extern "C" {
+#define MIDL_DEFINE_GUID(type, name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8)                                        \
+    const type name = {l, w1, w2, {b1, b2, b3, b4, b5, b6, b7, b8}}
+
+    MIDL_DEFINE_GUID(IID, IID_CATID_OPCDAServer20, 0x63D5F432, 0xCFE4, 0x11d1, 0xB2, 0xC8, 0x00, 0x60, 0x08, 0x3B, 0xA1,
+                     0xFB);
+
+#undef MIDL_DEFINE_GUID
+}
+
 LocalSyncOPCCLient::LocalSyncOPCCLient()
 {
     p_group_ = nullptr;

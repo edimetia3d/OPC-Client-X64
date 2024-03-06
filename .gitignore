@@ -3,3 +3,5 @@
 *.sdf
 *.opensdf
 *.suo
+bin
+build

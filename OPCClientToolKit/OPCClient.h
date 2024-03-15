@@ -30,6 +30,7 @@ Boston, MA  02111-1307, USA.
 #include <objbase.h>
 #include <stdexcept>
 
+#include "OPCClientToolKitDLL.h"
 #include "OPCItemData.h"
 #include "opcda.h"
 
@@ -91,7 +92,7 @@ enum OPCOLEInitMode
     MULTITHREADED
 }; // OPCOLEInitMode
 
-class COPCClient
+class OPCDACLIENT_API COPCClient
 {
   private:
     static ATL::CComPtr<IMalloc> iMalloc;

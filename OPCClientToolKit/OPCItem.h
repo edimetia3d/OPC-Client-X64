@@ -23,7 +23,6 @@ Boston, MA  02111-1307, USA.
 #pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
 
 #include "OPCClient.h"
-#include "OPCClientToolKitDLL.h"
 #include "OPCProperties.h"
 #include "Transaction.h"
 
@@ -38,7 +37,7 @@ class COPCGroup;
  * Provides wrapper for operations that typically exist at the group level (e.g. reads) (it is at this level
  * that OPC supports the operation) however, we provide the operation at this level for ease of use.
  */
-class OPCDACLIENT_API COPCItem
+class COPCItem
 {
   private:
     OPCHANDLE ServersItemHandle;

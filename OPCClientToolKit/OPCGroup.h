@@ -23,7 +23,6 @@ Boston, MA  02111-1307, USA.
 #pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
 
 #include "OPCClient.h"
-#include "OPCClientToolKitDLL.h"
 #include "Transaction.h"
 
 #ifdef OPCDA_CLIENT_NAMESPACE
@@ -44,7 +43,7 @@ class CAsyncDataCallback;
 /**
  * Client sided abstraction of an OPC group, wrapping the COM interfaces to the group within the OPC server.
  */
-class OPCDACLIENT_API COPCGroup
+class COPCGroup
 {
   private:
     ATL::CComPtr<IOPCGroupStateMgt> iStateManagement;

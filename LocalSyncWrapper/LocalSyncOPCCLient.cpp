@@ -55,7 +55,7 @@ bool LocalSyncOPCCLient::Connect(std::string serverName)
     //  connect to server and get item names
     std::vector<CLSID> localClassIdList;
     std::vector<std::wstring> localServerList;
-    p_host_->getListOfDAServers(IID_CATID_OPCDAServer20, localServerList, localClassIdList);
+    p_host_->getListOfDAServers(COPCClient::CATID_OPCDAv20, localServerList, localClassIdList);
     if (!localServerList.size())
     {
         return false;

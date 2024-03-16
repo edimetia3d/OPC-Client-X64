@@ -23,7 +23,6 @@ Boston, MA  02111-1307, USA.
 #pragma warning(disable : 4251) // can be ignored if deriving from a type in the Standard C++ Library..
 
 #include "OPCClient.h"
-#include "OPCClientToolKitDLL.h"
 
 #ifdef OPCDA_CLIENT_NAMESPACE
 namespace opcda_client
@@ -33,7 +32,7 @@ namespace opcda_client
 /**
  * Holds desciption of a property for an OPC item.
  */
-struct OPCDACLIENT_API CPropertyDescription
+struct CPropertyDescription
 {
     /// properties identifier
     DWORD id;

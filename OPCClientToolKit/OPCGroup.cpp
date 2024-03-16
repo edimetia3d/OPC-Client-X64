@@ -337,6 +337,7 @@ void COPCGroup::readSync(std::vector<COPCItem *> &items, COPCItemDataMap &itemDa
         {
             itemDataMap.SetValueAt(pair, data);
         }
+        VariantClear(&(states[i].vDataValue));
     } // for
 
     delete[] handles;

@@ -135,7 +135,7 @@ void main(void)
     // list servers
     std::vector<CLSID> localClassIdList;
     std::vector<std::wstring> localServerList;
-    host->getListOfDAServers(IID_CATID_OPCDAServer20, localServerList, localClassIdList);
+    host->getListOfDAServers(COPCClient::CATID_OPCDAv20, localServerList, localClassIdList);
 
     printf("\nserver ID list:\n");
     int server_id = -1;

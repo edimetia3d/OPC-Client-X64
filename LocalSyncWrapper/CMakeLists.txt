@@ -7,3 +7,5 @@ set(SOURCE_EXE ${SOURCE_H} ${SOURCE_CPP})
 
 add_executable(LocalSyncWrapper ${SOURCE_EXE})
 target_link_libraries(LocalSyncWrapper OPCClientToolKit ws2_32)
+
+install(TARGETS LocalSyncWrapper DESTINATION bin)

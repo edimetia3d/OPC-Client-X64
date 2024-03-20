@@ -3,5 +3,6 @@
 *.sdf
 *.opensdf
 *.suo
+.vscode
 bin
 build

@@ -29,7 +29,7 @@ namespace opcda_client
 {
 #endif
 
-class CTransaction;
+class OPCDACLIENT_API CTransaction;
 
 /**
  * Interface which provides means by which the client can be notified when an asynchronous operation

@@ -51,7 +51,7 @@ struct ServerStatus
 /**
  * Local representation of a local or remote OPC server. Wrapper for the COM interfaces to the server.
  */
-class COPCServer
+class OPCDACLIENT_API COPCServer
 {
   private:
     /**

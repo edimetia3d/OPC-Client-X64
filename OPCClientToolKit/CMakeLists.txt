@@ -1,6 +1,6 @@
 project(OPCClientToolKit)
 
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
 
 set(SOURCE_H OpcEnum.h opccomn.h opcda.h
     OPCClient.h OPCHost.h OPCItemData.h OPCServer.h

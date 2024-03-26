@@ -32,7 +32,7 @@ class COPCItem;
 /**
  *Wrapper for OPC data. Hides COM memory management.
  */
-struct OPCItemData
+struct OPCDACLIENT_API OPCItemData
 {
     FILETIME ftTimeStamp;
     WORD wQuality;
@@ -71,7 +71,7 @@ struct OPCItemData
 /**
  * Can't find an ATL autoptr map - this class provides the functionality I want.
  */
-class COPCItemDataMap : public CAtlMap<OPCHANDLE, OPCItemData *>
+class OPCDACLIENT_API COPCItemDataMap : public CAtlMap<OPCHANDLE, OPCItemData *>
 {
   public:
     ~COPCItemDataMap();

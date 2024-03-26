@@ -32,7 +32,7 @@ namespace opcda_client
 /**
  * Holds desciption of a property for an OPC item.
  */
-struct CPropertyDescription
+struct OPCDACLIENT_API CPropertyDescription
 {
     /// properties identifier
     DWORD id;

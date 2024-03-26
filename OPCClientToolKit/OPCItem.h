@@ -37,7 +37,7 @@ class COPCGroup;
  * Provides wrapper for operations that typically exist at the group level (e.g. reads) (it is at this level
  * that OPC supports the operation) however, we provide the operation at this level for ease of use.
  */
-class COPCItem
+class OPCDACLIENT_API COPCItem
 {
   private:
     OPCHANDLE ServersItemHandle;

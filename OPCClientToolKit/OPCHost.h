@@ -37,7 +37,7 @@ namespace opcda_client
  * Abstract class that represents a PC which may host one or more OPC servers. Provides means of getting a list
  * of OPC servers on the host and creating connections to OPC servers.
  */
-class COPCHost
+class OPCDACLIENT_API COPCHost
 {
     /**
      * TCHAR:    WCHAR if UNICODE is defined, a CHAR otherwise.
@@ -137,7 +137,7 @@ class COPCHost
 /**
  * Used for accessing OPC servers on a remote host. Make use of OpcEnum to browse servers.
  */
-class CRemoteHost : public COPCHost
+class OPCDACLIENT_API CRemoteHost : public COPCHost
 {
   private:
     /**
@@ -177,7 +177,7 @@ class CRemoteHost : public COPCHost
  * Used for accessing OPC servers on a local (this) host. Uses the Component Categories manger to enumerate
  * the OPC servers on the local machine.
  */
-class CLocalHost : public COPCHost
+class OPCDACLIENT_API CLocalHost : public COPCHost
 {
   public:
     CLocalHost();

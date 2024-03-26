@@ -43,7 +43,7 @@ class CAsyncDataCallback;
 /**
  * Client sided abstraction of an OPC group, wrapping the COM interfaces to the group within the OPC server.
  */
-class COPCGroup
+class OPCDACLIENT_API COPCGroup
 {
   private:
     ATL::CComPtr<IOPCGroupStateMgt> iStateManagement;

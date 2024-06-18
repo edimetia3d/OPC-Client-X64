@@ -44,6 +44,8 @@ wrong, you may check release 0.4.1 as a backup.
       .
 
 ## Detail & ChangeLog
+* Date: 2024-06-18
+    * Thanks for kumajaya, the project has been switched to CMake [PR#18](https://github.com/edimetia3d/OPC-Client-X64/pull/18), you can build it with CMake now.
 * Date: 2021-10-10
     * Thanks for wolfgang.griech (wolfgang.griech@gmail.com), who contributed a huge bug fixes [PR#14](https://github.com/edimetia3d/OPC-Client-X64/pull/14) that may fix many issues in this project.
 * Date: 2017-07-07
